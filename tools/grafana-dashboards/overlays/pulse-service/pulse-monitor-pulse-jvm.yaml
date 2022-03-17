@@ -1,0 +1,59 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-pulse-jvm
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-pulse-jvm
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Jvm Alerts
+    rules:
+      - alert: pulse_critical_hikari_cp
+        expr: |-
+          sum by(environment,location,pod) (
+            hikaricp_connections_active{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+          ) /
+          sum by(environment,location,pod) (
+            hikaricp_connections{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: pulse
+        annotations:
+          summary: Detected critical Hikari connections pool usage by Pulse container.
+          information: 'Detected critical Hikari connections pool usage: {{ $value }}% by pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'
+
+      - alert: pulse_high_hikari_cp
+        expr: |-
+          (
+            sum by(environment,location,pod) (
+              hikaricp_connections_active{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) /
+            sum by(environment,location,pod) (
+              hikaricp_connections{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) * 100
+            >= 70
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,pod) (
+              hikaricp_connections_active{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) /
+            sum by(environment,location,pod) (
+              hikaricp_connections{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: pulse
+        annotations:
+          summary: Detected high Hikari connections pool usage by Pulse container.
+          information: 'Detected high Hikari connections pool usage: {{ $value }}% by pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'

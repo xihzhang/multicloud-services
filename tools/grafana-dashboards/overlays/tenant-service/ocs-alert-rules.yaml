@@ -1,0 +1,52 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: tenant-monitor
+    meta.helm.sh/release-namespace: voice
+  name: tenant-ocs-alert-rules
+  namespace: voice
+spec:
+  groups:
+  - name: ocs-alert-rule
+    rules:
+    - alert: OcsHealthWarning
+      annotations:
+        description: OCS health is bad in pod {{ $labels.pod }} for 2 mins
+        summary: OCS health is bad in pod {{ $labels.pod }}
+      expr: tenant_ocs_health_level{namespace="voice",pod=~"t[0-9].*"} < 2
+      for: 2m
+      labels:
+        service: voice
+        severity: high
+    - alert: OcsHealthCritical
+      annotations:
+        description: OCS health is critical in pod {{ $labels.pod }} for 5 mins
+        summary: OCS health is critical
+      expr: tenant_ocs_health_level{namespace="voice",pod=~"t[0-9].*"} < 2
+      for: 5m
+      labels:
+        category: ocs_pager
+        service: voice
+        severity: critical
+    - alert: OcsConnectionCritical
+      annotations:
+        description: OCS connection status critical in pod {{ $labels.pod }} for 5
+          mins
+        summary: OCS connection status critical
+      expr: tenant_ocs_connection_status{namespace="voice",pod=~"t[0-9].*"} < 1
+      for: 5m
+      labels:
+        category: ocs_pager
+        service: voice
+        severity: critical
+    - alert: OcsCampaignUnhealthy
+      annotations:
+        description: Some more Campaign Groups in pod {{ $labels.pod }} are unhealthy
+          for 5 mins
+        summary: Campaign Groups unhealthy
+      expr: increase(tenant_ocs_campaign_groups_unhealthy[10m]) > 0
+      for: 5m
+      labels:
+        service: voice
+        severity: high

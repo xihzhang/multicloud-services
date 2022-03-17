@@ -1,0 +1,60 @@
+image:
+  registry: repository.path/auth
+  imagePullSecrets:		  
+    - name: pullsecret
+postgres:
+  secret:
+    create: true
+  configmap:
+    create: true
+  username: gauth_pg_username
+  password: gauth_pg_password
+  db: gauth
+  host: POSTGRES_ADDR
+  port: 5432
+redis:
+  secret:
+    name_override: gauth-redis
+    create: true
+  configmap:
+    create: true
+  cluster_nodes: infra-redis-redis-cluster.infra.svc.cluster.local:6379
+  password_required: true
+  password: gauth_redis_password
+services:
+  replicas: 2
+  secret:
+    admin_username: gauth_admin_username
+    admin_password: gauth_admin_password
+    client_id: gauth_gws_client_id
+    client_secret: gauth_gws_client_secret
+  auth:
+    jks:
+      # See more on Java Keystore creation: https://all.docs.genesys.com/AUTH/Current/AuthPEGuide/Configure
+      enabled: true
+      # Convert keystore.jks file content to base64 ( cat keystore.jks | base64 ) and put the output here
+      keyStore: jksStorage.jks
+      keyStoreFileData: |-
+        <key content>					  
+      keyStorePassword: gauth_jks_keyStorePassword
+      keyAlias: gws-auth-key
+      keyPassword: gauth_jks_keyPassword
+ingress:
+  frontend: gauth.INGRESS_DOMAIN
+  tls:
+    - hosts:
+        - gauth.INGRESS_DOMAIN  
+internal_ingress:
+  frontend: gauth.INGRESS_DOMAIN
+  tls:
+    - hosts:
+        - gauth.INGRESS_DOMAIN 
+monitoring:
+  enabled: true
+  dashboards: true
+
+pod_autoscaler:
+  auth:
+    enabled: true
+  environment:
+    enabled: true

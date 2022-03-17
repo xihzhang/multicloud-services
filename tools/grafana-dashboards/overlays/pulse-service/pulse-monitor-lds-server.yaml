@@ -1,0 +1,44 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-lds-server
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-lds-server
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Lds Server Alerts
+    rules:
+      - alert: pulse_lds_no_connected_senders
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_lds_senders_number{cloud="azure",namespace="pulse",pod=~"pulse-lds-.*"}
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: lds
+        annotations:
+          summary: LDS is not connected to senders.
+          information: 'Number of senders the LDS {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_lds_no_registered_dns
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_lds_sender_registered_dns_number{cloud="azure",namespace="pulse",pod=~"pulse-lds-.*"}
+          )
+          < 1
+          unless on(environment,location,pod)
+          kube_pod_labels{cloud="azure",pod=~".*-lds-vq-.*"}
+        for: 30m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: lds
+        annotations:
+          summary: No DNs are registered on LDS.
+          information: 'Number of DNs registered on the LDS {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}: {{ $value }}'

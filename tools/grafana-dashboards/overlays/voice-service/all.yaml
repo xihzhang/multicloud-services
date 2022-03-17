@@ -1,0 +1,496 @@
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-agent-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-agent-dashboard
+    key: voice-agent-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-callthread-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-callthread-dashboard
+    key: voice-callthread-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-common-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-common-dashboard
+    key: voice-common-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-config-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-config-dashboard
+    key: voice-config-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-config-drilldown-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-config-drilldown-dashboard
+    key: voice-config-drilldown-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-cprs-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-cprs-dashboard
+    key: voice-cprs-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-dialplan-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-dialplan-dashboard
+    key: voice-dialplan-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-dialplan-drilldown-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-dialplan-drilldown-dashboard
+    key: voice-dialplan-drilldown-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-kafka-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-kafka-metrics-dashboard
+    key: voice-kafka-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-alerts-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-log-output-dashboard
+    key: voice-alerts-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-ors-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-ors-dashboard
+    key: voice-ors-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-registrar-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-registrar-dashboard
+    key: voice-registrar-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-registrar-drilldown-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-registrar-drilldown-dashboard
+    key: voice-registrar-drilldown-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-rqclient-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-rqclient-dashboard
+    key: voice-rqclient-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-rq-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-rqnode-dashboard
+    key: voice-rq-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-service-alerts-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-service-alerts-dashboard
+    key: voice-service-alerts-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-service-status.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-service-status-dashboard
+    key: voice-service-status.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-service-tenant-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-service-tenant-metrics-dashboard
+    key: voice-service-tenant-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-service-versions.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-service-versions-dashboard
+    key: voice-service-versions.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sip-media-service-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sip-media-service-metrics-dashboard
+    key: voice-sip-media-service-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sip-server-dialplan.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sip-server-dialplan-dashboard
+    key: voice-sip-server-dialplan.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sip-service-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sip-service-metrics-dashboard
+    key: voice-sip-service-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sip-service-resources.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sip-service-resources-dashboard
+    key: voice-sip-service-resources.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sipfe-service-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sipfe-service-metrics-dashboard
+    key: voice-sipfe-service-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sipfe-service-resources.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sipfe-service-resources-dashboard
+    key: voice-sipfe-service-resources.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sipproxy-alerts-dashboard
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sipproxy-dashboard
+    key: voice-sipproxy-alerts.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sipproxy-sipnodes-dashboard
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sipproxy-dashboard
+    key: voice-sipproxy-sipnodes.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sipproxy-status-dashboard
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sipproxy-dashboard
+    key: voice-sipproxy-status.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-sips-dashboard.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-sips-dashboard
+    key: voice-sips-dashboard.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-voicemail-service-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-voicemail-dashboard
+    key: voice-voicemail-service-metrics.json
+---
+# Source: deploy-app-dashboards/templates/dashboards.yaml
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: voice-voicemail-drilldown-service-metrics.json
+  namespace: voice
+  labels:
+    app: grafana
+spec:
+  customFolderName: voice
+  json:
+    ""
+  configMapRef:
+    name: voice-voicemail-drilldown-dashboard
+    key: voice-voicemail-drilldown-service-metrics.json

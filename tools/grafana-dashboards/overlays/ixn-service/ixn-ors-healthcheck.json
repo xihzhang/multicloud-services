@@ -1,0 +1,5012 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "pluginName": "Prometheus"
+      }
+    ],
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "bargauge",
+        "name": "Bar Gauge",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "flant-statusmap-panel",
+        "name": "Statusmap",
+        "version": "0.4.1"
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "6.7.5"
+      },
+      {
+        "type": "panel",
+        "id": "graph",
+        "name": "Graph",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "heatmap",
+        "name": "Heatmap",
+        "version": ""
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "text",
+        "name": "Text",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "iteration": 1623319116287,
+    "links": [
+      {
+        "asDropdown": true,
+        "icon": "external link",
+        "tags": [
+          "IXN"
+        ],
+        "title": "IXN Dashboards",
+        "type": "dashboards"
+      }
+    ],
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": "${DS_PROMETHEUS}",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 85,
+        "panels": [],
+        "title": "Connection status",
+        "type": "row"
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#F2495C",
+              "tooltip": "All Connections Not Ready",
+              "value": "-1"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "Some Connections Not Ready",
+              "value": "0"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "All Connections Ready",
+              "value": "1"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Status of connection to redis cluster",
+        "gridPos": {
+          "h": 13,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "highlightCards": true,
+        "id": 61,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "# Get ratio of connected nodes to all known nodes. Get range: (0, 1)\n# Shift range to be (-0.001, 0.999)\n# Divide it by 0.998 to make range upper bound at least 1.\n# \"floor\" value to convert it to discrete one {-1, 0, 1}\nmin by (tenant)(\r\n  clamp_max(\r\n    floor(\r\n      (sum by (tenant, instance)(ixnnode_redis_client_status) /\r\r\n        count by (tenant, instance)(ixnnode_redis_client_status) - 0.001) / 0.998\n    ), 1\r\n  )\r\n)\nOR min by (tenant)(((up{servicename=\"ixn\", container=\"ixn-node\"} > 0) > bool 1) - 1)",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Redis Connection Status",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#F2495C",
+              "tooltip": "Not Connected",
+              "value": "-1"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "Some Nodes Not Connected",
+              "value": "0"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "All Connected",
+              "value": "1"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Status of  tenant connections to RQ Service",
+        "gridPos": {
+          "h": 13,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "highlightCards": true,
+        "id": 1782,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "# Get ratio of connected nodes to all known nodes. Get range: (0, 1)\n# Shift range to be (-0.001, 0.999)\n# Divide it by 0.998 to make range upper bound at least 1.\n# \"floor\" value to convert it to discrete one {-1, 0, 1}\nmin by (tenant)(\r\n  clamp_max(\r\n    floor(\r\n      (sum without (rq_node)(ixnnode_rq_client_status) / on(tenant, instance) \r\n        count by (tenant, instance)(ixnnode_rq_client_status) - 0.001) / 0.998\n    ), 1\r\n  )\r\n)\nOR min by (tenant)(((up{servicename=\"ixn\", container=\"ixn-node\"} > 0) > bool 1) - 1)",
+            "interval": "",
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "RQ Service Connection Status",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#F2495C",
+              "tooltip": "Not Connected",
+              "value": "-1"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "Some Tenants Not Connected",
+              "value": "0"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "All Connected",
+              "value": "1"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Status of  tenant connections to RQ Service",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 14
+        },
+        "highlightCards": true,
+        "id": 2421,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "# Get ratio of connected nodes to all known nodes. Get range: (0, 1)\n# Shift range to be (-0.001, 0.999)\n# Divide it by 0.998 to make range upper bound at least 1.\n# \"floor\" value to convert it to discrete one {-1, 0, 1}\nmin by (rq_node)(\r\n  clamp_max(\r\n    floor(\r\n      (sum by(rq_node)(ixnnode_rq_client_status) / on() group_left\r\n        count(count by (tenant) (ixnnode_rq_client_status)) - 0.001) / 0.998\r\n    ), 1\r\n  )\r\n)",
+            "interval": "",
+            "legendFormat": "RqNode {{rq_node}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Tenants Connected to RQ Nodes Status",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Number of tenant connected to a specific RQ Node.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 14
+        },
+        "hiddenSeries": false,
+        "id": 1165,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum by(rq_node)(ixnnode_rq_client_status)",
+            "interval": "",
+            "legendFormat": "RqNode {{rq_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Number of Tenants Connected to RQ Nodes",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Status of connection to individual nodes of redis client (in singleton mode matches to redis_client_status).\n0 - Not Ready\n1 - Ready\n2 - Wait",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 3939,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_redis_client_node_status{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "{{tenant}}-{{redis_client}}-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Redis Client Connection Status per Node",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": "",
+            "logBase": 1,
+            "max": "2",
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total number of error occurred on Redis client.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 3935,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_redis_client_errors_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "{{tenant}}-{{redis_client}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Redis Client Total Errors",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total number of error occurred on Redis client.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 16,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 3936,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_redis_client_errors_total{tenant=~\"$Tenant\"}[5m])",
+            "interval": "",
+            "legendFormat": "{{tenant}}-{{redis_client}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Redis Client Errors Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total number of errors occurred on individual nodes of redis client (in singleton mode matches to redis_client_errors_total).",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 30
+        },
+        "hiddenSeries": false,
+        "id": 3937,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_redis_client_node_errors_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "{{tenant}}-{{redis_client}}-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Redis Client Total Errors per Redis Node",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total number of errors occurred on individual nodes of redis client (in singleton mode matches to redis_client_errors_total).",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 30
+        },
+        "hiddenSeries": false,
+        "id": 3938,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_redis_client_node_errors_total{tenant=~\"$Tenant\"}[5m])",
+            "interval": "",
+            "legendFormat": "{{tenant}}-{{redis_client}}-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Redis Client Errors Rate per Redis Node",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#73BF69",
+              "tooltip": "Ok",
+              "value": "1"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "Processing Stuck",
+              "value": "0"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "The size of the queue of  routing instructions waiting for completion processing is under limit.\nWhen the queue size reaches the limit defined in IXN Node, reading of  routing instructions stops.",
+        "gridPos": {
+          "h": 13,
+          "w": 24,
+          "x": 0,
+          "y": 38
+        },
+        "highlightCards": true,
+        "id": 3795,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "min by (tenant)(\r\n  (ixnnode_instructions_processing_queue_concurrency_limit - \r\n    sum without(type)(ixnnode_instructions_processing_queue_size))\r\n  +\r\n  increase(ixnnode_all_instructions_received_total[1m])\r\n\r\n) > bool 0\nOR min by (tenant)((up{servicename=\"ixn\", container=\"ixn-node\"} > 0) > bool 1)",
+            "interval": "",
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Processing of Instructions Received from ORS",
+        "tooltip": {
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics"
+      },
+      {
+        "collapsed": false,
+        "datasource": "${DS_PROMETHEUS}",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 51
+        },
+        "id": 45,
+        "panels": [],
+        "title": "ORS Health Check",
+        "type": "row"
+      },
+      {
+        "content": "In order to monitor availability and latency for communications following event flow is implemented between Tenant IXN Node and ORS nodes\n0. Each Tenant IXN Node every 15 seconds sends health check request type 'ixn_ping' to ORS Service Nodes using:\n * **Redis** stream 'NewInteractionsStream' with refId, timeStamp, tenantId,  and instructionStreamName \n0. Random ORS Node take request from the Redis stream and send ping instruction back to same IXN Node using Redis instructionStreamName :\n * **Redis** stream <instructionStreamName> with same refId, timeStamp, name,  and RQ Node streamName, \n0. IXN Node communicate back to ORS Node via\n * **RQ Service** stream <streamName> event ixn_ping, with timeStamp\n0. ORS node send unsolicited ping to known IXN Node if no ping comes from IXN Node\n * **Redis** stream <instructionStreamName> with refId 0, timeStamp, name,  and RQ Node streamName\n\n\n\n",
+        "datasource": "$DataSource",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 52
+        },
+        "id": 524,
+        "mode": "markdown",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "How IXN <-> ORS Health Check Works",
+        "type": "text"
+      },
+      {
+        "content": "<table><tbody>\n<tr>\n<td><strong>Panel Title</strong></td>\n<td><strong>Description</strong></td>\n</tr>\n<tr>\n<td>IXN Ping Sending via Redis</td>\n<td>Shows status summary of sending pings process. Green state means IXN Node was able to send all ping messages via both Redis and RQ Service within a specific time range. Red state means the opposite.</td>\n</tr>\n<tr>\n<td>ORS Reply Receival</td>\n<td>Shows quantitive ratio between pings sent via Redis and replies received. States: OK 90 - 100% replied, WARN 60 - 89% replied, ALERT less than 60% replied.</td>\n</tr>\n<tr>\n<td>IXN Ping Sending via RQ Service</td>\n<td>Shows quantitive ratio between pings replied by ORS and then sent via RQ Service. States: OK 90 - 100% sent, WARN 60 - 89% sent, ALERT less than 60% sent.</td>\n</tr>\n<tr>\n<td>Pings Sent and Replied via Redis Total</td>\n<td>Graph shows counters for pings sent via Redis and replies received. For each tenant three types of counters are present: \"Sent by tenant\", \"Replied to tenant by specific ORS node\", \"Replied to tenant total\".</td>\n</tr>\n<tr>\n<td>Pings Sent and Replied via Redis Rate</td>\n<td>Graph shows rate for the same counters as Pings Sent and Replied via Redis Total.</td>\n</tr>\n<tr>\n<td>Pings Failed to Send via Redis Total</td>\n<td>Graph shows counters for pings failed to send via redis.</td>\n</tr>\n<tr>\n<td>Pings Failed to Send via Redis Rate</td>\n<td>Graph shows rate for the same counters as Pings Failed to Send via Redis Total.</td>\n</tr>\n<tr>\n<td>Pings Sent via RQ Service Total</td>\n<td>Graph shows counters for pings sent via RQ Service separately For each ORS node.</td>\n</tr>\n<tr>\n<td>Pings Sent via RQ Service Rate</td>\n<td>Graph shows rate for the same counters as Pings Sent via RQ Service Total.</td>\n</tr>\n<tr>\n<td>Pings Failed to Send via RQ Service Total</td>\n<td>Graph shows counters for pings failed to send via RQ Service.</td>\n</tr>\n<tr>\n<td>Pings Failed to Send via RQ Service Rate</td>\n<td>Graph shows rate for the same counters as Pings Failed to Send via RQ Service Total.</td>\n</tr>\n<tr>\n<td>Roundtrip Duration for Pings Sent via Redis</td>\n<td>Graphs show information about time duration between sending a ping and receiving a reply. Two types of graphs are displayed for each tenant and each ORS node:\n<br/>Roundtrip Duration for Time Range - histogram shows distribution between buckets for the selected time range.\n<br/>Roundtrip Duration over Time - heatmap shows distribution between buckets over time. The more bright color the more pings in a bucket within a specific time span.\n</td>\n</tr>\n<tr>\n<td>One-way Duration for Pings Sent via Redis</td>\n<td>Graphs show information about time duration between a ping (reply or unsolicited one) being sent by ORS and received by IXN Service. The information is based on local sending time passed in a message by ORS, so time difference between clocks may have a significant impact on this metric.\n<br/>There are same types of graphs as for Roundtrip Duration for Pings Sent via Redis</td>\n</tr>\n<tr>\n<td></td>\n<td></td>\n</tr>\n</tbody></table>\n",
+        "datasource": "$DataSource",
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 60
+        },
+        "id": 526,
+        "mode": "html",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Panels Description",
+        "type": "text"
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#73BF69",
+              "tooltip": "OK",
+              "value": "0"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "FAILED",
+              "value": "1"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Status of sending health check messages via redis and RqNode",
+        "gridPos": {
+          "h": 13,
+          "w": 8,
+          "x": 0,
+          "y": 66
+        },
+        "highlightCards": true,
+        "id": 27,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "(\r\n  (sum without (instance)(\r\n    increase(ixnnode_ors_health_check_failed_total[5m])\r\n  ) > bool 0)\r\n  +\r\n  (sum without (instance)(\r\n    increase(ixnnode_ors_health_check_sent_total[5m])\r\n  ) == bool 0)\r\n) > bool 0",
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "IXN Ping Sending via Redis",
+        "tooltip": {
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics"
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#F2495C",
+              "tooltip": "",
+              "value": "0"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "",
+              "value": "1"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "",
+              "value": "2"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "",
+              "value": "3"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "",
+              "value": "4"
+            },
+            {
+              "color": "#F2495C",
+              "tooltip": "<60%",
+              "value": "5"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "",
+              "value": "6"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "",
+              "value": "7"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "<90%",
+              "value": "8"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "",
+              "value": "9"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "100%",
+              "value": "10"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Matching between messages sent and replied via Redis.",
+        "gridPos": {
+          "h": 13,
+          "w": 8,
+          "x": 8,
+          "y": 66
+        },
+        "highlightCards": true,
+        "id": 26,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "min by (tenant)(clamp_max(floor(\r\n  sum without (ors_node)(increase(ixnnode_ors_health_check_replied_total[5m])) / \r\n    increase(ixnnode_ors_health_check_sent_total[5m]) \r\n  * 10\r\n), 10))\nOR min by (tenant)((up{servicename=\"ixn\", container=\"ixn-node\"} > 0) > bool 1)",
+            "interval": "",
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "ORS Reply Receival",
+        "tooltip": {
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics"
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 10,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#F2495C",
+              "tooltip": "<60%",
+              "value": "3"
+            },
+            {
+              "color": "#FADE2A",
+              "tooltip": "<90%",
+              "value": "2"
+            },
+            {
+              "color": "#73BF69",
+              "tooltip": "100%",
+              "value": "1"
+            }
+          ]
+        },
+        "datasource": "$DataSource",
+        "description": "Status of sending health check messages via RQ Service. It is based on matching number of pings received from ORS (as replies or unsolicited ones) and sent via RQ Service within some time interval.",
+        "gridPos": {
+          "h": 13,
+          "w": 8,
+          "x": 16,
+          "y": 66
+        },
+        "highlightCards": true,
+        "id": 532,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "((min by (tenant)(clamp_max(floor(\r\n  sum without (ors_node)(increase(ixnnode_ors_health_check_rqnode_sent_total[3m])) / \r\n    sum without (ors_node)(increase(ixnnode_ors_health_check_replied_total[3m])) \r* 10\r\n), 10)) < bool 6)\n+\n(min by (tenant)(clamp_max(floor(\r\n  sum without (ors_node)(increase(ixnnode_ors_health_check_rqnode_sent_total[3m])) / \r\n    sum without (ors_node)(increase(ixnnode_ors_health_check_replied_total[3m])) * 10\r\n), 10)) < bool 9)\n+\n(min by (tenant)(clamp_max(floor(\r\n  sum without (ors_node)(increase(ixnnode_ors_health_check_rqnode_sent_total[3m])) / \r\n    sum without (ors_node)(increase(ixnnode_ors_health_check_replied_total[3m])) * 10\r\n), 10)) <= bool 10)) > 0\nOR min by (tenant)(((up{servicename=\"ixn\", container=\"ixn-node\"} > 0) > bool 1) + 3)",
+            "interval": "",
+            "legendFormat": "{{tenant}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "IXN Ping Sending via RQ Service",
+        "tooltip": {
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": false,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Counters of sent and replied health check messages.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 79
+        },
+        "hiddenSeries": false,
+        "id": 17,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_ors_health_check_sent_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "Sent by '{{tenant}} - {{instance}}'",
+            "refId": "A"
+          },
+          {
+            "expr": "ixnnode_ors_health_check_replied_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "Replied to '{{tenant}} - {{instance}} by {{ors_node}}'",
+            "refId": "B"
+          },
+          {
+            "expr": "sum by (tenant, instance) (ixnnode_ors_health_check_replied_total{tenant=~\"$Tenant\"})",
+            "interval": "",
+            "legendFormat": "Total replied to '{{tenant}} - {{instance}}'",
+            "refId": "C"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Sent and Replied via Redis Total",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Rate of sending health check messages and receiving replies to them.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 79
+        },
+        "hiddenSeries": false,
+        "id": 19,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_ors_health_check_sent_total{tenant=~\"$Tenant\"}[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Sent by '{{tenant}} - {{instance}}'",
+            "refId": "A"
+          },
+          {
+            "expr": "sum without (ors_node) (rate(ixnnode_ors_health_check_replied_total{tenant=~\"$Tenant\"}[5m]))",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Total replied to '{{tenant}} - {{instance}}'",
+            "refId": "C"
+          },
+          {
+            "expr": "rate(ixnnode_ors_health_check_replied_total{tenant=~\"$Tenant\"}[5m])",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "Total replied to '{{tenant}} - {{instance}} by {{ors_node}}'",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Sent and Replied via Redis Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total amount of health check messages failed to send via redis",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 87
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_ors_health_check_failed_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "'{{tenant}} - {{instance}}'",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Failed to Send via Redis Total",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total amount of health check messages failed to send via redis",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 87
+        },
+        "hiddenSeries": false,
+        "id": 5,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_ors_health_check_failed_total{tenant=~\"$Tenant\"}[1m])",
+            "interval": "",
+            "legendFormat": "'{{tenant}} - {{instance}}'",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Failed to Send via Redis Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Counter of sent  via RqNode health check messages (as responses to all received from ORS).",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 95
+        },
+        "hiddenSeries": false,
+        "id": 8,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_ors_health_check_rqnode_sent_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "Sent by {{tenant}} - {{instance}}' to {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Sent via RQ Service Total",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Rate of sending via RqNode health check messages (as responses to all received from ORS).",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 95
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_ors_health_check_rqnode_sent_total{tenant=~\"$Tenant\"}[5m])",
+            "interval": "",
+            "legendFormat": "Sent by '{{tenant}} - {{instance}}' to {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Sent via RQ Service Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total amount of health check messages failed to send via RqNode.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 103
+        },
+        "hiddenSeries": false,
+        "id": 6,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_ors_health_check_rqnode_failed_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "From {{tenant}} - {{instance}} to {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Failed to Send via RQ Service Total",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Total amount of health check messages failed to send via RqNode",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 103
+        },
+        "hiddenSeries": false,
+        "id": 9,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_ors_health_check_rqnode_failed_total{tenant=~\"$Tenant\"}[1m])",
+            "interval": "",
+            "legendFormat": "From {{tenant}} - {{instance}} to {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pings Failed to Send via RQ Service Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Counter of received unsolicited health check messages.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 111
+        },
+        "hiddenSeries": false,
+        "id": 13,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "ixnnode_ors_health_check_unsolicited_total{tenant=~\"$Tenant\"}",
+            "interval": "",
+            "legendFormat": "To '{{tenant}} - {{instance}}' from {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Unsolicited Pings from ORS Total",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "none",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$DataSource",
+        "description": "Rate of receiving unsolicited health check messages.",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 111
+        },
+        "hiddenSeries": false,
+        "id": 15,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(ixnnode_ors_health_check_unsolicited_total{tenant=~\"$Tenant\"}[5m])",
+            "interval": "",
+            "legendFormat": "To '{{tenant}} - {{instance}}' from {{ors_node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Unsolicited Pings from ORS Total Rate",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 2,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": true,
+        "datasource": "${DS_PROMETHEUS}",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 119
+        },
+        "id": 47,
+        "panels": [
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 3
+            },
+            "id": 49,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": "ORS",
+            "repeatDirection": "h",
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-0",
+                "value": "voice-ors-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 3
+            },
+            "id": 3919,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-1",
+                "value": "voice-ors-1"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 3
+            },
+            "id": 3920,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-2",
+                "value": "voice-ors-2"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 11
+            },
+            "id": 3921,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-3",
+                "value": "voice-ors-3"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 11
+            },
+            "id": 3922,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-4",
+                "value": "voice-ors-4"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 11
+            },
+            "id": 3923,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-5",
+                "value": "voice-ors-5"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent and replied.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 19
+            },
+            "id": 3924,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 49,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-orscanary-0",
+                "value": "voice-orscanary-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 19
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3925,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-1",
+                "value": "voice-ors-1"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 19
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3926,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-2",
+                "value": "voice-ors-2"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 27
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 33,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": "ORS",
+            "repeatDirection": "h",
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-0",
+                "value": "voice-ors-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 27
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3928,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-4",
+                "value": "voice-ors-4"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 27
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3929,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-5",
+                "value": "voice-ors-5"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 35
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3927,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-3",
+                "value": "voice-ors-3"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of roundtrip duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 43
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3930,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716294,
+            "repeatPanelId": 33,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-orscanary-0",
+                "value": "voice-orscanary-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_ors_health_check_roundtrip_duration_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Roundtrip Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          }
+        ],
+        "repeat": "Tenant",
+        "title": "Roundtrip Duration (IXN->ORS->IXN) for Pings Sent via Redis for $Tenant",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": "${DS_PROMETHEUS}",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 164
+        },
+        "id": 99,
+        "panels": [
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 4
+            },
+            "id": 97,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": "ORS",
+            "repeatDirection": "h",
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-0",
+                "value": "voice-ors-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 4
+            },
+            "id": 3891,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-1",
+                "value": "voice-ors-1"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 4
+            },
+            "id": 3892,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-2",
+                "value": "voice-ors-2"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 12
+            },
+            "id": 3893,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-3",
+                "value": "voice-ors-3"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 12
+            },
+            "id": 3894,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-4",
+                "value": "voice-ors-4"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 12
+            },
+            "id": 3895,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-5",
+                "value": "voice-ors-5"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a health check message was sent by ORS and processed by IXN.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 20
+            },
+            "id": 3896,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 2,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.3",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 97,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-orscanary-0",
+                "value": "voice-orscanary-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 1,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration with $ORS for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 20
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3897,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-1",
+                "value": "voice-ors-1"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 20
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3898,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-2",
+                "value": "voice-ors-2"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 28
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 136,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": "ORS",
+            "repeatDirection": "h",
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-0",
+                "value": "voice-ors-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 28
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3900,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-4",
+                "value": "voice-ors-4"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 28
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3901,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-5",
+                "value": "voice-ors-5"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 36
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3899,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-ors-3",
+                "value": "voice-ors-3"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of one-way duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 44
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3902,
+            "legend": {
+              "show": false
+            },
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1613566716288,
+            "repeatPanelId": 136,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "ORS": {
+                "selected": false,
+                "text": "voice-orscanary-0",
+                "value": "voice-orscanary-0"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_instructions_stream_latency_sec_bucket{tenant=~\"$Tenant\",ors_node=~\"$ORS\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "One-way Duration Over Time with $ORS",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          }
+        ],
+        "repeat": "Tenant",
+        "title": "One-way Duration (ORS -> IXN) for Pings Sent via Redis for $Tenant",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": "$DataSource",
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 209
+        },
+        "id": 3842,
+        "panels": [
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a Redis command was called and called back.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 106
+            },
+            "id": 3824,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 1,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.5",
+            "repeat": "Redis_Command",
+            "repeatDirection": "h",
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xadd",
+                "value": "xadd"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration with $Redis_Command for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a Redis command was called and called back.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 106
+            },
+            "id": 3931,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 1,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.5",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1615399344919,
+            "repeatPanelId": 3824,
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xdel",
+                "value": "xdel"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration with $Redis_Command for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "datasource": "$DataSource",
+            "description": "Time duration between a Redis command was called and called back.\nThis panel shows distribution between buckets for the selected time range.\nUnit: seconds.\n\"1\" bucket was excluded due to the bug in Grafana. It should be put back after upgrading to 7.X.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 106
+            },
+            "id": 3932,
+            "maxPerRow": 3,
+            "options": {
+              "displayMode": "basic",
+              "fieldOptions": {
+                "calcs": [
+                  "last"
+                ],
+                "defaults": {
+                  "decimals": 1,
+                  "mappings": [],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  },
+                  "title": "${__series.name} s",
+                  "unit": "percentunit"
+                },
+                "overrides": [],
+                "values": false
+              },
+              "orientation": "horizontal",
+              "showUnfilled": true
+            },
+            "pluginVersion": "6.7.5",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1615399344919,
+            "repeatPanelId": 3824,
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xread",
+                "value": "xread"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le!=\"1\"}[${__range_s}s]))\n/ ignoring (le) group_left\nsum without (instance)(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\",le=\"+Inf\"}[${__range_s}s]))",
+                "format": "heatmap",
+                "interval": "",
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration with $Redis_Command for Time Range",
+            "type": "bargauge"
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of redis command duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 114
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3808,
+            "legend": {
+              "show": false
+            },
+            "links": [
+              {
+                "title": "",
+                "url": ""
+              }
+            ],
+            "maxPerRow": 3,
+            "repeat": "Redis_Command",
+            "repeatDirection": "h",
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xadd",
+                "value": "xadd"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration Over Time with $Redis_Command",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of redis command duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 114
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3933,
+            "legend": {
+              "show": false
+            },
+            "links": [
+              {
+                "title": "",
+                "url": ""
+              }
+            ],
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1615399344919,
+            "repeatPanelId": 3808,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xdel",
+                "value": "xdel"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration Over Time with $Redis_Command",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          },
+          {
+            "cards": {
+              "cardPadding": null,
+              "cardRound": null
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateCividis",
+              "exponent": 0.5,
+              "max": null,
+              "min": null,
+              "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "$DataSource",
+            "description": "Distribution of redis command duration between buckets over time.",
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 114
+            },
+            "heatmap": {},
+            "hideZeroBuckets": false,
+            "highlightCards": true,
+            "id": 3934,
+            "legend": {
+              "show": false
+            },
+            "links": [
+              {
+                "title": "",
+                "url": ""
+              }
+            ],
+            "maxPerRow": 3,
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1615399344919,
+            "repeatPanelId": 3808,
+            "reverseYBuckets": true,
+            "scopedVars": {
+              "Redis_Command": {
+                "selected": false,
+                "text": "xread",
+                "value": "xread"
+              },
+              "Tenant": {
+                "selected": false,
+                "text": "0089",
+                "value": "0089"
+              }
+            },
+            "targets": [
+              {
+                "expr": "sum(increase(ixnnode_redis_command_duration_sec_bucket{tenant=~\"$Tenant\", command=~\"$Redis_Command\"}[$__interval])) by (le)",
+                "format": "heatmap",
+                "instant": false,
+                "interval": "",
+                "intervalFactor": 10,
+                "legendFormat": "{{le}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis Command Duration Over Time with $Redis_Command",
+            "tooltip": {
+              "show": true,
+              "showHistogram": true
+            },
+            "type": "heatmap",
+            "xAxis": {
+              "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+              "decimals": 1,
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true,
+              "splitFactor": null
+            },
+            "yBucketBound": "middle",
+            "yBucketNumber": null,
+            "yBucketSize": null
+          }
+        ],
+        "repeat": "Tenant",
+        "title": "Redis Command Duration for $Tenant",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [
+      "IXN"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "default",
+            "value": "default"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "DataSource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": null,
+          "current": {},
+          "datasource": "$DataSource",
+          "definition": "label_values(up{service=\"ixn\", tenant!=\"shared\"}, tenant)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": null,
+          "multi": true,
+          "name": "Tenant",
+          "options": [],
+          "query": "label_values(up{service=\"ixn\", tenant!=\"shared\"}, tenant)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 3,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {},
+          "datasource": "$DataSource",
+          "definition": "label_values(ors_node)",
+          "hide": 2,
+          "includeAll": true,
+          "index": -1,
+          "label": null,
+          "multi": true,
+          "name": "ORS",
+          "options": [],
+          "query": "label_values(ors_node)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {},
+          "datasource": "$DataSource",
+          "definition": "label_values(ixnnode_redis_command_duration_sec_bucket, command)",
+          "hide": 2,
+          "includeAll": true,
+          "index": -1,
+          "label": null,
+          "multi": true,
+          "name": "Redis_Command",
+          "options": [],
+          "query": "label_values(ixnnode_redis_command_duration_sec_bucket, command)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "utc",
+    "title": "IXN <-> ORS Health Check",
+    "uid": "POmvz9hGz",
+    "variables": {
+      "list": []
+    },
+    "version": 1
+  }

@@ -1,0 +1,3162 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 190,
+    "iteration": 1616618313031,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 59,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "description": "",
+            "fill": 1,
+            "fillGradient": 5,
+            "gridPos": {
+              "h": 11,
+              "w": 24,
+              "x": 0,
+              "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 63,
+            "interval": "",
+            "legend": {
+              "alignAsTable": true,
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "sideWidth": null,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+              {
+                "alias": "/firing/",
+                "stack": "B",
+                "transform": "negative-Y",
+                "zindex": -3
+              },
+              {
+                "alias": "/pending/",
+                "stack": "A"
+              },
+              {
+                "alias": ""
+              },
+              {
+                "alias": "/help_series_x_axes_in_center/",
+                "bars": false,
+                "hideTooltip": true,
+                "legend": false,
+                "lines": false,
+                "stack": false,
+                "yaxis": 2
+              }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "ALERTS{pod=~\"$pod\", alertname=~\"$alertname\", service=\"voice\", alertstate=\"firing\"}",
+                "interval": "",
+                "legendFormat": "{{severity}} / {{alertname}} / {{pod}} ",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Alerts History",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "decimals": null,
+                "format": "short",
+                "label": "Firing (-)   /  Pending (+)  ",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": "1",
+                "min": "-1",
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": true,
+              "alignLevel": 0
+            }
+          },
+          {
+            "columns": [],
+            "datasource": "$datasource",
+            "description": "Shows how many times was particular alert started in a defined time range. Alert can be started either directly as \"firing\" or as a \"pending\". Pending alerts wait for a defined time before it flips to a \"firing\" alert. This is specified with the \"FOR\" clause in a Prometheus \"rules\" file.",
+            "fontSize": "100%",
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 12
+            },
+            "id": 65,
+            "pageSize": null,
+            "showHeader": true,
+            "sort": {
+              "col": 10,
+              "desc": true
+            },
+            "styles": [
+              {
+                "alias": "Time",
+                "align": "auto",
+                "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                "link": false,
+                "pattern": "Time",
+                "type": "hidden"
+              },
+              {
+                "alias": "",
+                "align": "auto",
+                "colorMode": null,
+                "colors": [
+                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(237, 129, 40, 0.89)",
+                  "rgba(50, 172, 45, 0.97)"
+                ],
+                "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                "decimals": 2,
+                "mappingType": 1,
+                "pattern": "instance",
+                "thresholds": [],
+                "type": "string",
+                "unit": "short"
+              },
+              {
+                "alias": "count",
+                "align": "auto",
+                "colorMode": null,
+                "colors": [
+                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(237, 129, 40, 0.89)",
+                  "rgba(50, 172, 45, 0.97)"
+                ],
+                "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                "decimals": 2,
+                "mappingType": 1,
+                "pattern": "Value",
+                "thresholds": [],
+                "type": "number",
+                "unit": "short"
+              },
+              {
+                "alias": "",
+                "align": "auto",
+                "colorMode": null,
+                "colors": [
+                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(237, 129, 40, 0.89)",
+                  "rgba(50, 172, 45, 0.97)"
+                ],
+                "decimals": 2,
+                "pattern": "/.*/",
+                "thresholds": [],
+                "type": "string",
+                "unit": "short"
+              }
+            ],
+            "targets": [
+              {
+                "expr": "changes(ALERTS_FOR_STATE{pod=~\"$pod\",alertname=~\"$alertname\", service=\"voice\"}[$__range] ) + 1",
+                "format": "table",
+                "hide": false,
+                "instant": true,
+                "interval": "",
+                "legendFormat": "",
+                "refId": "B"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Total Alert Counts",
+            "transform": "table",
+            "type": "table"
+          }
+        ],
+        "title": "SIP Service Alerts",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 27,
+        "panels": [
+          {
+            "cards": {
+              "cardHSpacing": 2,
+              "cardMinWidth": 5,
+              "cardRound": null,
+              "cardVSpacing": 2
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateGnYlRd",
+              "defaultColor": "#757575",
+              "exponent": 0.5,
+              "mode": "discrete",
+              "thresholds": [
+                {
+                  "color": "#F2495C",
+                  "tooltip": "OutOfService",
+                  "value": "0"
+                },
+                {
+                  "color": "#37872D",
+                  "tooltip": "InService",
+                  "value": "1"
+                }
+              ]
+            },
+            "datasource": "$datasource",
+            "description": "",
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 2
+            },
+            "highlightCards": true,
+            "id": 29,
+            "legend": {
+              "show": true
+            },
+            "nullPointMode": "as empty",
+            "pageSize": 15,
+            "repeat": null,
+            "repeatDirection": "h",
+            "seriesFilterIndex": -1,
+            "statusmap": {
+              "ConfigVersion": "v1"
+            },
+            "targets": [
+              {
+                "expr": "sum(sips_dp_state{pod=~\"$pod\"}) by (pod)",
+                "format": "time_series",
+                "interval": "",
+                "legendFormat": "DP State:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(sips_msml_noos_detected{pod=~\"$pod\"}) by (device_name)",
+                "format": "time_series",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "MSML OOS:{{device_name}}:{{pod}}",
+                "refId": "B"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Dialplan state (0 - OOS/ 1 - InService)",
+            "tooltip": {
+              "extraInfo": "",
+              "freezeOnClick": true,
+              "items": [],
+              "show": true,
+              "showExtraInfo": false,
+              "showItems": false
+            },
+            "type": "flant-statusmap-panel",
+            "useMax": true,
+            "usingPagination": false,
+            "xAxis": {
+              "show": true
+            },
+            "yAxis": {
+              "maxWidth": -1,
+              "minWidth": -1,
+              "show": true
+            },
+            "yAxisSort": "metrics",
+            "yLabel": {
+              "delimiter": "",
+              "labelTemplate": "",
+              "usingSplitLabel": false
+            }
+          },
+          {
+            "cards": {
+              "cardHSpacing": 2,
+              "cardMinWidth": 5,
+              "cardRound": null,
+              "cardVSpacing": 2
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateGnYlRd",
+              "defaultColor": "#757575",
+              "exponent": 0.5,
+              "mode": "discrete",
+              "thresholds": [
+                {
+                  "color": "#F2495C",
+                  "tooltip": "OutOfService",
+                  "value": "0"
+                },
+                {
+                  "color": "#73BF69",
+                  "tooltip": "InService",
+                  "value": "1"
+                }
+              ]
+            },
+            "datasource": "$datasource",
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 2
+            },
+            "highlightCards": true,
+            "id": 53,
+            "legend": {
+              "show": true
+            },
+            "nullPointMode": "as empty",
+            "pageSize": 15,
+            "pluginVersion": "6.7.3",
+            "seriesFilterIndex": -1,
+            "statusmap": {
+              "ConfigVersion": "v1"
+            },
+            "targets": [
+              {
+                "expr": "sum(sips_msml_in_service{pod=~\"$pod\"}) by (pod)",
+                "interval": "",
+                "legendFormat": "MSML OOS:{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "MSML OutOfService",
+            "tooltip": {
+              "extraInfo": "",
+              "freezeOnClick": true,
+              "items": [],
+              "show": true,
+              "showExtraInfo": false,
+              "showItems": false
+            },
+            "type": "flant-statusmap-panel",
+            "useMax": true,
+            "usingPagination": false,
+            "xAxis": {
+              "show": true
+            },
+            "yAxis": {
+              "maxWidth": -1,
+              "minWidth": -1,
+              "show": true
+            },
+            "yAxisSort": "metrics",
+            "yLabel": {
+              "delimiter": "",
+              "labelTemplate": "",
+              "usingSplitLabel": false
+            }
+          },
+          {
+            "cards": {
+              "cardHSpacing": 2,
+              "cardMinWidth": 5,
+              "cardRound": null,
+              "cardVSpacing": 2
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateGnYlRd",
+              "defaultColor": "#757575",
+              "exponent": 0.5,
+              "mode": "discrete",
+              "thresholds": [
+                {
+                  "color": "#73BF69",
+                  "tooltip": "InService",
+                  "value": "1"
+                },
+                {
+                  "color": "#F2495C",
+                  "tooltip": "OOS",
+                  "value": "0"
+                }
+              ]
+            },
+            "datasource": "$datasource",
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 10
+            },
+            "highlightCards": true,
+            "id": 71,
+            "legend": {
+              "show": true
+            },
+            "nullPointMode": "as empty",
+            "pageSize": 15,
+            "seriesFilterIndex": -1,
+            "statusmap": {
+              "ConfigVersion": "v1"
+            },
+            "targets": [
+              {
+                "expr": "sum(sips_sipproxy_in_service) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "SIP Proxy  service state",
+            "tooltip": {
+              "extraInfo": "",
+              "freezeOnClick": true,
+              "items": [],
+              "show": true,
+              "showExtraInfo": false,
+              "showItems": false
+            },
+            "type": "flant-statusmap-panel",
+            "useMax": true,
+            "usingPagination": false,
+            "xAxis": {
+              "show": true
+            },
+            "yAxis": {
+              "maxWidth": -1,
+              "minWidth": -1,
+              "show": true
+            },
+            "yAxisSort": "metrics",
+            "yLabel": {
+              "delimiter": "",
+              "labelTemplate": "",
+              "usingSplitLabel": false
+            }
+          },
+          {
+            "cards": {
+              "cardHSpacing": 2,
+              "cardMinWidth": 5,
+              "cardRound": null,
+              "cardVSpacing": 2
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateGnYlRd",
+              "defaultColor": "#757575",
+              "exponent": 0.5,
+              "mode": "discrete",
+              "thresholds": [
+                {
+                  "color": "#F2495C",
+                  "tooltip": "fail",
+                  "value": "0"
+                },
+                {
+                  "color": "#73BF69",
+                  "tooltip": "pass",
+                  "value": "1"
+                }
+              ]
+            },
+            "datasource": "$datasource",
+            "description": "",
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 12,
+              "y": 10
+            },
+            "highlightCards": true,
+            "id": 30,
+            "legend": {
+              "show": true
+            },
+            "nullPointMode": "as empty",
+            "pageSize": 15,
+            "repeatDirection": "h",
+            "seriesFilterIndex": -1,
+            "statusmap": {
+              "ConfigVersion": "v1"
+            },
+            "targets": [
+              {
+                "expr": "sum (sipnode_ors_health_check{pod=~\"$pod\"}) by (pod)",
+                "format": "time_series",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "ORS Health check (1 - pass, 0 -fail)",
+            "tooltip": {
+              "extraInfo": "",
+              "freezeOnClick": true,
+              "items": [],
+              "show": true,
+              "showExtraInfo": false,
+              "showItems": false
+            },
+            "type": "flant-statusmap-panel",
+            "useMax": true,
+            "usingPagination": false,
+            "xAxis": {
+              "show": true
+            },
+            "yAxis": {
+              "maxWidth": -1,
+              "minWidth": 10,
+              "show": true
+            },
+            "yAxisSort": "metrics",
+            "yLabel": {
+              "delimiter": "",
+              "labelTemplate": "",
+              "usingSplitLabel": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 17
+            },
+            "hiddenSeries": false,
+            "id": 56,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pluginVersion": "6.7.3",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(increase(sips_softswitch_noos_detected{pod=~\"$pod\", tenant=~\"$tenant\"}[1m])) by (device_name, pod)",
+                "interval": "",
+                "legendFormat": "OOS:{{device_name}}:{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Softswitch OutOfService",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "cards": {
+              "cardHSpacing": 2,
+              "cardMinWidth": 5,
+              "cardRound": null,
+              "cardVSpacing": 2
+            },
+            "color": {
+              "cardColor": "#b4ff00",
+              "colorScale": "sqrt",
+              "colorScheme": "interpolateRdYlGn",
+              "defaultColor": "#757575",
+              "exponent": 0.5,
+              "mode": "discrete",
+              "thresholds": [
+                {
+                  "color": "#F2495C",
+                  "tooltip": "error",
+                  "value": "0"
+                },
+                {
+                  "color": "#FADE2A",
+                  "tooltip": "connect",
+                  "value": "1"
+                },
+                {
+                  "color": "#73BF69",
+                  "tooltip": "ready",
+                  "value": "2"
+                }
+              ]
+            },
+            "datasource": "$datasource",
+            "gridPos": {
+              "h": 7,
+              "w": 12,
+              "x": 0,
+              "y": 18
+            },
+            "highlightCards": true,
+            "id": 67,
+            "legend": {
+              "show": true
+            },
+            "nullPointMode": "as empty",
+            "pageSize": 15,
+            "seriesFilterIndex": -1,
+            "statusmap": {
+              "ConfigVersion": "v1"
+            },
+            "targets": [
+              {
+                "expr": "sipnode_redis_state{pod=~\"$pod\"}",
+                "interval": "",
+                "legendFormat": " {{redis_cluster_name}}:{{pod}} ",
+                "refId": "A"
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Redis State",
+            "tooltip": {
+              "extraInfo": "",
+              "freezeOnClick": true,
+              "items": [],
+              "show": true,
+              "showExtraInfo": false,
+              "showItems": false
+            },
+            "type": "flant-statusmap-panel",
+            "useMax": true,
+            "usingPagination": false,
+            "xAxis": {
+              "show": true
+            },
+            "yAxis": {
+              "maxWidth": -1,
+              "minWidth": -1,
+              "show": true
+            },
+            "yAxisSort": "metrics",
+            "yLabel": {
+              "delimiter": "",
+              "labelTemplate": "",
+              "usingSplitLabel": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "cacheTimeout": null,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "description": "",
+            "fill": 1,
+            "fillGradient": 3,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 23
+            },
+            "hiddenSeries": false,
+            "id": 69,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pluginVersion": "6.7.3",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "kube_hpa_status_current_replicas{namespace=\"voice\",hpa=\"voice-sip-hpa\"}",
+                "interval": "",
+                "legendFormat": "current",
+                "refId": "A"
+              },
+              {
+                "expr": "kube_hpa_spec_max_replicas{namespace=\"voice\",hpa=\"voice-sip-hpa\"}",
+                "interval": "",
+                "legendFormat": "max",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": null,
+                "yaxis": "left"
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "POD Replica count",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "replica count",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": 0
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 25
+            },
+            "hiddenSeries": false,
+            "id": 54,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pluginVersion": "6.7.3",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(increase(sips_trunk_noos_detected{pod=~\"$pod\", tenant=~\"$tenant\"}[1m])) by (device_name, pod)",
+                "interval": "",
+                "legendFormat": "OOS:{{device_name}}:{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Trunk OutOfService",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 31
+            },
+            "hiddenSeries": false,
+            "id": 25,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(increase(sipnode_sips_restarts_total{pod=~\"$pod\"}[5m])) by (pod)",
+                "interval": "",
+                "legendFormat": "restart:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(increase(sipnode_sips_disconnects_total{pod=~\"$pod\"}[5m])) by (pod)",
+                "interval": "",
+                "legendFormat": "disconn:{{pod}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIP Server restarts/disconnects over last 5 min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIP Service Health metrics",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 2
+        },
+        "id": 18,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 3
+            },
+            "hiddenSeries": false,
+            "id": 4,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": false,
+              "hideZero": false,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(sips_cpu_usage_main{pod=~\"$pod\"}) by (pod)",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "Main Thread CPU:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(sips_cpu_usage_main{pod=~\"$pod\"}) by (pod) /  sum(kube_pod_container_resource_requests_cpu_cores{namespace=\"voice\", pod=~\"$pod\"}) by (pod)",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "Usage % from Requested: {{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(sips_cpu_usage_main{pod=~\"$pod\"}) by (pod) /  sum(kube_pod_container_resource_limits_cpu_cores{namespace=\"voice\", pod=~\"$pod\"}) by (pod)",
+                "interval": "",
+                "legendFormat": "Usage % from Limit: {{pod}}",
+                "refId": "C"
+              },
+              {
+                "expr": "sum(kube_pod_container_resource_limits_cpu_cores{namespace=\"voice\", pod=~\"$pod\"}) by (pod) * 100",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "Container CPU Limit: {{pod}}",
+                "refId": "D"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIPS Main thread CPU Limit Usage",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 6,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(sips_calls{pod=~\"$pod\"}) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIPS Active calls",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 18
+            },
+            "hiddenSeries": false,
+            "id": 8,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(irate(sips_calls_created{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "created:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(irate(sips_abandoned_calls{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "abandoned:{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "irate(sips_dialogs_created{pod=~\"$pod\"}[1m])",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "dialogs created:{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIPS Call rates",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 25
+            },
+            "hiddenSeries": false,
+            "id": 49,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(irate(sipnode_redis_restored_calls_total{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Rate of restored calls from Redis (call/sec)",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 33
+            },
+            "hiddenSeries": false,
+            "id": 10,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(sips_trequest_rate{pod=~\"$pod\"}) by (pod)",
+                "hide": false,
+                "interval": "",
+                "legendFormat": "trequest:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(sips_treatment_rate{pod=~\"$pod\"}) by (pod)",
+                "hide": false,
+                "interval": "",
+                "legendFormat": "treatment:{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(sips_userdata_rate{pod=~\"$pod\"}) by (pod)",
+                "interval": "",
+                "legendFormat": "user data:{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Request rates",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIP Server Rates",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "id": 32,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 4
+            },
+            "hiddenSeries": false,
+            "id": 34,
+            "legend": {
+              "alignAsTable": false,
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": " sum (irate(sipnode_requests_total{pod=~\"$pod\", request=~\"$request\", tenant=~\"$tenant\"}[5m])) by (pod, request) ",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "{{request}}:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": " sum (irate(sipnode_requests_total{pod=~\"$pod\", request=~\"$request\", tenant=~\"$tenant\"}[5m])) by (pod) ",
+                "interval": "",
+                "legendFormat": "{{$request}}:{{pod}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "(sipfe,ors) -> sipnode: requests/sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 12
+            },
+            "hiddenSeries": false,
+            "id": 35,
+            "legend": {
+              "alignAsTable": false,
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": " sum (irate(sipnode_events_total{pod=~\"$pod\", event=~\"$event\"}[5m])) by (pod, event) ",
+                "hide": true,
+                "interval": "",
+                "legendFormat": "{{event}}:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": " sum (irate(sipnode_events_total{pod=~\"$pod\", event=~\"$event\"}[5m])) by (pod) ",
+                "interval": "",
+                "legendFormat": "[{{$event}}]:{{pod}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "sipnode -> redis: events/sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIPNode Rates",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 21,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 25
+            },
+            "hiddenSeries": false,
+            "id": 12,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "rate(sips_routing_timeouts{pod=~\"$pod\"}[1m])",
+                "interval": "",
+                "legendFormat": "router timeout:{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIPS Router timeouts",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 32
+            },
+            "hiddenSeries": false,
+            "id": 51,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(irate(sips_msml_n4xx_received{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "4xx:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(irate(sips_msml_n5xx_received{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "5xx:{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(irate(sips_msml_n6xx_received{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "6xx:{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MSML Error rates",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "error/sec",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 39
+            },
+            "hiddenSeries": false,
+            "id": 55,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(irate(sips_trunk_n4xx_received{pod=~\"$pod\", tenant=~\"$tenant\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "4xx:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(irate(sips_trunk_n5xx_received{pod=~\"$pod\", tenant=~\"$tenant\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "5xx:{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(irate(sips_trunk_n6xx_received{pod=~\"$pod\", tenant=~\"$tenant\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "6xx:{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Trunk Error rates",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "error/sec",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 46
+            },
+            "hiddenSeries": false,
+            "id": 57,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(irate(sips_softswitch_n4xx_received[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "4xx:{{pod}}",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(irate(sips_softswitch_n5xx_received[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "5xx:{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(irate(sips_softswitch_n6xx_received[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "6xx:{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Softswitch Error rates",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "error/sec",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIP Server Errors",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 5
+        },
+        "id": 37,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 26
+            },
+            "hiddenSeries": false,
+            "id": 38,
+            "legend": {
+              "alignAsTable": false,
+              "avg": false,
+              "current": false,
+              "hideEmpty": true,
+              "hideZero": false,
+              "max": true,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": " sum (irate(sipnode_events_total{pod=~\"$pod\", event=\"EventError\"}[5m])) by (pod) ",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "sipnode -> redis: EventError rate (events/sec)",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIPNode Errors",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 6
+        },
+        "id": 23,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 7
+            },
+            "hiddenSeries": false,
+            "id": 19,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum (rate(sips_urs_response_1_to_5_sec{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "router response[1s-5s] :{{pod}}",
+                "refId": "B"
+              },
+              {
+                "expr": "sum(rate(sips_urs_response_more_5_sec{pod=~\"$pod\"}[1m])) by (pod)",
+                "interval": "",
+                "legendFormat": "router response[5s+] :{{pod}}",
+                "refId": "C"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIPS Routing latency",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "s",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 24,
+              "x": 0,
+              "y": 14
+            },
+            "hiddenSeries": false,
+            "id": 14,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(sips_sip_response_time_ms_bucket[5m])) by (le, pod))",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "SIP Response time, 95 percentile (ms)",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "ms",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIP Server Latency",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 7
+        },
+        "id": 40,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 42,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "histogram_quantile(0.95, sum(rate(sipnode_tlib_latency_msec_bucket{pod=~\"$pod\"}[5m])) by (le,ors,pod))",
+                "interval": "",
+                "legendFormat": "{{pod}}:{{ors}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "ors -> sipnode: latency 95 percentile",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "ms",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 14
+            },
+            "hiddenSeries": false,
+            "id": 43,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(sipnode_requests_queue_size{pod=~\"$pod\"}) by (pod)",
+                "interval": "",
+                "legendFormat": "{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Request queue size (requests)",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIPNode Latency",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        },
+        "id": 16,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fieldConfig": {
+              "defaults": {
+                "custom": {}
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 7,
+              "w": 24,
+              "x": 0,
+              "y": 102
+            },
+            "hiddenSeries": false,
+            "id": 2,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(sips_sips_memory_usage) by (pod) / sum by(pod)(kube_pod_container_resource_limits_memory_bytes{pod=~\"$pod\",namespace=\"voice\"}) * 100",
+                "interval": "",
+                "legendFormat": "SIPS mem usage % from limit:{{pod}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Memory usage",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "percent",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIPS Resources",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 45,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$datasource",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 103
+            },
+            "hiddenSeries": false,
+            "id": 47,
+            "legend": {
+              "alignAsTable": false,
+              "avg": false,
+              "current": false,
+              "hideZero": true,
+              "max": true,
+              "min": false,
+              "rightSide": false,
+              "show": true,
+              "sort": "max",
+              "sortDesc": true,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(nodejs_active_handles{pod=~\"$pod\"}) by (pod,type)",
+                "interval": "",
+                "legendFormat": "{{pod}}: {{type}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Node.js active handles",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SIPNode Resources",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "datasource",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": "voice-sip-.+",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(kube_pod_info{ namespace=~\"voice\",pod=~\"voice-sip-.+\"}, pod)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "pod",
+          "multi": false,
+          "name": "pod",
+          "options": [],
+          "query": "label_values(kube_pod_info{ namespace=~\"voice\",pod=~\"voice-sip-.+\"}, pod)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(sipnode_requests_total{pod=~\"$pod\"}, request)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "request",
+          "multi": true,
+          "name": "request",
+          "options": [],
+          "query": "label_values(sipnode_requests_total{pod=~\"$pod\"}, request)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(sipnode_events_total{pod=~\"$pod\"}, event)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "event",
+          "multi": true,
+          "name": "event",
+          "options": [],
+          "query": "label_values(sipnode_events_total{pod=~\"$pod\"}, event)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(sipnode_requests_total{pod=~\"$pod\"}, tenant)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "tenant",
+          "multi": true,
+          "name": "tenant",
+          "options": [],
+          "query": "label_values(sipnode_requests_total{pod=~\"$pod\"}, tenant)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "tags": [],
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(ALERTS_FOR_STATE{pod=~\"$pod\"},alertname)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "Alert:",
+          "multi": true,
+          "name": "alertname",
+          "options": [],
+          "query": "label_values(ALERTS_FOR_STATE{pod=~\"$pod\"},alertname)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "utc",
+    "title": "Voice / SIP Cluster / Service metrics",
+    "uid": "wR1RjrhGz",
+    "variables": {
+      "list": []
+    },
+    "version": 185
+  }

@@ -1,0 +1,352 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: ors-rules
+    meta.helm.sh/release-namespace: voice
+  name: ors-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-ors
+      rules: 
+      - alert: RedisDownFor5min
+        expr: orsnode_redis_state{pod=~"voice-ors.*"} != 2
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The trigger will flag an alarm when ors node is not connected to redis 5 mins"
+            summary: "ors node pod is not connected to redis 5 mins"
+      - alert: RedisDownFor10min
+        expr: orsnode_redis_state{pod=~"voice-ors.*"} != 2
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The trigger will flag an alarm when ors node is not connected to redis 10 mins"
+            summary: "ors node pod is not connected to redis 10 mins"
+
+      - alert: RQDownFor5min
+        expr: orsnode_rq_state{pod=~"voice-ors.*"} != 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The trigger will flag an alarm when ors node is not connected to RQ Service 5 mins"
+            summary: "ors node pod is not connected to RQ Service 5 mins"
+            runbook: 1.Check for failure of RQService. 2.Check number of clients on RQ Service dashboard is equal
+
+      - alert: RQDownFor10min
+        expr: orsnode_rq_state{pod=~"voice-ors.*"} != 1
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: The trigger will flag an alarm when ors node is not connected to RQ Service 10 mins
+            summary: ors node pod is not connected to RQ Service 10 mins
+            runbook: 1.Check for failure of RQService. 2.Check number of clients on RQ Service dashboard is equal, restart pod
+
+      - alert: URSHealthCheckFailFor5in
+        expr: min(avg(orsnode_urs_rlib_state{pod=~"voice-ors.*",tenant=~"...."}) by (tenant)) == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: The trigger will flag an alarm when ors service health check to any Tenant URS is failing for 5 mins
+            summary: ors service health check to any Tenant URS is failing for 5 mins
+            runbook: 1.Check ORS dashboard 'Tenant URS State'. Filter by failed Tenant. 2.Check Rlib requests per Tenant. Check Rlib events from Tenant
+
+      - alert: URSHealthCheckFailFor10min
+        expr: min(avg(orsnode_urs_rlib_state{pod=~"voice-ors.*",tenant=~"...."}) by (tenant)) == 0
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: The trigger will flag an alarm when ors service health check to any Tenant URS is failing for 10 mins
+            summary: ors service health check to any Tenant URS is failing for 10 mins
+            runbook: 1.Check ORS dashboard 'Tenant URS State'. Filter by failed Tenant. 2.Check Rlib requests per Tenant. Check Rlib events from Tenant
+
+      - alert: ors_node_memory_usage
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-ors"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-ors",unit="byte"})) * 100 > 60
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node container memory crossed 60% for 5 minutes"
+            summary: "The ors node container memory crossed 60% for 5 minute"
+      - alert: ors_node_memory_usage_85
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-ors"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-ors",unit="byte"})) * 100 > 85
+        for: 5m
+        labels:
+          severity: critical
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node container memory crossed 85% for 5 minutes"
+            summary: "The ors node container memory crossed 85% for 5 minute"
+      - alert: ors_node_cpu_usage
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-ors.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-ors.*",unit="core"}))) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node container cpu crossed 65% for 5 minutes"
+            summary: "The ors node container cpu crossed 65% for 5 minute"
+      - alert: ors_node_cpu_usage_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-ors.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-ors.*",unit="core"}))) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node container cpu crossed 80% for 5 minutes"
+            summary: "The ors node container cpu crossed 80% for 5 minute"
+      - alert: PodStatusFailed
+        expr: kube_pod_status_phase{pod=~"voice-ors.*",pod!~"voice-ors-test-.*",phase="Failed"} == 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node pod went to failed state"
+            summary: "The ors node pod went to failed state"
+      - alert: PodStatusUnknown
+        expr: kube_pod_status_phase{pod=~"voice-ors.*",pod!~"voice-ors-test-.*",phase="Unknown"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node pod went to Unknown state for 5min"
+            summary: "The ors node pod went to Unknown state for 5min"
+      - alert: PodStatusPending
+        expr: kube_pod_status_phase{pod=~"voice-ors.*",pod!~"voice-ors-test-.*",phase="Pending"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node pod went to Pending state for 5min"
+            summary: "The ors node pod went to Pending state for 5min"
+      - alert: ContainerRestartedRepeatedly
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-ors"}[15m]) >= 5
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: "The ors node container was restarted 5 or more times within 15 mins"
+          summary: "The ors node container was restarted 5 or more times within 15 mins"
+      - alert: PodStatusNotReadyfor10mins
+        expr: kube_pod_status_ready{pod=~"voice-ors.*",pod!~"voice-ors-test-.*",condition="true"} != 1
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "The ors node pod went to Not ready status for 10 mins"
+            summary: "The ors node pod went to Not ready status for 10 mins"
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-ors.*",pod!~"voice-.+-test-.*"}) by (pod) < 5
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      - alert: ors_node_load_strategy_error
+        expr: sum by (tenant) (irate(orsnode_load_errors[1m])) > 0.02
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: "Ors node fail to load strategy on RP. Check Kibana for message 'Failed to load strategy'"
+            summary: "Ors node fail to load Designer Application for {{ $labels.tenant }}"
+      # alert rules for rq-client library
+      - alert: rq_client_cluster_down 
+        expr: rq_client_cluster_state{pod=~"voice-ors.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: None of the rq-nodes are available for pod {{ $labels.pod }}
+            summary: 1. Check if all the rq-nodes are up, if not start the nodes. 2. Check if this pod is able to connect with other nodes, if so, check for crash in rq-nodes
+      - alert: rq_client_state_notready
+        expr: rq_client_state{pod=~"voice-ors.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: None of the rq-nodes in pair {{ $labels.pair }} is ready for sending requests from pod {{ $labels.pod }}
+            summary: 1. Check if both the nodes in this pair are running and connected, if not start. 2. Check for crash in this rq-node pair 3. Collect logs and check for rqnode election
+      - alert: rq_client_disconnected 
+        expr: rq_client_connection_state{pod=~"voice-ors.*"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Pod {{ $labels.pod }} disconnected with voice-rq-{{ $labels.node }}
+            summary: 1. Check if the rq-node pod is running, if not restart. 2. Check the connectivity of this pod with other nodes. 3. Check for crash in rq-node pod
+      - alert: rq_client_active_rqnodes_less_than_expected
+        expr: rq_client_timeouts_total{pod=~"voice-ors.*"} < kube_statefulset_replicas{statefulset="voice-rq"}
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Number of rq-nodes read from consul is lesser than actual configuration for pod {{ $labels.pod }}
+            summary: 1. Check the number of rq-nodes configured 2. Check if all the rq-nodes are running, if not start. 3. Check for consul disconnection/crash in rq-nodes
+      - alert: rq_client_active_healthchek_streams_too_high
+        expr: avg_over_time(rq_client_streams_total{healthcheck="true", pod=~"voice-ors.*"}[5m]) >= 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Number of uncleared healthcheck streams sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }} is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_timedout_healthcheck_requests_too_high
+        expr: rate(rq_client_timeouts_total{healthcheck="true", pod=~"voice-ors.*"}[1m]) >= 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Rate of healthcheck streams, sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }}, which got timedout without response is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_timedout_call_requests_too_high
+        expr: rate(rq_client_timeouts_total{healthcheck="false", pod=~"voice-ors.*"}[1m]) >= 10
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Rate of call streams, sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }}, which got timedout without response is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_queue_depth_too_high_for_2m
+        expr: rq_client_queue_depth{pod=~"voice-ors.*"} >= 200
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Number of requests in rq-client queue is too high in {{ $labels.pod }} for rq-node pair {{ $labels.pair }}
+            summary: 1. Check the client_state and client_connection_state metrics for issue in ready state and connection. 2. Check if atleast one of the rq-node pod pair is running and in ready state. If not running, start the pod 3. Check for crash in rq-node pod 4. Collect logs and check for rqnode election
+      - alert: rq_client_queue_depth_too_high_for_5m
+        expr: rq_client_queue_depth{pod=~"voice-ors.*"} >= 200
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Number of requests in rq-client queue is too high in {{ $labels.pod }} for rq-node pair {{ $labels.pair }}
+            summary: 1. Check the client_state and client_connection_state metrics for issue in ready state and connection. 2. Check if atleast one of the rq-node pod pair is running and in ready state. If not running, start the pod 3. Check for crash in rq-node pod 4. Collect logs and check for rqnode election
+      - alert: orsnode_config_health_check_failed_warning
+        expr:  orsnode_health_check_error{reason="config"} != 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: Config service is not available for 2 minutes in pod {{ $labels.pod }}
+          summary: If issue persists, restart ORS pod
+      - alert: orsnode_config_health_check_failed_critical
+        expr: orsnode_health_check_error{reason="config"} != 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Config service is not available for 5 minutes in pod {{ $labels.pod }}
+            summary: If issue persists, restart ORS pod
+      - alert: orsnode_envoy_health_check_failed_warning
+        expr:  orsnode_health_check_error{reason="envoy"} != 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: Envoy service is not available for 2 minutes in pod {{ $labels.pod }}
+          summary: If issue persists, restart ORS pod
+      - alert: orsnode_envoy_health_check_failed_critical
+        expr: orsnode_health_check_error{reason="envoy"} != 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-ors
+        annotations:
+            description: Envoy service is not available for 5 minutes in pod {{ $labels.pod }}
+            summary: If issue persists, restart ORS pod
+      - alert: orsnode_sipfe_health_check_failed_warning
+        expr:  orsnode_health_check_error{reason="sipfe"} != 0
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: Sipfe is not available for 5 minutes in pod {{ $labels.pod }}
+          summary: If issue persists, restart ORS pod
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-ors"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-ors
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate
+

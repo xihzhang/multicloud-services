@@ -1,0 +1,482 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: sip-rules
+    meta.helm.sh/release-namespace: voice
+  name: sip-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-sip
+      rules: 
+      - alert: kafka_queue_increase
+        expr: avg_over_time(kafka_producer_queue_depth{pod=~"voice-sip-.*|voice-sipcanary-.*"}[5m]) > 1000
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Too many Kafka producer pending events for pod {{ $labels.pod }}
+          runbook: Make sure there is no issues with Kafka, {{ $labels.pod }} pod's CPU and network
+      - alert: kafka_unavailable
+        expr: kafka_producer_state{pod=~"voice-sip-.*|voice-sipcanary-.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Kafka is not available for pod {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod
+      - alert: sip_pod_status_error
+        expr: kube_pod_status_phase{pod=~"voice-sip-.*|voice-sipcanary-.*",pod!~"voice-sip-test-.*",phase=~"Failed|Unknown|Pending"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod status Failed/Unknown/Pending
+          detailed_description: Pod {{ $labels.pod }} is in {{ $labels.phase}} state
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: sip_pod_status_notready
+        expr: kube_pod_status_ready{pod=~"voice-sip-.*|voice-sipcanary-.*",pod!~"voice-sip-test-.*",condition="true"} != 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod status NotReady
+          detailed_description: Pod {{ $labels.pod }} went to NotReady status for 5 min
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: sip_container_restarted_repeatedly
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-sip"}[15m]) >= 5
+        labels:
+          severity: critical  
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Container restarted repeatedly
+          detailed_description: Container {{ $labels.container }} was restarted 5 or more times within 15 min
+          runbook: Check if new version of image was deployed. Check for issues with Kubernetes cluster
+      - alert: sip_ready_pods_below_60
+        expr: ((kube_statefulset_status_replicas_ready{statefulset=~"voice-sip*"} * 100 ) / (kube_statefulset_status_replicas_current{statefulset=~"voice-sip*"})) < 60
+        for: 5m
+        labels:
+          severity: critical  
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Ready Pods below 60% 
+          detailed_description: Statefultset {{ $labels.statefulset}} pods that are in ready state are below 60% to total current pods for 5 mins
+          runbook: Check if new version of image was deplyed. Check for issues with Kubernetes cluster
+      - alert: sip_pods_scaled_up_greater_than_80
+        expr: ((kube_hpa_status_current_replicas{hpa="voice-sip-hpa"} * 100 ) / kube_hpa_spec_max_replicas{hpa="voice-sip-hpa"}) > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Current Replicas are Higher
+          detailed_description: Current number of replicas are greater than 80% of max replicas
+          runbook: Check resources available for Kubernetes. Increase resources, if necessary
+      - alert: sip_pods_less_than_min_replicas
+        expr: kube_hpa_status_current_replicas{hpa="voice-sip-hpa"} < kube_hpa_spec_min_replicas{hpa="voice-sip-hpa"}
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pods less than Min Replicas
+          detailed_description: Current number of replicas are greater than 80% of max replicas
+          runbook: 1. If all services are faced with same issue, then check Kubernetes nodes, consul health 2.If faced only for voice-sip service, then check pods logs or deployment manifest/helm errors
+      - alert: sip_cpu_greater_65
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sip-.*|voice-sipcanary-.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sip-.*|voice-sipcanary-.*",unit="core"}))) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod CPU greater than 65%
+          detailed_description: High CPU load for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: sip_cpu_greater_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sip-.*|voice-sipcanary-.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sip-.*|voice-sipcanary-.*",unit="core"}))) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod CPU greater than 80%
+          detailed_description: Critical CPU load for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service.
+      - alert: sip_memory_greater_65
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sip"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sip",unit="byte"})) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod memory greater than 65%
+          detailed_description: High memory utilization for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: sip_memory_greater_80
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sip"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sip",unit="byte"})) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Pod memory greater than 80%
+          detailed_description: Critical memory utilization for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service for pod {{ $labels.pod }}
+      - alert: sip_redis_unavailable
+        expr: sipnode_redis_state{pod=~"voice-sip-.*|voice-sipcanary-.*"} != 2
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Redis {{ $labels.redis_cluster_name }} is not available for pod {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Redis. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod      
+      - alert: sip_kafka_producer_errors
+        expr: sum by (pod) (increase(kafka_producer_error_total{pod=~"voice-sip-.*|voice-sipcanary-.*"}[5m])) > 100
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Too many Kafka producer errors
+          detailed_description: Kafka responds with errors at pod {{ $labels.pod }}
+          runbook: For pod {{ $labels.pod }} make sure there is no issues with Kafka
+      - alert: sips_cpu_usage_main_warning
+        expr: sips_cpu_usage_main > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: sipserver main thread is consuming more than 65% cpu for 5 mins
+          detailed_description: Main thread consumes too much CPU (MAIN_CPU_USAGE>65 for 5 minutes in a row)
+      - alert: sips_dp_overloaded
+        expr: sips_dp_average_response_latency > 1000
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: voice-dialplan is overloaded
+          detailed_description: Dialplan node is overloaded as the response latency increases
+          runbook: 1.Check inbound call rate to SIP Server if it is not too high. 2.Check Dialplan node CPU and memory usage. 3.Check network connection between SIP Server and Dialplan nodes.
+      - alert: sips_dp_queue_increase
+        expr: sips_dp_queue_size > 1000
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Dialplan Queue Increase
+          detailed_description: Due to dialplan requests are huge in size or connection issue with dialplan node, processing queue size increases in size
+          runbook: 1.Check SIP Server inbound call rate 2.Check connection with SIP Server and Dialplan node
+      - alert: sips_dp_node_down
+        expr: sips_dp_active_connections == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Dialplan Node Down
+          detailed_description: No dialplan nodes are reachable from sipserver and all connections to dialplan nodes are down
+          runbook: 1.Check network connection between SIP Server and dialplan node host. 2.Check Dialplan node CPU and memory usage.            
+      - alert: sips_dp_rq_failure_by_timeout
+        expr: sum(rate(sips_dp_timeouts{pod=~"voice-sip-.|voice-sipcanary-.*"}[1m])/sips_dp_req_rate{pod=~"voice-sip-.|voice-sipcanary-.*"}*100) by (pod) > 1
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Dialplan requests failing by timeout
+          detailed_description: More that 1% requests from SIPS to Dialplan fail by timeout
+          runbook: Check "Voice / SIP Cluster / SIP Server / Dialplan" dashboard. Troubleshooting 1.Check network connection between SIP Server and Dialplan host. 2.Check Dialplan nodes are running
+      - alert: sips_dp_rq_failure_by_500
+        expr: sum(rate(sips_dp_500_errors{pod=~"voice-sip-.|voice-sipcanary-.*"}[1m])/sips_dp_req_rate{pod=~"voice-sip-.|voice-sipcanary-.*"}*100) by (pod) > 1
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          summary: Dialplan requests failing with 500 error response
+          detailed_description: More that 1% requests from SIPS to Dialplan with 500 error response
+          runbook: Check "Voice / SIP Cluster / SIP Server / Dialplan" dashboard. Troubleshooting 1.Check network connection between SIP Server and Dialplan host. 2.Check Dialplan nodes are running
+      # 11/19/2020 [tolik] Blinker: need careful consideration of threshhold or re-think what kind of metric serve better purpose.
+      #- alert: sips_routing_timeout_increase
+      #  expr: increase(sips_routing_timeouts[2m]) > 20
+      #  for: 5m
+      #  labels:
+      #     severity: warning
+      #      service: voice
+      #      servicename: voice-sip
+      #  annotations:
+      #      summary: 'SIP Server: Routing timeout counter growth'
+      #      detailed_description: The trigger detects routing timeouts increase. (absolute value of NROUTINGTIMEOUTS on specific SIP server increased for more than 20 in 2 minutes)
+      #      runbook: 1.Check URS_RESPONSE_MORE5SEC stat value. If it's increasing, then investigate why URS doesn't respond to SIPS in time. 2.Check SIPS-to-URS network connectivity.
+      #
+      # VOICEMCS-1447 disable noisy alerts in dev env, removed label category: voice_pager
+      - alert: sips_trunk_oos
+        expr: sips_trunk_in_service == 0
+        for: 5m
+        labels:
+            severity: critical
+            service: voice
+            servicename: voice-sip
+        annotations:
+            summary: SIP trunk {{ $labels.device_name }} is out of service
+            runbook: 'For Primary and Secondary trunks: 1.troubleshoot SIP Server-to-SBC network connection. Collect network stats and escalate to Network team to resolve network issues, if necessary. 2.troubleshoot SBC. For Inter-SIPServer trunks: troubleshoot SIP Server-to-SIP Server network connection. Collect network stats and escalate to Network team to resolve network issues, if necessary.'
+      - alert: sips_msml_oos
+        expr: sips_msml_in_service == 0
+        for: 5m
+        labels:
+            severity: critical
+            category: voice_pager
+            service: voice
+            servicename: voice-sip
+        annotations:
+            summary: Media service {{ $labels.device_name }} is out of service
+            runbook: 1.troubleshoot SIP Server-to-RM network connection. Collect network stats and escalate to Network team to resolve network issues, if necessary. 2.troubleshoot RM, consider RM restart. 3.in 5 minutes re-direct traffic to another site
+      - alert: sips_softswitch_oos
+        expr: sips_softswitch_in_service == 0
+        for: 5m
+        labels:
+            severity: critical
+            service: voice
+            servicename: voice-sip
+        annotations:
+            summary: SIP softswitch {{ $labels.device_name }} is out of service
+            runbook: 1.troubleshoot SIP Server-to-SBC network connection. Collect network stats and escalate to Network team to resolve network issues, if necessary. 2.troubleshoot SBC.
+      - alert: voice_sipproxy_oos
+        expr: sips_sipproxy_in_service == 0
+        for: 5m
+        labels:
+            severity: critical
+            category: voice_pager
+            service: voice
+            servicename: voice-sip
+        annotations:
+            summary: SIP Proxy is out of service
+            runbook: 1.Troubleshoot SIP Server-to-SIPProxy nodes network connections. Collect network stats and escalate to Network team to resolve network issues, if necessary. 2.Troubleshoot SIPProxy nodes.
+      - alert: voice_sipnode_ors_health_check_failed
+        expr: sum(sipnode_ors_health_check) by (pod) == 0
+        for: 5m
+        labels:
+            severity: critical
+            category: voice_pager
+            service: voice
+            servicename: voice-sip
+        annotations:
+            summary: SIP Node's health check of ORS has failed
+            runbook: 1.Check state of "NewCallThreadStream" SIPNode->Redis stream. 2. Check state of ORS->SIP Node REST communication 3. Check ORS state of ORS service.
+      # 03/11/2021 VOICEMCS-1639: sips_excessive_sip_response_latency is unreliable 
+      #- alert: sips_excessive_sip_response_latency
+      #  expr: histogram_quantile(0.95, sum(rate(sips_sip_response_time_ms_bucket[5m])) by (le, pod)) > 500
+      #  for: 5m
+      #  labels:
+      #      severity: critical
+      #      category: voice_pager
+      #      service: voice
+      #      servicename: voice-sip
+      #  annotations:
+      #      summary: SIP Proxy is overloaded
+      #      runbook: 1. Check SIP Proxy nodes for cpu and memory usages 2. If SIP Proxy nodes has good cpu and memory, then check for errors or hung up state which could delay SIP Proxy in forwarding. 3. Check SBC side for network delays
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-sip-.*|voice-sipcanary-.",pod!~"voice-.+-test-.*"}) by (pod) < 6
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      #  11/12/2020 [tolik@genesys.com] Disabled. Issues: Blinker
+      #- alert: sips_active_calls_drop
+      #  expr: sips_calls offset 2m - sips_calls > 30 and increase(sips_calls_created[2m]) == 0
+      #  labels:
+      #      severity: warning
+      #      service: voice
+      #      servicename: voice-sip
+      #  annotations:
+      #     summary: Calls activity drop
+      #     detailed_description: Absolute value of active calls on specific SIP server reduced for more than 30 calls in 2 minutes and there is no any new calls arrived to SIP server processing
+      #      runbook: 'collect SIP Server Main thread logs: log files without index in file name (appname_date.log files). Raise ticket with development for the investigation of a root cause.'
+      - alert: service_state_fail
+        expr: sipnode_health_level < 2
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: SIP Node health level is fail for pod {{ $labels.pod }}
+          runbook: 1.Check for failure of dependant services redis/kafka/sipproxy/GVP/dialplan. 2.Check for envoy proxy failure, restart pod
+      # alert rules for rq-client library
+      - alert: rq_client_cluster_down 
+        expr: rq_client_cluster_state{pod=~"voice-sip-.|voice-sipcanary-.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: None of the rq-nodes are available for pod {{ $labels.pod }}
+            summary: 1. Check if all the rq-nodes are up, if not start the nodes. 2. Check if this pod is able to connect with other nodes, if so, check for crash in rq-nodes
+      - alert: rq_client_state_notready
+        expr: rq_client_state{pod=~"voice-sip-.|voice-sipcanary-.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: None of the rq-nodes in pair {{ $labels.pair }} is ready for sending requests from pod {{ $labels.pod }}
+            summary: 1. Check if both the nodes in this pair are running and connected, if not start. 2. Check for crash in this rq-node pair 3. Collect logs and check for rqnode election
+      - alert: rq_client_disconnected 
+        expr: rq_client_connection_state{pod=~"voice-sip-.|voice-sipcanary-.*"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Pod {{ $labels.pod }} disconnected with voice-rq-{{ $labels.node }}
+            summary: 1. Check if the rq-node pod is running, if not restart. 2. Check the connectivity of this pod with other nodes. 3. Check for crash in rq-node pod
+      - alert: rq_client_active_rqnodes_less_than_expected
+        expr: rq_client_timeouts_total{pod=~"voice-sip-.|voice-sipcanary-.*"} < kube_statefulset_replicas{statefulset="voice-rq"}
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Number of rq-nodes read from consul is lesser than actual configuration for pod {{ $labels.pod }}
+            summary: 1. Check the number of rq-nodes configured 2. Check if all the rq-nodes are running, if not start. 3. Check for consul disconnection/crash in rq-nodes
+      - alert: rq_client_active_healthchek_streams_too_high
+        expr: avg_over_time(rq_client_streams_total{healthcheck="true", pod=~"voice-sip-.|voice-sipcanary-.*"}[5m]) >= 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Number of uncleared healthcheck streams sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }} is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_timedout_healthcheck_requests_too_high
+        expr: rate(rq_client_timeouts_total{healthcheck="true", pod=~"voice-sip-.|voice-sipcanary-.*"}[1m]) >= 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Rate of healthcheck streams, sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }}, which got timedout without response is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_timedout_call_requests_too_high
+        expr: rate(rq_client_timeouts_total{healthcheck="false", pod=~"voice-sip-.|voice-sipcanary-.*"}[1m]) >= 10
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Rate of call streams, sent from {{ $labels.pod }} to voice-rq-{{ $labels.node }}, which got timedout without response is high
+            summary: 1. Check if the rq-node pod is running and in ready state. If not running, start the pod 2. Check for crash in rq-node pod 3. Collect logs and check for rqnode election
+      - alert: rq_client_queue_depth_too_high_for_2m
+        expr: rq_client_queue_depth{pod=~"voice-sip-.|voice-sipcanary-.*"} >= 200
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Number of requests in rq-client queue is too high in {{ $labels.pod }} for rq-node pair {{ $labels.pair }}
+            summary: 1. Check the client_state and client_connection_state metrics for issue in ready state and connection. 2. Check if atleast one of the rq-node pod pair is running and in ready state. If not running, start the pod 3. Check for crash in rq-node pod 4. Collect logs and check for rqnode election
+      - alert: rq_client_queue_depth_too_high_for_5m
+        expr: rq_client_queue_depth{pod=~"voice-sip-.|voice-sipcanary-.*"} >= 200
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+            description: Number of requests in rq-client queue is too high in {{ $labels.pod }} for rq-node pair {{ $labels.pair }}
+            summary: 1. Check the client_state and client_connection_state metrics for issue in ready state and connection. 2. Check if atleast one of the rq-node pod pair is running and in ready state. If not running, start the pod 3. Check for crash in rq-node pod 4. Collect logs and check for rqnode election
+      - alert: config_node_unavailable_for_2m
+        expr: sipnode_config_node_status == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_unavailable_for_5m
+        expr: sipnode_config_node_status == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_fail
+        expr: increase(http_client_response_count{container="voice-sip",status!~"2XX"}[5m]) > 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Request to config node failed
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-sip"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sip
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate

@@ -1,0 +1,158 @@
+# Version 4 UUID
+tenantid: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
+
+serviceAccount:
+    create: true
+
+images:
+  imagePullSecrets: pullsecret
+  registry: repository.path
+  pullPolicy: Always
+  rcsInit:
+    enable: "true"
+
+  pulseInit:
+    enable: "true"
+    pulseMode: "setup"
+
+tenant:
+  general:
+    upstreamServices: voice-sipfe:9101,voice-config:9100,ixn-server-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd:7120,ixn-vqnode-9350e2fc-a1dd-4c65-8d40-1f75a2e080dd:7122"
+  pgdb:
+    dbhost: "/opt/genesys/dbserver/dbserver"
+    dbuser: "/opt/genesys/dbuser/dbuser"
+    dbname: "/opt/genesys/dbname/dbname"
+  gws:
+    enable: "false"
+
+  logging:
+    volumes:
+      log:
+        - name: log
+          persistentVolumeClaim:
+            claimName: log-pvc
+    mounts:
+      log:
+        - name: log
+          mountPath: /opt/genesys/logs/volume
+        - name: log
+          mountPath: /logs
+  secrets:
+    pgdb:
+      pwd:
+        secretName: "/opt/genesys/dbpassword/dbpassword"
+        secretKey: "dbpassword"
+      volumes: |
+        - name: dbpassword
+          secret:
+            secretName: dbpassword
+        - name: dbserver
+          secret:
+            secretName: dbserver
+        - name: dbname
+          secret:
+            secretName: dbname
+        - name: dbuser
+          secret:
+            secretName: dbuser
+      mounts:
+        - name: dbpassword
+          readOnly: true
+          mountPath: "/opt/genesys/dbpassword"
+        - name: dbserver
+          readOnly: true
+          mountPath: "/opt/genesys/dbserver"
+        - name: dbname
+          readOnly: true
+          mountPath: "/opt/genesys/dbname"
+        - name: dbuser
+          readOnly: true
+          mountPath: "/opt/genesys/dbuser"
+
+    consul:
+      acl:
+        secretName: "/opt/genesys/consul-shared-secret/consul-consul-voice-token"
+      volumes:
+        - name: consul-shared-secret
+          secret:
+            secretName: consul-voice-token
+      mounts:
+        - name: consul-shared-secret
+          readOnly: true
+          mountPath: "/opt/genesys/consul-shared-secret"
+    redis:
+      configPwd:
+        secretName: "/opt/genesys/redis-config-secret/redis-config-state"
+        volumes:
+          - name: redis-config-secret
+            secret:
+              secretName: redis-config-token
+        mounts:
+          - name: redis-config-secret
+            readOnly: true
+            mountPath: "/opt/genesys/redis-config-secret"
+
+      streamPwd:
+        secretName: "/opt/genesys/redis-tenant-secret/redis-tenant-stream"
+        volumes:
+          - name: redis-tenant-secret
+            secret:
+              secretName: redis-tenant-token
+        mounts:
+          - name: redis-tenant-secret
+            readOnly: true
+            mountPath: "/opt/genesys/redis-tenant-secret"
+
+    kafka:
+      pwd:
+         secretName: "/opt/genesys/kafka-secrets/kafka-secrets"
+      volumes:
+        - name: kafka-secrets
+          secret:
+            secretName: kafka-secrets-token
+      mounts:
+        - name: kafka-secrets
+          mountPath: "/opt/genesys/kafka-secrets"
+    gws:
+      user:
+        secretName: "/opt/genesys/gauth-client-id/clientid"
+      pwd:
+        secretName: "/opt/genesys/gauth-client-token/clientsecret"
+      volumes:
+        - name: gauth-client-id
+          secret:
+            secretName: gauthclientid
+        - name: gauth-client-token
+          secret:
+            secretName: gauthclientsecret
+      mounts:
+        - name: gauth-client-id
+          readOnly: true
+          mountPath: "/opt/genesys/gauth-client-id"
+        - name: gauth-client-token
+          readOnly: true
+          mountPath: "/opt/genesys/gauth-client-token"
+
+  redis:
+    isCluster: true
+
+  resources:
+      tenantContainer:
+          limits:
+            cpu: "900m"
+            memory: 900Mi
+          requests:
+            cpu: "500m"
+            memory: 600Mi
+
+      initResources:
+        requests:
+          cpu: "100m"
+          memory: 500Mi
+
+  containerSecurityContext:
+    runAsUser: null
+    runAsGroup: 0
+    
+  securityContext:
+    fsGroup: null

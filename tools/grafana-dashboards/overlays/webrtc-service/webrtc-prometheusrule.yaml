@@ -1,0 +1,161 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: webrtc-infra-blue
+    meta.helm.sh/release-namespace: webrtc
+  name: webrtc-alerts-blue
+  namespace: webrtc
+spec:
+  groups:
+    - name: webrtc-gateway-blue
+      rules:
+        - alert: webrtc-gateway-signins-blue
+          annotations:
+            description: >-
+              Number of sign-ins on BLUE becomes critical. It looks like
+              autoscaling doesn't work properly
+            summary: '[CRITICAL] Number of sign-ins on BLUE becomes critical'
+          expr: >-
+            sum( wrtc_current_signins{ color="blue", container="webrtc" } ) >
+            count( wrtc_current_signins{ color="blue", container="webrtc" } ) *
+            2 *  30
+          for: 15m
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-crash-blue
+          annotations:
+            description: 'Gateway Pod on BLUE is restarted, maybe crashed'
+            summary: '[CRITICAL] Gateway Pod on BLUE is restarted, maybe crashed'
+          expr: >-
+            count by(pod) ( container_memory_usage_bytes{ namespace="webrtc",
+            pod=~"webrtc-gateway-blue.*" } offset 3m ) unless count by(pod) (
+            container_memory_usage_bytes{ namespace="webrtc",
+            pod=~"webrtc-gateway-blue.*" } )
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-gauth-blue
+          annotations:
+            description: Gateway Pod on BLUE has lost connection to Auth Service
+            summary: '[CRITICAL] Gateway Pod on BLUE has lost connection to Auth Service'
+          expr: 'wrtc_system_error{ color="blue", type="auth" } > 0'
+          labels:
+            action: email
+            alert: alert-test
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-gws-blue
+          annotations:
+            description: Gateway Pod on BLUE has lost connection to Environment Service
+            summary: >-
+              [CRITICAL] Gateway Pod on BLUE has lost connection to Environment
+              Service
+          expr: 'wrtc_system_error{ color="blue", type="env" } > 0'
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-gws-blue
+          annotations:
+            description: Gateway Pod on BLUE has lost connection to Configuration Service
+            summary: >-
+              [CRITICAL] Gateway Pod on BLUE has lost connection to
+              Configuration Service
+          expr: 'wrtc_system_error{ color="blue", type="cfg" } > 0'
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-es-blue
+          annotations:
+            description: Gateway Pod on BLUE has lost connection ot ElasticSearch
+            summary: Gateway Pod on BLUE has lost connection ot ElasticSearch
+          expr: 'wrtc_system_error{ color="blue", type="es" } > 0'
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-cpu-blue
+          annotations:
+            description: 'Gateway Pod on BLUE has exceeded requested CPU '
+            summary: 'Gateway Pod on BLUE has exceeded requested CPU '
+          expr: >-
+            ( rate( container_cpu_usage_seconds_total{ namespace="webrtc",
+            pod=~"webrtc-gateway-blue.*", image!="", container!="POD" }[1m] ) *
+            1000 ) > on(namespace, pod) group_left
+            kube_pod_container_resource_requests_cpu_cores{ namespace="webrtc",
+            pod=~"webrtc-gateway-blue.*" } * 1000
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-gateway-mem-blue
+          annotations:
+            description: 'Gateway Pod on BLUE has exceeded requested Memory '
+            summary: 'Gateway Pod on BLUE has exceeded requested Memory '
+          expr: >-
+            ( container_memory_working_set_bytes{ namespace="webrtc", image!="",
+            container!="POD", pod=~"webrtc-gateway-blue.*" } ) > on(namespace,
+            pod) group_left kube_pod_container_resource_requests_memory_bytes{
+            namespace="webrtc", pod=~"webrtc-gateway-blue.*" }
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+    - name: webrtc-coturn-blue
+      rules:
+        - alert: webrtc-coturn-crash-blue
+          annotations:
+            description: 'Coturn Pod on BLUE is restarted, maybe crashed'
+            summary: '[CRITICAL] Coturn Pod on BLUE is restarted, maybe crashed'
+          expr: >-
+            count by(pod) ( container_memory_usage_bytes{ namespace="webrtc",
+            pod=~"webrtc-coturn-blue.*" } offset 3m ) unless count by(pod) (
+            container_memory_usage_bytes{ namespace="webrtc",
+            pod=~"webrtc-coturn-blue.*" } )
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-coturn-cpu-blue
+          annotations:
+            description: 'Coturn Pod on BLUE has exceeded requested CPU '
+            summary: 'Coturn Pod on BLUE has exceeded requested CPU '
+          expr: >-
+            ( rate( container_cpu_usage_seconds_total{ namespace="webrtc",
+            pod=~"webrtc-coturn-blue.*", image!="", container!="POD" }[1m] ) *
+            1000 ) > on(namespace, pod) group_left
+            kube_pod_container_resource_requests_cpu_cores{ namespace="webrtc",
+            pod=~"webrtc-coturn-blue.*" } * 1000
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning
+        - alert: webrtc-coturn-mem-blue
+          annotations:
+            description: 'Coturn Pod on BLUE has exceeded requested Memory '
+            summary: 'Coturn Pod on BLUE has exceeded requested Memory '
+          expr: >-
+            ( container_memory_working_set_bytes{ namespace="webrtc", image!="",
+            container!="POD", pod=~"webrtc-coturn-blue.*" } ) > on(namespace,
+            pod) group_left kube_pod_container_resource_requests_memory_bytes{
+            namespace="webrtc", pod=~"webrtc-coturn-blue.*" }
+          labels:
+            action: email
+            service: webrtc
+            servicename: webrtc
+            severity: warning

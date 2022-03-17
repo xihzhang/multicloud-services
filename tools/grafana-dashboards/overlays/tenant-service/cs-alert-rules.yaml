@@ -1,0 +1,417 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: tenant-monitoring-rules
+    meta.helm.sh/release-namespace: voice
+  creationTimestamp: '2022-01-25T19:39:37Z'
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: voice
+    genesysengage/monitoring: prometheus
+  managedFields:
+    - apiVersion: monitoring.coreos.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:meta.helm.sh/release-name: {}
+            f:meta.helm.sh/release-namespace: {}
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:app.kubernetes.io/name: {}
+            f:genesysengage/monitoring: {}
+        f:spec:
+          .: {}
+          f:groups: {}
+      manager: helm
+      operation: Update
+      time: '2022-01-25T19:39:37Z'
+  name: tenant-cs-alert-rules
+  namespace: voice
+  resourceVersion: '163990026'
+  selfLink: >-
+    /apis/monitoring.coreos.com/v1/namespaces/voice/prometheusrules/tenant-cs-alert-rules
+  uid: e88442ca-c2f8-4ff2-96c8-129e29f1b63a
+spec:
+  groups:
+    - name: cs-alert-rule
+      rules:
+        - alert: tenant_cs_clients_warning
+          annotations:
+            detailed_description: There are more number of clients connected to the CS
+            summary: Number of CS client is greater than 100 for 5 mins
+          expr: tenant_cs_clients > 100
+          for: 5m
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: HealthFailFor5min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant status health(all pods)
+              is failed for 5 mins
+            summary: Tenant pod status health is failed for 5 mins
+          expr: >-
+            (max by (tenant)
+            (tenant_service_health_level{namespace="voice",pod=~"t[0-9].*"})) <
+            2
+          for: 5m
+          labels:
+            category: tenant_pager
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: HealthFailFor2min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant status health is failed
+              for 2 mins
+            summary: Tenant pod status health is failed for 2 mins
+          expr: tenant_service_health_level{namespace="voice",pod=~"t[0-9].*"} < 2
+          for: 2m
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: RedisDownFor10min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant is not connected to
+              redis 10 mins
+            summary: Tenant pod is not connected to redis 10 mins
+          expr: tenant_redis_state{namespace="voice",pod=~"t[0-9].*"} != 2
+          for: 10m
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: tenant_memory_usage_60_percent_10min
+          annotations:
+            detailed_description: Tenant memory is above 60% for 10 min
+            summary: Tenant memory is above 60% for 10 min
+          expr: >-
+            ((sum by(pod)
+            (container_memory_usage_bytes{image!="",pod=~"t[0-9].*",container="tenant"}))
+            / sum
+            by(pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",unit="byte",container="tenant"}))
+            * 100  > 60
+          for: 10m
+          labels:
+            metric: memory
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: tenant_memory_usage_60_percent_20min
+          annotations:
+            detailed_description: Tenant memory is above 60% for 20 min
+            summary: Tenant memory is above 60% for 20 min
+          expr: >-
+            ((sum by(pod)
+            (container_memory_usage_bytes{image!="",pod=~"t[0-9].*",container="tenant"}))
+            / sum
+            by(pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",unit="byte",container="tenant"}))
+            * 100  > 60
+          for: 20m
+          labels:
+            metric: memory
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: tenant_memory_usage_80_percent_10min
+          annotations:
+            detailed_description: Tenant memory is above 80% for 10 min
+            summary: Tenant memory is above 80% for 10 min
+          expr: >-
+            ((sum by(pod)
+            (container_memory_usage_bytes{image!="",pod=~"t[0-9].*",container="tenant"}))
+            / sum
+            by(pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",unit="byte",container="tenant"}))
+            * 100  > 80
+          for: 10m
+          labels:
+            metric: memory
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: tenant_memory_usage_80_percent_20min
+          annotations:
+            detailed_description: Tenant memory is above 80% for 20 min
+            summary: Tenant memory is above 80% for 20 min
+          expr: >-
+            ((sum by(pod)
+            (container_memory_usage_bytes{image!="",pod=~"t[0-9].*",container="tenant"}))
+            / sum
+            by(pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",unit="byte",container="tenant"}))
+            * 100  > 80
+          for: 20m
+          labels:
+            category: tenant_pager
+            metric: memory
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: tenant_memory_usage_90_percent_10min
+          annotations:
+            detailed_description: Tenant memory is above 90% for 10 min
+            summary: Tenant memory is above 90% for 10 min
+          expr: >-
+            ((sum by(pod)
+            (container_memory_usage_bytes{image!="",pod=~"t[0-9].*",container="tenant"}))
+            / sum
+            by(pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",unit="byte",container="tenant"}))
+            * 100  > 90
+          for: 10m
+          labels:
+            category: tenant_pager
+            metric: memory
+            service: voice
+            servicename: tenant
+            severity: warning
+        - alert: ContainerCPUreached60percentFor10min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 60% for 10 mins
+            summary: >-
+              tenant container CPU utilization more than 60% in the tenant pod
+              for 2 minutes
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 60
+          for: 10m
+          labels:
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerCPUreached60percentfor20min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 60% for 20 mins
+            summary: tenant container CPU utilization more than 60% in the tenant pod
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 60
+          for: 20m
+          labels:
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerCPUreached80percentfor10min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 80% for 20 mins
+            summary: tenant container CPU utilization more than 80% in the tenant pod
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 80
+          for: 10m
+          labels:
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerCPUreached80percentfor20min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 80% for 20 mins
+            summary: tenant container CPU utilization more than 80% in the tenant pod
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 80
+          for: 20m
+          labels:
+            category: tenant_pager
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerCPUreached90percentfor10min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 90% for 10 mins
+            summary: tenant container CPU utilization more than 90% in the tenant pod
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 90
+          for: 10m
+          labels:
+            category: tenant_pager
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerCPUreached90percentfor20min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container CPU
+              utilization goes beyond 90% for 20 mins
+            summary: tenant container CPU utilization more than 90% in the tenant pod
+          expr: >-
+            (sum by
+            (pod)(rate(container_cpu_usage_seconds_total{pod=~"t[0-9].*",
+            image!="",namespace="voice",container="tenant"}[5m]))/ (sum by
+            (pod)(kube_pod_container_resource_limits{pod=~"t[0-9].*",namespace="voice",unit="core",container="tenant"})))
+            * 100 > 90
+          for: 20m
+          labels:
+            category: tenant_pager
+            metric: cpu
+            service: voice
+            servicename: tenant
+            severity: warning
+        - alert: PodStatusFailed
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant pod goes to Failed
+              state
+            summary: Tenant pod is in Failed state
+          expr: >-
+            kube_pod_status_phase{pod=~"t[0-9].*",namespace="voice",phase="Failed"}
+            == 1
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: PodStatusUnknown
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant pod goes to Unknown
+              state for 5min
+            summary: Tenant pod is in Unknown state for 5 min
+          expr: >-
+            kube_pod_status_phase{pod=~"t[0-9].*",namespace="voice",phase="Unknown"}
+            == 1
+          for: 5m
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: PodStatusNotReadyfor10mins
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant pod status is Not ready
+              for 10 mins
+            summary: Tenant pod status has been in Not ready state for 10 mins
+          expr: >-
+            (kube_pod_status_ready{condition="false",namespace="voice",pod=~"t[0-9].*"}
+            AND ON (namespace,pod) kube_pod_container_status_waiting
+            {container="tenant"} !=1 ) != 0
+          for: 10m
+          labels:
+            category: tenant_pager
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: PodStatusPendingfor20mins
+          annotations:
+            description: >-
+              The trigger will flag an alarm when tenant pod status is Not ready
+              for 10 mins
+            summary: Tenant pod status has been in Not ready state for 10 mins
+          expr: >-
+            kube_pod_status_phase{phase="Pending",
+            namespace="voice",pod=~"t[0-9].*" }  AND ON (namespace,pod)
+            kube_pod_container_status_waiting {container="tenant"} != 0
+          for: 20m
+          labels:
+            category: tenant_pager
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: ContainerRestartedRepeatedly
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant container gets
+              restarted 5 or more times within 15 mins
+            summary: Repeated container restart seen in the tenant pod
+          expr: >-
+            increase(kube_pod_container_status_restarts_total{container="tenant",namespace="voice"}[15m])
+            >= 2
+          labels:
+            category: tenant_pager
+            service: voice
+            servicename: tenant
+            severity: critical
+        - alert: TServerConfigDisconnect
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the Tserver cannot connect to
+              config node for 10 min
+            summary: Tserver cannot connect to config node for 10 min
+          expr: tenant_tserver_configuration_retry != 0
+          for: 10m
+          labels:
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: rqClientDisconnectedFor10min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 10 mins
+            summary: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 10 mins
+          expr: tenant_rq_client_state != 2
+          for: 10m
+          labels:
+            metric: rq-client
+            service: voice
+            servicename: tenant
+            severity: high
+        - alert: rqClientDisconnectedFor20min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 20 mins
+            summary: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 20 mins
+          expr: tenant_rq_client_state != 2
+          for: 20m
+          labels:
+            metric: rq-client
+            service: voice
+            servicename: tenant
+            severity: warning
+        - alert: rqClientDisconnectedFor30min
+          annotations:
+            description: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 30 mins
+            summary: >-
+              The trigger will flag an alarm when the tenant is disconnected
+              from rq-client for 30 mins
+          expr: tenant_rq_client_state != 2
+          for: 30m
+          labels:
+            metric: rq-client
+            service: voice
+            servicename: tenant
+            severity: warning

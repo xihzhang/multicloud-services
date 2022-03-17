@@ -1,0 +1,213 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-permissions-pod
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-permissions-pod
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Permissions Alerts
+    rules:
+      - alert: pulse_permissions_critical_running_instances
+        expr: |-
+          sum by(environment,location,deployment) (
+            kube_deployment_status_replicas_available{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+          ) /
+          sum by(environment,location,deployment) (
+            kube_deployment_status_replicas{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+          ) * 100
+          < 75
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Pulse Permissions instances are down.
+          information: 'Detected critical number of running {{ $labels.deployment }}@{{ $labels.environment }}-{{ $labels.location }} instances: {{ $value }}%'
+      - alert: pulse_permissions_low_running_instances
+        expr: |-
+          (
+            sum by(environment,location,deployment) (
+              kube_deployment_status_replicas_available{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+            ) /
+            sum by(environment,location,deployment) (
+              kube_deployment_status_replicas{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+            ) * 100
+            < 90
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,deployment) (
+              kube_deployment_status_replicas_available{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+            ) /
+            sum by(environment,location,deployment) (
+              kube_deployment_status_replicas{cloud="azure",namespace="pulse",deployment=~"pulse-permissions-.*"}
+            ) * 100
+            < 75
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Pulse Permissions instances are down.
+          information: 'Detected low number of running {{ $labels.deployment }}@{{ $labels.environment }}-{{ $labels.location }} instances: {{ $value }}%'
+      - alert: pulse_permissions_critical_memory
+        expr: |-
+          sum by(environment,location,pod,container) (
+            container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+          ) /
+          sum by(environment,location,pod,container) (
+            kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="memory",unit="byte"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected critical memory usage by Pulse Permissions Pod.
+          information: 'Detected critical memory usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_permissions_high_memory
+        expr: |-
+          (
+            sum by(environment,location,pod,container) (
+              container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="memory",unit="byte"}
+            ) * 100
+            >= 80
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,pod,container) (
+              container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="memory",unit="byte"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected high memory usage by Pulse Permissions Pod.
+          information: 'Detected high memory usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_permissions_critical_cpu
+        expr: |-
+          sum by(environment,location,pod,container) (
+            rate(
+              container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+              [2m]
+            )
+          ) /
+          sum by(environment,location,pod,container) (
+            kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="cpu",unit="core"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected critical CPU usage by Pulse Permissions Pod.
+          information: 'Detected critical CPU usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_permissions_high_cpu
+        expr: |-
+          (
+            sum by(environment,location,pod,container) (
+              rate(
+                container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+                [2m]
+              )
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="cpu",unit="core"}
+            ) * 100
+            >= 80
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,pod,container) (
+              rate(
+                container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD"}
+                [2m]
+              )
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*",container!="",container!="POD",resource="cpu",unit="core"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected high CPU usage by Pulse Permissions Pod.
+          information: 'Detected high CPU usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_permissions_too_frequent_restarts
+        expr: |-
+          max_over_time((
+            increase(
+              kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*"}
+              [1h:]
+            ) >= bool 2
+          )[1h:])
+          > 0
+          unless on(environment,location,pod)
+          kube_pod_labels{cloud="azure",pod=~".*"}
+        for: 1h
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected too frequent restarts of Permissions Pod container.
+          information: |-
+            The container {{ $labels.container }} from the pod {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} has been restarted
+            at least 2 times in the last 1h.
+      - alert: pulse_permissions_frequent_restarts
+        expr: |-
+          (
+            max_over_time((
+              increase(
+                kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*"}
+                [10m:]
+              ) >= bool 1
+            )[10m:])
+            > 0
+          ) * on() group_left() absent_over_time((
+            max_over_time((
+              increase(
+                kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-permissions-.*"}
+                [1h:]
+              ) >= bool 2
+            )[1h:])
+            > 0
+          )[1h:])
+          unless on(environment,location,pod)
+          kube_pod_labels{cloud="azure",pod=~".*"}
+        for: 10m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: permissions
+        annotations:
+          summary: Detected frequent restarts of Permissions Pod container.
+          information: |-
+            The container {{ $labels.container }} from the pod {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} has been restarted
+            at least 1 times in the last 10m.

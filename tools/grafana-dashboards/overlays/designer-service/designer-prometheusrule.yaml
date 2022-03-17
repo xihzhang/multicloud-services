@@ -1,0 +1,167 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: designer-das
+    meta.helm.sh/release-namespace: designer
+  name: designer-das-prometheus-alerts
+  namespace: designer
+spec:
+  groups:
+  - name: DESIGNER-DAS
+    rules:
+    - alert: DESIGNER-DASRestartCount
+      annotations:
+        information: DESIGNER-DAS container is experiencing more than 5 restarts in
+          last 1 hour
+        summary: Container restarts in designer-das service
+      expr: increase(kube_pod_container_status_restarts_total{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*" }[60m]) > 5
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASMemoryUtilizationAlert
+      annotations:
+        information: DESIGNER-DAS container is experiencing high Memory utilization
+          for past 1m minutes
+        summary: DESIGNER-DAS Container is experiencing High Memory Utilization
+      expr: (sum by (pod) (container_memory_working_set_bytes{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*"}) / sum by (pod) (kube_pod_container_resource_limits{resource="memory",namespace="designer",
+        container="designer-das", pod=~"designer-das-.*"})) * 100 > 75
+      for: 1m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASCPUUtilizationAlert
+      annotations:
+        information: DESIGNER-DAS container is experiencing high CPU utilization for
+          past 1m minutes
+        summary: designer-das pod CPU utilization greater than threshold 75%
+      expr: (sum(rate(container_cpu_usage_seconds_total{namespace="designer", container="designer-das",
+        pod=~"designer-das-.*"}[1m])) by (pod) / sum(kube_pod_container_resource_limits{resource="cpu",
+        namespace="designer", container="designer-das", pod=~"designer-das-.*"}) by
+        (pod)) * 100 > 75
+      for: 1m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASWorkspaceUtilizationAlert
+      annotations:
+        information: DESIGNER-DAS Workspace usage size reaches 70% of claim limit
+        summary: designer-das Workspace utilization greater than threshold 70%
+      expr: (100 - ((kubelet_volume_stats_available_bytes{namespace="designer", persistentvolumeclaim="designer-managed-disk"})
+        / (kubelet_volume_stats_capacity_bytes{namespace="designer", persistentvolumeclaim="designer-managed-disk"}))*
+        100) > 70
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASAbsentAlert
+      annotations:
+        information: No designer-das release and its related resources found for past  minutes
+        summary: designer-das release is absent for  minutes
+      expr: absent({namespace="designer", container="designer-das", pod=~"designer-das-.*"})
+        == 1
+      for: 1m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASHealthStatus
+      annotations:
+        information: designer-das is experiencing health check failure for past 3m
+          minutes
+        summary: designer-das is unhealthy for 3m minutes
+      expr: das_healthcheck{namespace="designer", container="designer-das", pod=~"designer-das-.*"}
+        == 0
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASWorkspaceHealth
+      annotations:
+        information: designer-das is experiencing workspace health check failure for
+          past 3m minutes
+        summary: designer-das is unable to reach workspace for 3m minutes
+      expr: das_workspace_healthcheck{namespace="designer", container="designer-das",
+        pod=~"designer-das-.*"} == 0
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASPHPHealth
+      annotations:
+        information: designer-das is experiencing PHP health check failure for past
+          3m minutes
+        summary: designer-das is experiencing error with PHP process for 3m minutes
+      expr: das_php_healthcheck{namespace="designer", container="designer-das", pod=~"designer-das-.*"}
+        == 0
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASProxyHealth
+      annotations:
+        information: designer-das is experiencing Proxy health check failure for past
+          3m minutes
+        summary: designer-das is unable to reach Proxy Server for 3m minutes
+      expr: das_proxy_healthcheck{namespace="designer", container="designer-das",
+        pod=~"designer-das-.*"} == 0
+      for: 3m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASPHPLatencyAlert
+      annotations:
+        information: designer-das is experiencing PHP Latency for past 1m minutes
+        summary: designer-das is experiencing PHP Latency for 1m minutes
+      expr: sum(increase(das_http_request_duration_seconds_sum{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*",req_type ="php"}[1m])) by
+        (req_type) / sum(increase(das_http_request_duration_seconds_count{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", req_type ="php"}[1m])) by
+        (req_type) > 10
+      for: 1m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASHTTPLatencyAlert
+      annotations:
+        information: designer-das is experiencing HTTP Latency for past 1m minutes
+        summary: designer-das is experiencing HTTP Latency for 1m minutes
+      expr: sum(increase(das_http_request_duration_seconds_sum{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*",req_type !~"php|other"}[1m]))
+        by (req_type) / sum(increase(das_http_request_duration_seconds_count{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", req_type !~"php|other"}[1m]))
+        by (req_type) > 10
+      for: 1m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASHTTP4XXErrorCountAlert
+      annotations:
+        information: designer-das is experiencing 4xx error ratio of 10 to the total
+          number of requests for past 5m minutes
+        summary: designer-das is experiencing 4xx error ratio of more than 10 for
+          5m minutes
+      expr: sum by (ccid) ((sum(increase(das_http_requests_total{status="4xx", namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", ccid != "none"}[5m])))/(sum(increase(das_http_requests_total{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", ccid != "none"}[5m]))))
+        > 10
+      for: 5m
+      labels:
+        service: designer
+        severity: CRITICAL
+    - alert: DESIGNER-DASHTTP5XXErrorCountAlert
+      annotations:
+        information: designer-das is experiencing 5xx error ratio of more than 10
+          to the total number of requests for  5m minutes
+        summary: designer-das is experiencing 5xx error ratio of more than 10 for  5m
+          minutes
+      expr: sum by (ccid) ((sum(increase(das_http_requests_total{status="5xx", namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", ccid != "none"}[5m])))/(sum(increase(das_http_requests_total{namespace="designer",
+        container="designer-das", pod=~"designer-das-.*", ccid != "none"}[5m]))))
+        > 10
+      for: 5m
+      labels:
+        service: designer
+        severity: CRITICAL

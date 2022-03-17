@@ -1,0 +1,4597 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "iteration": 1643295729439,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-green",
+                    "index": 0,
+                    "text": "success"
+                  },
+                  "1": {
+                    "color": "dark-red",
+                    "index": 1,
+                    "text": "failure"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 0
+        },
+        "id": 77,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(\niwdEmail_iwd_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\"} \n) by (cloud,location,environment,domain) > bool 0",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{domain}}",
+            "refId": "A"
+          }
+        ],
+        "title": "iWD Connectivity Status per Tenant",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-green",
+                    "index": 0,
+                    "text": "success"
+                  },
+                  "1": {
+                    "color": "dark-red",
+                    "index": 1,
+                    "text": "failure"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 0
+        },
+        "id": 81,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(\niwdEmail_ucs_connection_status\n{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}\n) by (cloud,location,environment,domain) > bool 0",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{domain}}",
+            "refId": "A"
+          }
+        ],
+        "title": "UCS Connectivity Status per Tenant",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-green",
+                    "index": 0,
+                    "text": "success"
+                  },
+                  "1": {
+                    "color": "dark-red",
+                    "index": 1,
+                    "text": "failure"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 16,
+          "y": 0
+        },
+        "id": 83,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(\niwdEmail_nexus_connection_status\n{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\"}\n) by (cloud,location,environment) > bool 0",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": " ",
+            "refId": "A"
+          }
+        ],
+        "title": "Nexus Connectivity Status",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-red",
+                    "index": 0,
+                    "text": "failure"
+                  },
+                  "1": {
+                    "color": "dark-green",
+                    "index": 1,
+                    "text": "success"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 8,
+          "x": 16,
+          "y": 4
+        },
+        "id": 82,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "(\ncount(\niwdEmail_redis_connections_ready\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\"}\n) - sum(\niwdEmail_redis_connections_ready\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\"}\n)\n) == bool 0",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": " ",
+            "refId": "A"
+          }
+        ],
+        "title": "Redis Connectivity Status",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 1
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 25
+                },
+                {
+                  "color": "light-orange",
+                  "value": 50
+                },
+                {
+                  "color": "light-red",
+                  "value": 75
+                },
+                {
+                  "color": "dark-red",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 84,
+        "links": [],
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "100 * sum(\niwdEmail_inbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}\n)  by (domain) /\ncount(\niwdEmail_inbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}\n) by (domain)",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{domain}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Percentage of failed inbound mailboxes",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DataSource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-green",
+                  "value": null
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 1
+                },
+                {
+                  "color": "super-light-yellow",
+                  "value": 25
+                },
+                {
+                  "color": "light-orange",
+                  "value": 50
+                },
+                {
+                  "color": "light-red",
+                  "value": 75
+                },
+                {
+                  "color": "dark-red",
+                  "value": 100
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 79,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DataSource}"
+            },
+            "exemplar": true,
+            "expr": "100 * sum(\niwdEmail_inbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}\n)  by (domain) /\ncount(\niwdEmail_inbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}\n) by (domain)",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{domain}}",
+            "refId": "A"
+          }
+        ],
+        "title": "Percentage of failed outbound mailboxes",
+        "type": "status-history"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "id": 73,
+        "panels": [],
+        "title": "Mailbox",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-green",
+                    "index": 0,
+                    "text": "success"
+                  },
+                  "1": {
+                    "color": "dark-red",
+                    "index": 1,
+                    "text": "failure"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 17
+        },
+        "id": 78,
+        "links": [],
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(\niwdEmail_inbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}\n) by (cloud,location,environment,domain,mailbox) > bool 0",
+            "format": "time_series",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{mailbox}}({{domain}})",
+            "refId": "A"
+          }
+        ],
+        "title": "Inbound Mailbox Connectivity Status",
+        "type": "status-history"
+      },
+      {
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "fillOpacity": 70,
+              "lineWidth": 1
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "color": "dark-green",
+                    "index": 0,
+                    "text": "success"
+                  },
+                  "1": {
+                    "color": "dark-red",
+                    "index": 1,
+                    "text": "failure"
+                  }
+                },
+                "type": "value"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 17
+        },
+        "id": 85,
+        "options": {
+          "colWidth": 0.9,
+          "legend": {
+            "displayMode": "hidden",
+            "placement": "bottom"
+          },
+          "rowHeight": 0.9,
+          "showValue": "never",
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(\niwdEmail_outbound_server_connection_status\n{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}\n) by (cloud,location,environment,domain,mailbox) > bool 0",
+            "interval": "",
+            "intervalFactor": 5,
+            "legendFormat": "{{mailbox}}({{domain}})",
+            "refId": "A"
+          }
+        ],
+        "title": "Outbound Mailbox Connectivity Status",
+        "type": "status-history"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 0,
+          "y": 25
+        },
+        "hiddenSeries": false,
+        "id": 62,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "0.001 * \nsum by (cloud,location,environment,domain) (rate(iwdEmail_mailbox_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m])) / \nsum by (cloud,location,environment,domain)\n(rate(iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+            "interval": "",
+            "legendFormat": "{{domain}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Mailbox processing average time per Tenant, sec",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "logBase": 1,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "links": []
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 12,
+          "x": 12,
+          "y": 25
+        },
+        "hiddenSeries": false,
+        "id": 64,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "alertThreshold": true
+        },
+        "percentage": false,
+        "pluginVersion": "8.3.5",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "0.001 * \nsum by (cloud,location,environment,domain,mailbox) (rate(iwdEmail_mailbox_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m])) / \nsum by (cloud,location,environment,domain,mailbox)\n(rate(iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))",
+            "interval": "",
+            "legendFormat": "{{mailbox}}({{domain}})",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeRegions": [],
+        "title": "Mailbox processing average time, sec",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "mode": "time",
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "logBase": 1,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "logBase": 1,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false
+        }
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 31
+        },
+        "id": 9,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 32
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 2,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_processed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_processed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Emails per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 32
+            },
+            "hiddenSeries": false,
+            "id": 66,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_inbound_emails_processed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\", subtype=~\"$InboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Emails per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 38
+            },
+            "hiddenSeries": false,
+            "id": 49,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum (rate(iwdEmail_inbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))/sum (rate(iwdEmail_inbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Average",
+                "refId": "B"
+              },
+              {
+                "expr": "sum by (cloud,location,environment,domain) (rate(iwdEmail_inbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain)(rate(iwdEmail_inbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email processing average time per Tenant, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 38
+            },
+            "hiddenSeries": false,
+            "id": 50,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum by (cloud,location,environment,domain,mailbox) (rate(iwdEmail_inbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain,mailbox)(rate(iwdEmail_inbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email processing average time per Mailbox, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 44
+            },
+            "hiddenSeries": false,
+            "id": 4,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Emails Size per Tenant rate, KB/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 44
+            },
+            "hiddenSeries": false,
+            "id": 13,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Emails Size per Mailbox rate, KB/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 50
+            },
+            "hiddenSeries": false,
+            "id": 28,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(iwdEmail_inbound_unread_emails_in_mailbox{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"})",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(iwdEmail_inbound_unread_emails_in_mailbox{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Queue size per Tenant, emails",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 50
+            },
+            "hiddenSeries": false,
+            "id": 29,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(iwdEmail_inbound_unread_emails_in_mailbox{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Queue size per Mailbox, emails",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 56
+            },
+            "hiddenSeries": false,
+            "id": 56,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum (rate(iwdEmail_inbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))/sum (rate(iwdEmail_inbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Average",
+                "refId": "B"
+              },
+              {
+                "expr": "sum by (cloud,location,environment,domain) (rate(iwdEmail_inbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain)(rate(iwdEmail_inbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average waiting time in Inbound Queue per Tenant, sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 56
+            },
+            "hiddenSeries": false,
+            "id": 58,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum by (cloud,location,environment,domain,mailbox) (rate(iwdEmail_inbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain,mailbox)(rate(iwdEmail_inbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average waiting time in Inbound Queue per Mailbox, sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          }
+        ],
+        "title": "Inbound Emails",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 32
+        },
+        "id": 17,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+          "y": 63
+            },
+            "hiddenSeries": false,
+            "id": 18,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email Failures per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DataSource}"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+          "y": 63
+            },
+            "hiddenSeries": false,
+            "id": 12,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DataSource}"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_inbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\", subtype=~\"$InboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email Failures per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+          "y": 69
+            },
+            "hiddenSeries": false,
+            "id": 26,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email Retries per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+          "y": 69
+            },
+            "hiddenSeries": false,
+            "id": 21,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_inbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\", subtype=~\"$InboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Inbound Email Retries per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+          "y": 75
+            },
+            "hiddenSeries": false,
+            "id": 22,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Rejected by content Inbound Emails per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+          "y": 75
+            },
+            "hiddenSeries": false,
+            "id": 23,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Rejected by content Inbound Emails per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+          "y": 81
+            },
+            "hiddenSeries": false,
+            "id": 24,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_attachments_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_attachments_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Rejected Inbound Email Attachments per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+          "y": 81
+            },
+            "hiddenSeries": false,
+            "id": 25,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_inbound_emails_blocked_attachments_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Rejected Inbound Email Attachments per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          }
+        ],
+        "title": "Inbound Email Failures",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 33
+        },
+        "id": 11,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 64
+            },
+            "hiddenSeries": false,
+            "id": 3,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_sent_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_sent_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Emails per Tenant, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 64
+            },
+            "hiddenSeries": false,
+            "id": 14,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_outbound_emails_sent_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\", subtype=~\"$OutboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Emails per Mailbox, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 70
+            },
+            "hiddenSeries": false,
+            "id": 52,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum (rate(iwdEmail_outbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))/sum (rate(iwdEmail_outbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Average",
+                "refId": "B"
+              },
+              {
+                "expr": "sum by (cloud,location,environment,domain) (rate(iwdEmail_outbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain)(rate(iwdEmail_outbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email processing average time per Tenant, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 70
+            },
+            "hiddenSeries": false,
+            "id": 54,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum by (cloud,location,environment,domain,mailbox) (rate(iwdEmail_outbound_email_processing_duration_milliseconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain,mailbox)(rate(iwdEmail_outbound_email_processing_duration_milliseconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email processing average time per Mailbox, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 76
+            },
+            "hiddenSeries": false,
+            "id": 5,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Emails Size per Tenant, KB/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 76
+            },
+            "hiddenSeries": false,
+            "id": 15,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_size_kb_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Emails Size per Mailbox, KB/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 82
+            },
+            "hiddenSeries": false,
+            "id": 45,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(iwdEmail_outbound_emails_in_queue{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"})",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "expr": "sum(iwdEmail_outbound_emails_in_queue{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Queue size per Tenant, emails",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 82
+            },
+            "hiddenSeries": false,
+            "id": 47,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum(iwdEmail_outbound_emails_in_queue{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Queue size per Mailbox, emails",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 88
+            },
+            "hiddenSeries": false,
+            "id": 59,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum (rate(iwdEmail_outbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))/sum (rate(iwdEmail_outbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Average",
+                "refId": "B"
+              },
+              {
+                "expr": "sum by (cloud,location,environment,domain) (rate(iwdEmail_outbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain)(rate(iwdEmail_outbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average waiting time in Outbound Queue per Tenant, sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 88
+            },
+            "hiddenSeries": false,
+            "id": 60,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "expr": "sum by (cloud,location,environment,domain,mailbox) (rate(iwdEmail_outbound_email_waiting_time_seconds_sum{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))/sum by (cloud,location,environment,domain,mailbox)(rate(iwdEmail_outbound_email_waiting_time_seconds_count{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Average waiting time in Outbound Queue per Mailbox, sec",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          }
+        ],
+        "title": "Outbound Emails",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 31,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 65
+            },
+            "hiddenSeries": false,
+            "id": 33,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email Failures per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 65
+            },
+            "hiddenSeries": false,
+            "id": 35,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_outbound_emails_failed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\", subtype=~\"$OutboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email Failures per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 71
+            },
+            "hiddenSeries": false,
+            "id": 37,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase(iwdEmail_outbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", protocol=~\"$ActiveOutboundProtocol\"}[1m])) by (cloud,location,environment,domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email Retries per Tenant rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$DataSource"
+        },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 71
+            },
+            "hiddenSeries": false,
+            "id": 39,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+        "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "3LqJeTVnk"
+            },
+                "exemplar": true,
+            "expr": "sum(increase(iwdEmail_outbound_emails_to_retry_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\", subtype=~\"$OutboundSubtype\"}[1m])) by (cloud,location,environment,domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Outbound Email Retries per Mailbox rate, email/min",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+          "align": false
+            }
+          }
+        ],
+        "title": "Outbound Email Failures",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 35
+        },
+        "id": 70,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "type": "prometheus",
+              "uid": "$DataSource"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 96
+            },
+            "hiddenSeries": false,
+            "id": 68,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "3LqJeTVnk"
+                },
+                "exemplar": true,
+                "expr": "100 * sum (increase(iwdEmail_inbound_emails_processed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveInboundProtocol\", subtype=~\"$InboundSubtype\"}[1m]))/(1e-30+sum (increase (iwdEmail_inbound_emails_processed_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m])))",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Pod:$Pod,  Tenant:$ActiveTenantName, Mailbox:$ActiveMailboxName, Protocol:$ActiveInboundProtocol",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Queried Inbound Emails of Total, %",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": "100",
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": {
+              "type": "prometheus",
+              "uid": "$DataSource"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 24,
+              "x": 0,
+              "y": 102
+            },
+            "hiddenSeries": false,
+            "id": 71,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.3.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "3LqJeTVnk"
+                },
+                "exemplar": true,
+                "expr": "100 * sum (increase(iwdEmail_outbound_emails_sent_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\",pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\", protocol=~\"$ActiveOutboundProtocol\", subtype=~\"$OutboundSubtype\"}[1m]))/(1e-30+sum (increase (iwdEmail_outbound_emails_sent_total{cloud=~\"$Cloud\",location=~\"$Location\",environment=~\"$Environment\"}[1m])))",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Pod:$Pod,  Tenant:$ActiveTenantName, Mailbox:$ActiveMailboxName, Protocol:$ActiveInboundProtocol",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeRegions": [],
+            "title": "Queried Outbound Emails of Total, %",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": "100",
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "logBase": 1,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false
+            }
+          }
+        ],
+        "title": "Misc",
+        "type": "row"
+      }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 34,
+    "style": "dark",
+    "tags": [
+      "__iwd__",
+      "__iwdem__",
+      "__digital__"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Genesys-Metrics",
+            "value": "Genesys-Metrics"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "DataSource",
+          "multi": false,
+          "name": "DataSource",
+          "options": [],
+          "query": "prometheus",
+          "queryValue": "",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "azure",
+            "value": "azure"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "up",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Cloud",
+          "multi": false,
+          "name": "Cloud",
+          "options": [],
+          "query": {
+            "query": "up",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*cloud=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "eastus2",
+            "value": "eastus2"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "up{cloud=~\"$Cloud\"}",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Location",
+          "multi": false,
+          "name": "Location",
+          "options": [],
+          "query": {
+            "query": "up{cloud=~\"$Cloud\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*location=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": true,
+            "text": "prod001",
+            "value": "prod001"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "up{cloud=~\"$Cloud\", location=~\"$Location\"}",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Environment",
+          "multi": false,
+          "name": "Environment",
+          "options": [],
+          "query": {
+            "query": "up{cloud=~\"$Cloud\", location=~\"$Location\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*environment=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Pod",
+          "multi": false,
+          "name": "Pod",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*pod=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Tenant",
+          "multi": false,
+          "name": "ActiveTenantName",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*domain=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Mailbox",
+          "multi": false,
+          "name": "ActiveMailboxName",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*mailbox=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "iwdEmail_inbound_server_connection_status{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Inbound Protocol",
+          "multi": false,
+          "name": "ActiveInboundProtocol",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_inbound_server_connection_status{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*protocol=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$DataSource"
+          },
+          "definition": "iwdEmail_outbound_server_connection_status{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Outbound Protocol",
+          "multi": false,
+          "name": "ActiveOutboundProtocol",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_outbound_server_connection_status{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*protocol=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          "description": "Inbound interaction subtype",
+          "hide": 0,
+          "includeAll": true,
+          "label": "InboundSubtype",
+          "multi": false,
+          "name": "InboundSubtype",
+          "options": [
+            {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": false,
+              "text": "InboundNew",
+              "value": "InboundNew"
+            },
+            {
+              "selected": false,
+              "text": "InboundCustomerReply",
+              "value": "InboundCustomerReply"
+            },
+            {
+              "selected": false,
+              "text": "Unknown",
+              "value": "Unknown"
+            }
+          ],
+          "query": "InboundNew,InboundCustomerReply,Unknown",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          "description": "Outbound interaction subtype",
+          "hide": 0,
+          "includeAll": true,
+          "label": "OutboundSubtype",
+          "multi": false,
+          "name": "OutboundSubtype",
+          "options": [
+            {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": false,
+              "text": "OutboundNew",
+              "value": "OutboundNew"
+            },
+            {
+              "selected": false,
+              "text": "OutboundReply",
+              "value": "OutboundReply"
+            },
+            {
+              "selected": false,
+              "text": "OutboundAcknowledgement",
+              "value": "OutboundAcknowledgement"
+            },
+            {
+              "selected": false,
+              "text": "OutboundAutoResponse",
+              "value": "OutboundAutoResponse"
+            },
+            {
+              "selected": false,
+              "text": "OutboundRedirect",
+              "value": "OutboundRedirect"
+            },
+            {
+              "selected": false,
+              "text": "Unknown",
+              "value": "Unknown"
+            }
+          ],
+          "query": "OutboundNew,OutboundReply,OutboundAcknowledgement,OutboundAutoResponse,OutboundRedirect,Unknown",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-15m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "Email Processing",
+    "version": 5
+  }

@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-lds-monitor
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-lds-monitor
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Lds Monitor Agent Alerts
+    rules:
+      - alert: pulse_lds_monitor_data_unavailable
+        expr: |-
+          kube_pod_info{cloud="azure",namespace="pulse",pod=~"pulse-lds-.*",created_by_kind="StatefulSet"}
+          - on(environment,location,pod) group_right()
+          (
+            changes(pulse_monitor_check_duration_seconds{cloud="azure",namespace="pulse",pod=~"pulse-lds-.*"}[10m]) ==bool 0
+            or on(environment,location,pod)
+            kube_pod_info{cloud="azure",namespace="pulse",pod=~"pulse-lds-.*",created_by_kind="StatefulSet"}
+          )
+          == 0
+        for: 10m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: lds
+        annotations:
+          summary: Pulse Lds Monitor Agent does not provide data.
+          information: |-
+            Detected that Monitor Agent for the POD {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}
+            does not provide metrics data.

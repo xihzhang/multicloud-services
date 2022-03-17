@@ -1,0 +1,214 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: dailplan-rules
+    meta.helm.sh/release-namespace: voice
+  name: dialplan-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-dialplan
+      rules: 
+      - alert: RedisDownFor5min
+        expr: dialplan_redis_state{pod=~"voice-dialplan.*"} != 2
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The trigger will flag an alarm when dialplan node is not connected to redis 5 mins"
+            summary: "Dialplan node pod is not connected to redis 5 mins"
+      - alert: RedisDownFor10min
+        expr: dialplan_redis_state{pod=~"voice-dialplan.*"} != 2
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The trigger will flag an alarm when dialplan node is not connected to redis 10 mins"
+            summary: "Dialplan node pod is not connected to redis 10 mins"
+
+      - alert: dialplan_node_memory_usage
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-dialplan"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-dialplan",unit="byte"})) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node container memeory crossed 65% for 5 minutes"
+            summary: "The dialplan node container memeory crossed 65% for 5 minute"
+      - alert: dialplan_node_memory_usage_80
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-dialplan"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-dialplan",unit="byte"})) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node container memeory crossed 80% for 5 minutes"
+            summary: "The dialplan node container memeory crossed 80% for 5 minute"
+      - alert: dialplan_node_cpu_usage
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-dialplan.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-dialplan.*",unit="core"}))) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node container cpu crossed 65% for 5 minutes"
+            summary: "The dialplan node container cpu crossed 65% for 5 minute"
+      - alert: dialplan_node_cpu_usage_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-dialplan.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-dialplan.*",unit="core"}))) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node container cpu crossed 80% for 5 minutes"
+            summary: "The dialplan node container cpu crossed 80% for 5 minute"
+      - alert: PodStatusFailed
+        expr: kube_pod_status_phase{pod=~"voice-dialplan.*",pod!~"voice-dialplan-test-.*",phase="Failed"} == 1
+        labels:
+          severity: warning
+          service: voice
+          category: voice_pager
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node pod went to failed state"
+            summary: "The dialplan node pod went to failed state"
+      - alert: PodStatusUnknown
+        expr: kube_pod_status_phase{pod=~"voice-dialplan.*",pod!~"voice-dialplan-test-.*",phase="Unknown"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          category: voice_pager
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node pod went to Unknown state for 5min"
+            summary: "The dialplan node pod went to Unknown state for 5min"
+      - alert: PodStatusPending
+        expr: kube_pod_status_phase{pod=~"voice-dialplan.*",pod!~"voice-dialplan-test-.*",phase="Pending"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          category: voice_pager
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node pod went to Pending state for 5min"
+            summary: "The dialplan node pod went to Pending state for 5min"
+      - alert: PodStatusNotReadyfor10mins
+        expr: kube_pod_status_ready{pod=~"voice-dialplan.*",pod!~"voice-dialplan-test-.*",condition="true"} != 1
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "The dialplan node pod went to Not ready status for 10 mins"
+            summary: "The dialplan node pod went to Not ready status for 10 mins"
+      - alert: ContainerRestartedRepeatedly
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-dialplan"}[15m]) >= 5
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: "The dialplan node container was restarted 5 or more times within 15 mins"
+          summary: "The dialplan node container was restarted 5 or more times within 15 mins"
+
+      - alert: DialplanProcessingTimeGT500sec
+        expr: histogram_quantile(0.95, sum by (le) (rate(dialplan_response_time_bucket{pod=~"voice-dialplan.*"}[5m]))) > 500
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "Dialplan processing time is increasing either due to increased load or due to delay in getting infor from redis"
+            summary: "The 95% of dialplan request processing time is greater than 500 msec"
+
+      - alert: DialplanProcessingTimeGT2sec
+        expr: histogram_quantile(0.95, sum by (le) (rate(dialplan_response_time_bucket{pod=~"voice-dialplan.*"}[5m]))) > 2000
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+            description: "Dialplan processing time is increasing either due to increased load or due to delay in getting infor from redis"
+            summary: "The 95% of dialplan request processing time is greater than 2 sec"
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-dialplan.*",pod!~"voice-.+-test-.*"}) by (pod) < 5
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      - alert: aggregated_service_health_failed
+        expr: dialplan_health_level < 2
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Dependent services or envoy sidecar is not available for 5 mins in pod {{ $labels.pod }}
+          runbook: Check Dialplan dashboard for Aggregated Service Health Errors panel. For redis error, check issues/crash in pod, otherwise restart redis. For envoy error, dialplan container will be restarted by liveness probe and if still issue exists, restart pod
+      - alert: config_node_unavailable_for_2m
+        expr: dialplan_config_node_status == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_unavailable_for_5m
+        expr: dialplan_config_node_status == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_fail
+        expr: increase(http_client_response_count{container="voice-dialplan",status!~"2XX"}[5m]) > 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Request to config node failed
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-dialplan"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-dialplan
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate

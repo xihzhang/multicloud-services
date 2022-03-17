@@ -1,0 +1,829 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 602,
+    "links": [],
+    "panels": [
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#5794F2",
+          "#B877D9",
+          "#73BF69"
+        ],
+        "datasource": null,
+        "decimals": null,
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 0,
+          "y": 0
+        },
+        "id": 10,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "aggregation": "Last",
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "sum(sips_calls)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "Calls",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold"
+          }
+        ],
+        "thresholds": "5,10",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Concurrent Calls",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#F2495C",
+          "#FF9830",
+          "#73BF69"
+        ],
+        "datasource": null,
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 2,
+          "y": 0
+        },
+        "id": 12,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "max(sum(agent_logged_in_agents))",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "0,1",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Logged In Agents",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorValue": false,
+        "colors": [
+          "#73BF69",
+          "#FF9830",
+          "#F2495C"
+        ],
+        "datasource": null,
+        "format": "none",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 2,
+          "x": 4,
+          "y": 0
+        },
+        "id": 16,
+        "interval": null,
+        "links": [],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "sum(sips_routing_timeouts)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Default Route",
+        "type": "singlestat",
+        "valueFontSize": "80%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "avg"
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "max": 1,
+          "min": 0,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "color": "#C4162A",
+              "tooltip": "error",
+              "value": "0"
+            },
+            {
+              "color": "#56A64B",
+              "tooltip": "ok",
+              "value": 1
+            },
+            {
+              "color": "#56A64B",
+              "tooltip": "ok",
+              "value": "2"
+            },
+            {
+              "color": "rgb(33, 33, 33)",
+              "tooltip": "",
+              "value": "1000"
+            }
+          ]
+        },
+        "datasource": null,
+        "gridPos": {
+          "h": 35,
+          "w": 18,
+          "x": 6,
+          "y": 0
+        },
+        "highlightCards": true,
+        "id": 2,
+        "interval": "",
+        "legend": {
+          "show": true
+        },
+        "links": [],
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "pluginVersion": "6.7.3",
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "SIP_____________________",
+            "refId": "Z"
+          },
+          {
+            "expr": "avg(sipnode_health_check_errors) == bool 0",
+            "format": "time_series",
+            "interval": "",
+            "legendFormat": "sip--state",
+            "refId": "Q"
+          },
+          {
+            "aggregation": "Last",
+            "alias": "sip-redis",
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "sipnode_redis_state",
+            "interval": "",
+            "legendFormat": "sip--{{redis_cluster_name}}",
+            "refId": "A",
+            "units": "none",
+            "valueHandler": "Number Threshold"
+          },
+          {
+            "expr": "(sips_dp_active_connections!=bool 0)",
+            "interval": "",
+            "legendFormat": "sip-dialpan-state",
+            "refId": "B"
+          },
+          {
+            "expr": "sips_msml_in_service",
+            "interval": "",
+            "legendFormat": "sip-gvp-state",
+            "refId": "C"
+          },
+          {
+            "expr": "sips_sipproxy_in_service",
+            "interval": "",
+            "legendFormat": "sip-sipproxy-state",
+            "refId": "D"
+          },
+          {
+            "expr": "(50-sips_cpu_usage_main) > bool 0",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "sip-cpu-threshold",
+            "refId": "F"
+          },
+          {
+            "expr": "(1-idelta(sips_routing_timeouts[1m])) > bool 0",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "sip-routing-timeouts",
+            "refId": "E"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-sip.+\"}",
+            "interval": "",
+            "legendFormat": "sip-kafka-producer",
+            "refId": "G"
+          },
+          {
+            "expr": "10-kafka_producer_queue_depth{pod=~\"voice-sip.+\"} > bool 0",
+            "interval": "",
+            "legendFormat": "sip-kafka-producer-queue-depth"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "DIALPLAN_____________________"
+          },
+          {
+            "expr": "dialplan_service_state",
+            "interval": "",
+            "legendFormat": "dialplan",
+            "refId": "U"
+          },
+          {
+            "expr": "dialplan_redis_state",
+            "interval": "",
+            "legendFormat": "dialplan-config-redis",
+            "refId": "W"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "AGENT_____________________",
+            "refId": "V"
+          },
+          {
+            "aggregation": "Last",
+            "alias": "agent-redis",
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "agent_redis_state",
+            "interval": "",
+            "legendFormat": "agent-{{redis_cluster_name}}",
+            "refId": "J",
+            "units": "none",
+            "valueHandler": "Number Threshold"
+          },
+          {
+            "expr": "kafka_consumer_state{pod=~\"voice-agent.+\"}",
+            "interval": "",
+            "legendFormat": "agent-kafka-consumer",
+            "refId": "K"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-agent.+\"}",
+            "interval": "",
+            "legendFormat": "agent-kafka-producer"
+          },
+          {
+            "expr": "10-kafka_producer_queue_depth{pod=~\"voice-agent.+\"} > bool 0",
+            "interval": "",
+            "legendFormat": "agent-kafka-producer-queue-depth"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "ORS_____________________",
+            "refId": "Y"
+          },
+          {
+            "aggregation": "Last",
+            "alias": "ors-redis",
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "orsnode_redis_state",
+            "interval": "",
+            "legendFormat": "ors-{{redis_cluster_name}}",
+            "refId": "H",
+            "units": "none",
+            "valueHandler": "Number Threshold"
+          },
+          {
+            "expr": "orsnode_rq_state",
+            "interval": "",
+            "legendFormat": "ors-rq-state",
+            "refId": "I"
+          },
+          {
+            "expr": "orsnode_balancer_stream_state",
+            "interval": "",
+            "legendFormat": "ors-{{balancer_stream_type}}-balancer",
+            "refId": "X"
+          },
+          {
+            "expr": "avg(orsnode_sip_health_check) == bool 1",
+            "interval": "",
+            "legendFormat": "ors-health-check"
+          },
+          {
+            "expr": "idelta(orsnode_load_errors)  == bool 0",
+            "interval": "",
+            "legendFormat": "ors-strategy-load-error"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "CALLTRHEAD_____________________"
+          },
+          {
+            "aggregation": "Last",
+            "alias": "call redis",
+            "decimals": 2,
+            "displayAliasType": "Warning / Critical",
+            "displayType": "Regular",
+            "displayValueWithAlias": "Never",
+            "expr": "callthread_redis_state",
+            "interval": "",
+            "legendFormat": "callthread-redis-backend",
+            "refId": "L",
+            "units": "none",
+            "valueHandler": "Number Threshold"
+          },
+          {
+            "expr": "kafka_consumer_state{pod=~\"voice-callthread.+\"}",
+            "interval": "",
+            "legendFormat": "callthread-kafka-consumer",
+            "refId": "M"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-callthread.+\"}",
+            "interval": "",
+            "legendFormat": "callthread-kafka-producer",
+            "refId": "N"
+          },
+          {
+            "expr": "10-kafka_producer_queue_depth{pod=~\"voice-callthread.+\"} > bool 0",
+            "interval": "",
+            "legendFormat": "callthread-kafka-producer-queue-depth"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "REGISTRAR_____________________"
+          },
+          {
+            "expr": "kafka_consumer_state{pod=~\"voice-registrar.+\"}",
+            "interval": "",
+            "legendFormat": "registrar-kafka-consumer",
+            "refId": "P"
+          },
+          {
+            "expr": "registrar_redis_state",
+            "interval": "",
+            "legendFormat": "registrar-{{redis_cluster_name}}",
+            "refId": "O"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-registrar.+\"}",
+            "interval": "",
+            "legendFormat": "registrar-kafka-producer",
+            "refId": "R"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "SIPFE_____________________"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-sipfe.+\"}",
+            "interval": "",
+            "legendFormat": "sipfe-kafka-producer",
+            "refId": "S"
+          },
+          {
+            "expr": "10-kafka_producer_queue_depth{pod=~\"voice-sipfe.+\"} > bool 0",
+            "interval": "",
+            "legendFormat": "sipfe-kafka-producer-queue-depth"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "CONFIG_____________________"
+          },
+          {
+            "expr": "config_redis_state",
+            "interval": "",
+            "legendFormat": "config-backend",
+            "refId": "T"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "SIPPROXY____________________"
+          },
+          {
+            "expr": "sipproxy_active_sip_nodes_count > bool 0",
+            "interval": "",
+            "legendFormat": "sipproxy-sip-servers"
+          },
+          {
+            "expr": "kafka_producer_state{pod=~\"voice-sipproxy.+\"}",
+            "interval": "",
+            "legendFormat": "sipproxy-kafka-producer"
+          },
+          {
+            "expr": "(50-irate(process_cpu_seconds_total{pod=~\"voice-sipproxy.+\"}[1m]))> bool 0",
+            "interval": "",
+            "legendFormat": "sipproxy-cpu-treshold"
+          },
+          {
+            "expr": "1000",
+            "interval": "",
+            "legendFormat": "RQ_____________________"
+          },
+          {
+            "expr": "rqnode_alive",
+            "interval": "",
+            "legendFormat": "rq-state"
+          },
+          {
+            "expr": "rqnode_redis_state",
+            "interval": "",
+            "legendFormat": "rq-redis-state"
+          },
+          {
+            "expr": "max(rqnode_clients) - avg(rqnode_clients) == bool 0",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "rq-clients"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Voice Service State",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "dashboardFilter": "",
+        "dashboardTags": [],
+        "datasource": null,
+        "description": "Voice Service Alerts",
+        "folderId": null,
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 0,
+          "y": 4
+        },
+        "id": 4,
+        "limit": 10,
+        "nameFilter": "",
+        "onlyAlertsOnDashboard": false,
+        "show": "current",
+        "sortOrder": 1,
+        "stateFilter": [],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Recent Alerts",
+        "type": "alertlist"
+      },
+      {
+        "datasource": null,
+        "description": "",
+        "folderId": null,
+        "gridPos": {
+          "h": 13,
+          "w": 6,
+          "x": 0,
+          "y": 11
+        },
+        "headings": true,
+        "id": 6,
+        "limit": 20,
+        "links": [],
+        "query": "",
+        "recent": false,
+        "search": true,
+        "starred": false,
+        "tags": [
+          "voice_common"
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Service Dashboards",
+        "type": "dashlist"
+      },
+      {
+        "cacheTimeout": null,
+        "columns": [],
+        "datasource": null,
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 11,
+          "w": 6,
+          "x": 0,
+          "y": 24
+        },
+        "id": 8,
+        "links": [],
+        "pageSize": null,
+        "showHeader": true,
+        "sort": {
+          "col": null,
+          "desc": false
+        },
+        "styles": [
+          {
+            "alias": "Time",
+            "align": "auto",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "pattern": "Time",
+            "type": "hidden"
+          },
+          {
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "/service_name/",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          },
+          {
+            "alias": "",
+            "align": "auto",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "Value",
+            "thresholds": [],
+            "type": "hidden",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "expr": "max(service_version_info) by (container,version)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Service Versions",
+        "transform": "table",
+        "type": "table"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "voice-service-state",
+    "uid": "lO5fcg1Mk",
+    "variables": {
+      "list": []
+    },
+    "version": 28
+  }

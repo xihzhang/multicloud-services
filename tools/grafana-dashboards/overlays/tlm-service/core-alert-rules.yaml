@@ -1,0 +1,156 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: 
+    meta.helm.sh/release-namespace: 
+  name: tlm-core-alert-rules
+  namespace: tlm
+spec:
+  groups:
+    - name: Telemetry-Alerts-[USW1-t100]
+      rules:
+        - alert: '[USW1-t100] Telemetry CPU Utilization is Greater Than Threshold'
+          annotations:
+            body: Average CPU usage for pod {{ $labels.pod }} is at {{ $value }}%
+            summary: '[USW1-t100] CPU usage more than 60% for {{ $labels.service }}'
+          expr: >-
+            max(rate(container_cpu_usage_seconds_total{namespace="tlm",container=~"tlm-telemetry-service.*"}[5m]))/on()avg(kube_pod_container_resource_limits_cpu_cores{namespace="tlm"})*100
+            > 60
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical
+        - alert: '[USW1-t100] Telemetry Memory Usage is Greater Than Threshold'
+          annotations:
+            body: >-
+              Average memory usage for service {{ $labels.container }} is at {{
+              $value }}%
+            summary: '[USW1-t100] Memory usage more than 60% for {{ $labels.container }}'
+          expr: >-
+            sum(container_memory_working_set_bytes{namespace="tlm",
+            container!="POD", container=~"tlm-telemetry-service.*"}) by
+            (container) /
+            sum(kube_pod_container_resource_limits_memory_bytes{namespace="tlm",
+            pod=~"tlm-telemetry-service.*"}) by (container) * 100 > 60
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical
+        - alert: '[USW1-t100] Telemetry High Network Traffic'
+          annotations:
+            body: Network traffic for pod {{ $labels.pod }} exceeding 1e+07Byte/sec
+            summary: >-
+              [USW1-t100] High network traffic on exceeding 1e+07Byte/sec for 5
+              min for {{ $labels.pod }}
+          expr: >-
+            rate(container_network_receive_bytes_total{namespace="tlm",
+            pod=~"tlm-telemetry-service.*"}[5m]) > 1e+07 AND
+            rate(container_network_receive_bytes_total{namespace="tlm",
+            pod=~"tlm-telemetry-service.*"}[5m]) > 1e+07
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical
+        - alert: '[USW1-t100] Http Errors Occurrences Exceeded Threshold'
+          annotations:
+            body: >-
+              Occurrences of Http Error {{ $labels.eventName }} for service {{
+              $labels.service }} is at {{ $value }} per 5m
+            summary: >-
+              [USW1-t100] Http Error {{ $labels.eventName }} Occurrences
+              Exceeded 500 Per 5m
+          expr: >-
+            sum(telemetry_events{namespace="tlm",service="tlm-telemetry-service",eventName=~"http_error_.*",eventName!="http_error_404"}
+            -
+            telemetry_events{namespace="tlm",service="tlm-telemetry-service",eventName=~"http_error_.*",eventName!="http_error_404"}
+            offset 5m) by (service, eventName) > 500
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: warning
+        - alert: '[USW1-t100] Http Error 404 Occurrences Exceeded Threshold'
+          annotations:
+            body: >-
+              Occurrences of Http Error {{ $labels.eventName }} for service {{
+              $labels.service }} is at {{ $value }} per 5m
+            summary: >-
+              [USW1-t100] Http Error {{ $labels.eventName }} Occurrences
+              Exceeded 500 Per 5m
+          expr: >-
+            sum(telemetry_events{namespace="tlm",service="tlm-telemetry-service",eventName="http_error_404"}
+            -
+            telemetry_events{namespace="tlm",service="tlm-telemetry-service",eventName="http_error_404"}
+            offset 5m) by (service, eventName) > 500
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: warning
+        - alert: '[USW1-t100] Telemetry Dependency Status'
+          annotations:
+            body: >-
+              {{ $labels.service }} Dependency {{ $labels.serviceName }}
+              availability rate over 10m at {{ $value }}% for pod {{ $labels.pod
+              }}
+            summary: >-
+              [USW1-t100] Dependency {{ $labels.serviceName }} down for {{
+              $labels.service }}
+          expr: >-
+            100*avg_over_time(telemetry_dependency_status{service="tlm-telemetry-service"}[10m])
+            < 80
+          for: 1m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: warning
+        - alert: '[USW1-t100] Telemetry Healthy Pod Count Alert'
+          annotations:
+            body: '{{ $labels.service }} healthy pod count below 2 for 5 minutes'
+            summary: >-
+              [USW1-t100] Number of healthy pods for {{ $labels.service }} below
+              2
+          expr: >-
+            sum(kube_pod_container_status_ready{namespace="tlm",pod=~"tlm-telemetry-service.*"})
+            by (service) < 2
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical
+        - alert: '[USW1-t100] Telemetry GAuth Time Alert'
+          annotations:
+            body: >-
+              {{ $labels.instance }} GAuth request exceeded 10000msec for 5
+              minutes
+            summary: >-
+              [USW1-t100] GAuth request time exceeds 10000msec for {{
+              $labels.instance }}
+          expr: >-
+            avg(telemetry_gws_auth_req_time{metricType != "COUNT",
+            service="tlm-telemetry-service"}) by (instance, metricType) > 10000
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical
+        - alert: '[USW1-t100] Telemetry NodeJS Event Loop Lag Alert'
+          annotations:
+            body: >-
+              NodeJS event loop lag threshold exceeded on {{ $labels.pod }} for
+              5 minutes
+            summary: >-
+              [USW1-t100] NodeJS event loop lag exceeds 0.5s for {{
+              $labels.service }}
+          expr: >-
+            telemetry_nodejs_eventloop_lag_seconds{service="tlm-telemetry-service"}
+            > 0.5
+          for: 5m
+          labels:
+            service: tlm
+            servicename: tlm-telemetry-service
+            severity: critical

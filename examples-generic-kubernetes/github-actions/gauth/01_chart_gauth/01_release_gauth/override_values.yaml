@@ -1,0 +1,32 @@
+gws-ui-auth:          100.0.002.1325
+gws-core-environment: 100.0.002.1864
+gws-core-auth:        100.0.002.3491
+
+postgres:
+  host:     infra-postgres-postgresql.infra.svc.cluster.local
+  db:       gauth-test 
+
+###############################################################################
+# Values below recommended to save in secrets/deployment-secrets for privacy 
+# 
+# Don`t change values below if using secrets/deployment-secrets. 
+# It will be read and replaced by values from secrets/deployment-secrets
+###############################################################################
+  username: gauth_pg_username
+  password: gauth_pg_password
+
+
+redis:
+  password: gauth_redis_password
+
+services:
+  secret:
+    admin_username: gauth_admin_username
+    admin_password: gauth_admin_password
+    client_id:      gauth_gws_client_id
+    client_secret:  gauth_gws_client_secret
+
+  auth:
+    jks:
+      keyStorePassword: gauth_jks_keyStorePassword
+      keyPassword:      gauth_jks_keyPassword

@@ -1,0 +1,140 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-dcu-collector
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-dcu-collector
+  namespace: pulse 
+spec: 
+  groups:
+  - name: Pulse Dcu Collector Alerts
+    rules:
+      - alert: pulse_dcu_critical_col_connected_configservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_collector_connection_status{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",connection="configServer"}
+            > bool 0
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu Collector is not connected to ConfigServer.
+          information: 'Detected critical number of ConfigServers the Collector {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_col_connected_statservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_collector_connection_status{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",connection=~"statServer.*"}
+            > bool 0
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu Collector is not connected to StatServer.
+          information: 'Detected critical number of StatServers the Collector {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_col_connected_dbservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_collector_connection_status{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",connection=~"dbConnection.*"}
+            > bool 0
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu Collector is not connected to DbServer.
+          information: 'Detected critical number of DbServers the Collector {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_col_snapshot_writing
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_collector_snapshot_writing_status{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+            > bool 0
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu Collector does not write snapshots.
+          information: 'Detected critical status of writing snapshots by the Collector {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}: {{ $value }}'
+      - alert: pulse_dcu_high_col_failed_statistics
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_collector_statistics_failed_count{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+          ) /
+          sum by(environment,location,pod) (
+            pulse_collector_statistics_total_count{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+          ) * 100
+          >= 10
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected high statistics failures on Pulse Dcu Collector.
+          information: 'Detected high number of statistics failures on the Collector {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}: {{ $value }}%'
+      - alert: pulse_dcu_critical_col_active_layouts
+        expr: |-
+          max by(environment,location,pod,tenant) (
+            label_replace(
+              label_replace(
+                label_replace(
+                  label_replace(
+                    label_replace(
+                      (
+                        pulse_collector_active_layouts_count{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+                        + on(environment,location,pod) group_right()
+                        (
+                            pulse_collector_deactivated_dangling_layouts_count{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+                            or
+                            kube_pod_info{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",created_by_kind="StatefulSet"} ==bool 0
+                        )
+                      )
+                      / on(environment,location,pod) group_left()
+                      sum without(layout_type) (
+                        label_replace(
+                          pulse_dcu_active_layouts_count{cloud="azure",namespace="pulse",dcu_pod=~"pulse-dcu-.*",layout_type=~"PCREGULAR|PERFORMANCE"}
+                          , "pod", "$1", "dcu_pod", "(.*)"
+                        )
+                      )
+                      * 100
+                      , "pod", "${1}{0,1}", "pod", "(.*-([0-9]*))[01]"
+                    )
+                    , "pod", "${1}{2,3}", "pod", "(.*-([0-9]*))[23]"
+                  )
+                  , "pod", "${1}{4,5}", "pod", "(.*-([0-9]*))[45]"
+                )
+                , "pod", "${1}{6,7}", "pod", "(.*-([0-9]*))[67]"
+              )
+              , "pod", "${1}{8,9}", "pod", "(.*-([0-9]*))[89]"
+            )
+          )
+          < 100
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu Collector pair does not serve all assigned layouts.
+          information: 'Detected critical number of layouts open by the Collector pair {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}: {{ $value }}'

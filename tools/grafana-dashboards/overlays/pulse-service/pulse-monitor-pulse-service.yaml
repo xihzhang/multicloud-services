@@ -1,0 +1,75 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-pulse-service
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-pulse-service
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Service Alerts
+    rules:
+      - alert: pulse_service_down
+        expr: |-
+          (
+            sum by(environment,location,service) (
+              up{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            )
+            or on() vector(0)
+          ) == 0
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: pulse
+        annotations:
+          summary: All Pulse instances are down.
+          information: 'Number of running {{ $labels.service }}@{{ $labels.environment }}-{{ $labels.location }} instances: {{ $value }}'
+      - alert: pulse_critical_pulse_health
+        expr: |-
+          sum by(environment,location,service) (
+            pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+          ) /
+          count by(environment,location,service) (
+            pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+          ) * 100
+          < 50
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: pulse
+        annotations:
+          summary: Detected critical number of healthy Pulse containers.
+          information: 'Detected critical number of healthy Pulse containers: {{ $value }}%'
+      - alert: pulse_warning_pulse_health
+        expr: |-
+          (
+            sum by(environment,location,service) (
+              pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) /
+            count by(environment,location,service) (
+              pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) * 100
+            < 75
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,service) (
+              pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) /
+            count by(environment,location,service) (
+              pulse_health_all_Boolean{cloud="azure",namespace="pulse",pod=~"pulse-[^-]+-[^-]{5}$"}
+            ) * 100
+            < 50
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: pulse
+        annotations:
+          summary: Detected low number of healthy Pulse containers.
+          information: 'Detected low number of healthy Pulse containers: {{ $value }}%'

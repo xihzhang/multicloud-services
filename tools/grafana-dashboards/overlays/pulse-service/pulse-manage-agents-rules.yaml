@@ -1,0 +1,72 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-manage-agents-rules
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-manage-agents-rules
+  namespace: pulse 
+spec:
+  groups:
+  - name: Pulse Agent Management Alerts
+    rules:
+      - alert: pulse_am_service_down
+        expr: (sum by(environment,location,service) (up{cloud="azure",service=~".*pulse-manage-agents.*"}) or on() vector(0)) == 0
+        for: 300s
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: pulse-manage-agents
+        annotations:
+          summary: All Agent Management servers report they are not UP.
+          information: 'Number of Agent Management servers that are UP: {{ $value }} for Service: {{ $labels.service }}@{{ $labels.environment }}-{{ $labels.location }}'
+      - alert: pulse_am_high_5xx_responses
+        expr: |-
+          ((sum(
+          rate(pulse_manage_agents_responses_total{cloud="azure",code="5xx"}[1h]))
+          by(environment,location,service) /
+          sum(rate(pulse_manage_agents_requests_total[1h])) by(environment,location,service)))
+          > 0.3
+        for: 100s
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: pulse-manage-agents
+        annotations:
+          summary: More than 30% of responses during the last 1 hour have 5xx http status (this includes health check).
+          information: 'Percent of responses with 5xx http status: {{ $value }}% for Service: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'
+      - alert: pulse_am_crashing_container_detected
+        expr: absent_over_time(container_last_seen{cloud="azure",container="pulse-manage-agents"}[30s]) > 0
+        for: 1m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: pulse-manage-agents
+        annotations:
+          summary: Agent Management container has not responded for more than 30 seconds.
+          information: 'Seconds since container was last responsive: {{ $value }} for Agent Management container {{ $labels.container }} of Service: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'
+      - alert: pulse_am_container_high_cpu_usage
+        expr: sum by(environment,location,pod, container) (rate(container_cpu_usage_seconds_total{cloud="azure",container="pulse-manage-agents"}[5m])) * 100 > 80
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: pulse-manage-agents
+        annotations:
+          summary: Detected high CPU usage by Agent Management container.
+          information: 'Detected high CPU usage: {{ $value }} by Agent Management container {{ $labels.container }} of Service: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'
+      - alert: pulse_am_container_high_memory_usage
+        expr: ceil(sum(container_memory_working_set_bytes{cloud="azure",pod=~".*pulse-manage-agents.*"}) by(environment,location,pod, container) / sum(kube_pod_container_resource_limits{cloud="azure",pod=~".*pulse-manage-agents.*",resource="memory",unit="byte"}) by(environment,location, pod, container) * 100) > 60
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: pulse-manage-agents
+        annotations:
+          summary: Detected high memory usage by Agent Management container.
+          information: 'Detected high memory usage: {{ $value }} % by Agent Management container {{ $labels.container }} of Service: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}'

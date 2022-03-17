@@ -1,0 +1,1436 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 1,
+  "id": null,
+  "iteration": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 29,
+      "panels": [],
+      "title": "Shared Services",
+      "type": "row"
+    },
+    {
+      "datasource": "$DataSource",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "failed"
+                },
+                "2": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "pending"
+                },
+                "3": {
+                  "color": "green",
+                  "index": 2,
+                  "text": "running"
+                },
+                "4": {
+                  "color": "super-light-green",
+                  "index": 3,
+                  "text": "succeeded"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 19,
+        "x": 0,
+        "y": 1
+      },
+      "id": 15,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "none"
+        }
+      },
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "1 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$BackendPod\",phase=\"Failed\"}) + \n2 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$BackendPod\",phase=\"Pending\"}) + \n3 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$BackendPod\",phase=\"Running\"}) + \n4 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$BackendPod\",phase=\"Succeeded\"})",
+          "interval": "",
+          "legendFormat": "{{`{{pod}}`}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "POD Status",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": "$DataSource",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "displayName": "${__series.name}",
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "dark-green",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 1
+      },
+      "id": 17,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "text": {}
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum by(deployment) (kube_deployment_status_replicas_available{namespace=\"$Namespace\",deployment=~\"$BackendDeployment\"}) /\nsum by(deployment) (kube_deployment_status_replicas{namespace=\"$Namespace\",deployment=~\"$BackendDeployment\"}) * 100",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{`{{deployment}}`}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Running Instances, %",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": "$DataSource",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "disconnected"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "connected"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 34,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "none"
+        }
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum by(pod,connection) (pulse_health_connections_Boolean{namespace=\"$Namespace\",pod=~\"$BackendPod\"}) > bool 0",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{`{{pod}}`}} -> {{`{{connection}}`}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Backend Connections Status",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": true,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 21,
+      "panels": [
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "1": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "failed"
+                    },
+                    "2": {
+                      "color": "orange",
+                      "index": 1,
+                      "text": "pending"
+                    },
+                    "3": {
+                      "color": "green",
+                      "index": 2,
+                      "text": "running"
+                    },
+                    "4": {
+                      "color": "super-light-green",
+                      "index": 3,
+                      "text": "succeeded"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 19,
+            "x": 0,
+            "y": 16
+          },
+          "id": 25,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none"
+            }
+          },
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$DcuPod\",label_tenant=\"$Tenant\"} * on(pod) (\n1 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$DcuPod\",phase=\"Failed\"}) + \n2 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$DcuPod\",phase=\"Pending\"}) + \n3 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$DcuPod\",phase=\"Running\"}) + \n4 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$DcuPod\",phase=\"Succeeded\"}))",
+              "interval": "",
+              "legendFormat": "{{`{{pod}}`}}",
+              "refId": "A"
+            },
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$LdsPod\",label_tenant=\"$Tenant\"} * on(pod) (\n1 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$LdsPod\",phase=\"Failed\"}) + \n2 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$LdsPod\",phase=\"Pending\"}) + \n3 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$LdsPod\",phase=\"Running\"}) + \n4 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$LdsPod\",phase=\"Succeeded\"}))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{`{{pod}}`}}",
+              "refId": "B"
+            },
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$PermissionsPod\",label_tenant=\"$Tenant\"} * on(pod) (\n1 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$PermissionsPod\",phase=\"Failed\"}) + \n2 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$PermissionsPod\",phase=\"Pending\"}) + \n3 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$PermissionsPod\",phase=\"Running\"}) + \n4 * min by(pod) (kube_pod_status_phase{namespace=\"$Namespace\",pod=~\"$PermissionsPod\",phase=\"Succeeded\"}))",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "{{`{{pod}}`}}",
+              "refId": "C"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "POD Status",
+          "transparent": true,
+          "type": "state-timeline"
+        },
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "decimals": 0,
+              "displayName": "${__series.name}",
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": null
+                  },
+                  {
+                    "color": "orange",
+                    "value": 70
+                  },
+                  {
+                    "color": "dark-green",
+                    "value": 90
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 7,
+            "w": 5,
+            "x": 19,
+            "y": 16
+          },
+          "id": 27,
+          "options": {
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": false,
+            "text": {}
+          },
+          "pluginVersion": "8.2.5",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_statefulset_labels{namespace=\"$Namespace\",statefulset=~\"$DcuStatefulSet\",label_tenant=\"$Tenant\"} * on(statefulset)\nsum by(statefulset) (kube_statefulset_status_replicas_ready{namespace=\"$Namespace\",statefulset=~\"$DcuStatefulSet\"}) /\nsum by(statefulset) (kube_statefulset_status_replicas{namespace=\"$Namespace\",statefulset=~\"$DcuStatefulSet\"}) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{`{{statefulset}}`}}",
+              "refId": "A"
+            },
+            {
+              "exemplar": true,
+              "expr": "kube_statefulset_labels{namespace=\"$Namespace\",statefulset=~\"$LdsStatefulSet\",label_tenant=\"$Tenant\"} * on(statefulset)\nsum by(statefulset) (kube_statefulset_status_replicas_ready{namespace=\"$Namespace\",statefulset=~\"$LdsStatefulSet\"}) /\nsum by(statefulset) (kube_statefulset_status_replicas{namespace=\"$Namespace\",statefulset=~\"$LdsStatefulSet\"}) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{`{{statefulset}}`}}",
+              "refId": "B"
+            },
+            {
+              "exemplar": true,
+              "expr": "kube_deployment_labels{namespace=\"$Namespace\",deployment=~\"$PermissionsDeployment\",label_tenant=\"$Tenant\"} * on(deployment)\nsum by(deployment) (kube_deployment_status_replicas_available{namespace=\"$Namespace\",deployment=~\"$PermissionsDeployment\"}) /\nsum by(deployment) (kube_deployment_status_replicas{namespace=\"$Namespace\",deployment=~\"$PermissionsDeployment\"}) * 100",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "legendFormat": "{{`{{deployment}}`}}",
+              "refId": "C"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Running Instances, %",
+          "transparent": true,
+          "type": "gauge"
+        },
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "not ok"
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "ok"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 24,
+            "x": 0,
+            "y": 23
+          },
+          "id": 31,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none"
+            }
+          },
+          "pluginVersion": "6.7.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$DcuPod\",label_tenant=\"$Tenant\"} * on(pod)\nsum by(pod) (pulse_collector_snapshot_writing_status{namespace=\"$Namespace\",pod=~\"$DcuPod\"}) > bool 0",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{`{{pod}}`}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Writing Snapshot Status",
+          "transparent": true,
+          "type": "state-timeline"
+        },
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "disconnected"
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "connected"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "id": 32,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none"
+            }
+          },
+          "pluginVersion": "6.7.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$DcuPod\",label_tenant=\"$Tenant\"} * on(pod) group_right()\nsum by(pod,connection) (pulse_collector_connection_status{namespace=\"$Namespace\",pod=~\"$DcuPod\"}) > bool 0",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{`{{pod}}`}} -> {{`{{connection}}`}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Collector Connections Status",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "configServer",
+                "renamePattern": "config-server-proxy"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "dbConnection1",
+                "renamePattern": "db"
+              }
+            },
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "statServer0",
+                "renamePattern": "stat-server"
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "state-timeline"
+        },
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "disconnected"
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "connected"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 24,
+            "x": 0,
+            "y": 38
+          },
+          "id": 23,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none"
+            }
+          },
+          "pluginVersion": "6.7.3",
+          "repeat": null,
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$LdsPod\",label_tenant=\"$Tenant\"} * on(pod) group_right()\nsum by(pod,sender) (pulse_lds_sender_connected_seconds{namespace=\"$Namespace\",pod=~\"$LdsPod\"}) > bool 0",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{`{{pod}}`}} -> {{`{{sender}}`}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "LDS Connections Status",
+          "transparent": true,
+          "type": "state-timeline"
+        },
+        {
+          "datasource": "$DataSource",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "fillOpacity": 70,
+                "lineWidth": 0
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "0": {
+                      "color": "red",
+                      "index": 0,
+                      "text": "disconnected"
+                    },
+                    "1": {
+                      "color": "green",
+                      "index": 1,
+                      "text": "connected"
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "transparent",
+                    "value": null
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 16,
+            "w": 24,
+            "x": 0,
+            "y": 42
+          },
+          "id": 33,
+          "options": {
+            "alignValue": "left",
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "mergeValues": true,
+            "rowHeight": 0.9,
+            "showValue": "never",
+            "tooltip": {
+              "mode": "none"
+            }
+          },
+          "pluginVersion": "6.7.3",
+          "targets": [
+            {
+              "exemplar": true,
+              "expr": "kube_pod_labels{namespace=\"$Namespace\",pod=~\"$DcuPod\",label_tenant=\"$Tenant\"} * on(pod) group_right()\nsum by(pod,server) (idelta(pulse_statserver_server_connected_seconds{namespace=\"$Namespace\",pod=~\"$DcuPod\"}[1m])) != bool 0",
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{`{{pod}}`}} -> {{`{{server}}`}}",
+              "refId": "A"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "StatServer Connections Status",
+          "transformations": [
+            {
+              "id": "renameByRegex",
+              "options": {
+                "regex": "CONFIG_SERVER",
+                "renamePattern": "config-server-proxy"
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "state-timeline"
+        }
+      ],
+      "repeat": "Tenant",
+      "title": "Tenant Services: $Tenant",
+      "type": "row"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 32,
+  "style": "dark",
+  "tags": [
+    "pulse"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DataSource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "label": "Namespace",
+        "name": "Namespace",
+        "query": "{{ .Release.Namespace }}",
+        "skipUrlSync": false,
+        "type": "constant",
+        "current": {
+          "text": "{{ .Release.Namespace }}",
+          "value": "{{ .Release.Namespace }}"
+        },
+        "options": [
+          {
+            "text": "{{ .Release.Namespace }}",
+            "value": "{{ .Release.Namespace }}"
+          }
+        ]
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "BackendChart",
+        "multi": true,
+        "name": "BackendChart",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "pulse",
+            "value": "pulse"
+          }
+        ],
+        "query": "pulse",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^(.*-)?($BackendChart)-[^-]+-[^-]{5}$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "BackendRelease",
+        "multi": true,
+        "name": "BackendRelease",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^(.*-)?($BackendChart)-[^-]+-[^-]{5}$\"}, pod)",
+        "refresh": 1,
+        "regex": "/((?:.*-)?(?:$BackendChart))-.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($BackendRelease)-[^-]+-[^-]{5}$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "BackendPod",
+        "multi": true,
+        "name": "BackendPod",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($BackendRelease)-[^-]+-[^-]{5}$\"}, pod)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$BackendPod\"}, created_by_name)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "BackendDeployment",
+        "multi": true,
+        "name": "BackendDeployment",
+        "options": [],
+        "query": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$BackendPod\"}, created_by_name)",
+        "refresh": 1,
+        "regex": "/(.*)-[^-]+$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "PermissionsChart",
+        "multi": true,
+        "name": "PermissionsChart",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "permissions",
+            "value": "permissions"
+          }
+        ],
+        "query": "permissions",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "DcuChart",
+        "multi": true,
+        "name": "DcuChart",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "dcu",
+            "value": "dcu"
+          }
+        ],
+        "query": "dcu",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "LdsChart",
+        "multi": true,
+        "name": "LdsChart",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "lds",
+            "value": "lds"
+          },
+          {
+            "selected": false,
+            "text": "lds-vq",
+            "value": "lds-vq"
+          }
+        ],
+        "query": "lds,lds-vq",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${DataSource}",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\".*-(($DcuChart|$LdsChart)-[0-9]+-[0-9]+|($PermissionsChart)-[0-9]+-[^-]+-[^-]{5})$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Tenant",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\".*-(($DcuChart|$LdsChart)-[0-9]+-[0-9]+|($PermissionsChart)-[0-9]+-[^-]+-[^-]{5})$\"}, pod)",
+        "refresh": 1,
+        "regex": "/.*-(\\d+)-.*/",
+        "skipUrlSync": false,
+        "sort": 3,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($PermissionsChart)-($Tenant)-[^-]+-[^-]{5}$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "PermissionsRelease",
+        "multi": true,
+        "name": "PermissionsRelease",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($PermissionsChart)-($Tenant)-[^-]+-[^-]{5}$\"}, pod)",
+        "refresh": 1,
+        "regex": "/(.*-(?:$PermissionsChart))-.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($DcuChart)-($Tenant)-[0-9]+$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "DcuRelease",
+        "multi": true,
+        "name": "DcuRelease",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($DcuChart)-($Tenant)-[0-9]+$\"}, pod)",
+        "refresh": 1,
+        "regex": "/(.*-(?:$DcuChart))-(?:$Tenant)-.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($LdsChart)-($Tenant)-[0-9]+$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "LdsRelease",
+        "multi": true,
+        "name": "LdsRelease",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"^.*-($LdsChart)-($Tenant)-[0-9]+$\"}, pod)",
+        "refresh": 1,
+        "regex": "/(.*-(?:$LdsChart))-(?:$Tenant)-.*/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($PermissionsRelease)-($Tenant)-[^-]+-[^-]{5}$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "PermissionsPod",
+        "multi": true,
+        "name": "PermissionsPod",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($PermissionsRelease)-($Tenant)-[^-]+-[^-]{5}$\"}, pod)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($DcuRelease)-($Tenant)-[0-9]+$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "DcuPod",
+        "multi": true,
+        "name": "DcuPod",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($DcuRelease)-($Tenant)-[0-9]+$\"}, pod)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($LdsRelease)-($Tenant)-[0-9]+$\"}, pod)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "LdsPod",
+        "multi": true,
+        "name": "LdsPod",
+        "options": [],
+        "query": "label_values(kube_pod_container_info{namespace=\"$Namespace\", pod=~\"($LdsRelease)-($Tenant)-[0-9]+$\"}, pod)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$PermissionsPod\"}, created_by_name)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "PermissionsDeployment",
+        "multi": true,
+        "name": "PermissionsDeployment",
+        "options": [],
+        "query": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$PermissionsPod\"}, created_by_name)",
+        "refresh": 1,
+        "regex": "/(.*)-[^-]+$/",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$DcuPod\"}, created_by_name)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "DcuStatefulSet",
+        "multi": true,
+        "name": "DcuStatefulSet",
+        "options": [],
+        "query": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$DcuPod\"}, created_by_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "$DataSource",
+        "definition": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$LdsPod\"}, created_by_name)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "LdsStatefulSet",
+        "multi": true,
+        "name": "LdsStatefulSet",
+        "options": [],
+        "query": "label_values(kube_pod_info{namespace=\"$Namespace\", pod=~\"$LdsPod\"}, created_by_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Pulse Overall Health",
+  "uid": "mhzz1omGz",
+  "version": 0
+}

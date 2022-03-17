@@ -1,0 +1,367 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: nexus-alerts
+    meta.helm.sh/release-namespace: nexus
+  name: nexus-alerts
+  namespace: nexus
+spec:
+  groups:
+    - name: nexus
+      rules:
+      - alert: Memory usage is above 3000 Mb
+        expr: avg by (instance, cloud, location) (nexus_process_resident_memory_bytes)/1024/1024 > 3000
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: "Nexus memory usage is above threshold in{{ $labels.cloud }} {{ $labels.location }} region"
+          description: " {{ $labels.instance }} memory usage is above 3000 Mb "        
+
+      - alert: Instance memory usage is above 85%
+        expr: 100 - ((node_memory_MemAvailable_bytes{cloud="aws",service="nexus",instance!~".*logs.*|.*LOGS.*"} * 100) / node_memory_MemTotal_bytes{cloud="aws",service="nexus",instance!~".*logs.*|.*LOGS.*"}) > 85
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Nexus memory usage is above threshold in {{ $externalLabels.location }} region'
+          description: ' {{ $labels.instance }} memory usage is above 85% '  
+
+      - alert: Nexus error on request
+        expr: sum by (serv_name,location,cloud) (increase(nexus_errors_total[5m])) /sum by (serv_name,cloud,location) (increase(nexus_request_total[5m])) * 100  > 40 AND sum by (serv_name,cloud,location) (increase(nexus_errors_total[5m])) > 1000
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: "Nexus request error rate in {{ $labels.cloud }} {{ $labels.location }}  region"
+          description: "Nexus request error rate on {{ $labels.cloud }} {{ $labels.location }} is {{ humanize $value }}% for last 15 min"
+ 
+      - alert: Nexus 5xx errors on response
+        expr: (sum(rate(nexus_api_request_total{code=~"^5..$"}[5m])) by (code, path, cloud,location) / sum(rate(nexus_api_request_total[5m])) by (code, path,cloud,location) * 100) > 40 AND sum(increase(nexus_api_request_total{code=~"^5..$"}[5m])) by (code, path,cloud,location) > 200
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: "Nexus response 5xx error rate in {{ $labels.cloud }} {{ $labels.location }}  region"
+          description: "Nexus response 5xx error rate on {{ $labels.cloud }} {{ $labels.location }}  is {{ humanize $value }}% for last 15 min"
+
+
+      - alert: Nexus ELB 5XX errors
+        expr: ((aws_applicationelb_httpcode_elb_5_xx_count_sum offset 10m) / (aws_applicationelb_request_count_sum offset 10m) * 100) > 25
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: 'Nexus ELB 5XX errors in {{ $externalLabels.location }} region'
+          description: 'On ELB {{ $labels.load_balancer }} {{ humanize $value }} errors 5XX for last 15 min'
+
+      - alert: Nexus eventloop lag critical
+        expr: nexus_nodejs_eventloop_lag_seconds > 10
+        for: 10m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: "Nexus critical eventloop lag in {{ $labels.cloud }} {{ $labels.location }} region"
+          description: "Nexus eventloop lag in {{ $labels.cloud }} {{ $labels.location }} region is {{ humanize $value }} seconds for last 10 min"
+
+      - alert: Nexus eventloop lag
+        expr: nexus_nodejs_eventloop_lag_seconds > 3
+        for: 10m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: "Nexus eventloop lag in {{ $labels.cloud }} {{ $labels.location }} region"
+          description: "Nexus eventloop lag in {{ $labels.cloud }} {{ $labels.location }} region is {{ humanize $value }} seconds for last 10 min"
+          dashboard: ""
+
+      - alert: Nexus process CPU usage
+        expr: rate(nexus_process_cpu_seconds_total[5m]) * 100 > 90
+        for: 10m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: "Nexus process CPU usage is extremely high in {{ $labels.cloud }} {{ $labels.location }} for the past 10 min."
+          description: "Nexus process CPU usage in {{ $labels.cloud }} {{ $labels.location }} region is {{ humanize $value }}% for last 10 min"
+
+      - alert: Nexus error rate
+        annotations:
+          description: Nexus error rate on {{ $labels.instance }} is {{ humanize $value
+            }}% for last 15 min
+          summary: Nexus error rate {{ $labels.instance }} in {{ $externalLabels.environment_prometheus
+            }}:{{ $externalLabels.location_prometheus }}
+        expr: (increase(nexus_errors_total[15m]) / increase(nexus_request_total[15m]))
+          * 100  > 20
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+
+      - alert: HubPP invalid Whatsapp webhook signature
+        expr: increase(hubpp_webhook_invalid_signature_total{channelType="whatsapp", channelProvider="PEC"}[15m]) > 1
+        for: 1m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: "HubPP invalid Whatsapp webhook signature for {{ $labels.channelId }} channel"
+          description: "HubPP invalid Whatsapp webhook signature for {{ $labels.channelId }} channel for last 10 min"
+
+      - alert: HubPP missing Whatsapp webhook signature
+        expr: increase(hubpp_webhook_undefined_signature_total{channelType="whatsapp", channelProvider="PEC"}[15m]) > 1
+        for: 1m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: "HubPP missing Whatsapp webhook signature in {{ $labels.cloud }} {{ $labels.location }} for {{ $labels.channelId }} channel"
+          description: "HubPP missing Whatsapp webhook signature in {{ $labels.cloud }} {{ $labels.location }} for {{ $labels.channelId }} channel for last 10 min"
+
+      - alert: HubPP invalid Whatsapp webhook signature
+        expr: increase(hubpp_webhook_invalid_signature_total{channelType="whatsapp", channelProvider="PEC"}[15m]) > 1
+        for: 1m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: warning
+        annotations:
+          summary: "HubPP invalid Whatsapp webhook signature for {{ $labels.channelId }} channel"
+          description: "HubPP invalid Whatsapp webhook signature for {{ $labels.channelId }} channel for last 10 min"
+
+    - name: Disks
+      rules:
+      - alert: DiskSpace
+        expr: (1 - node_filesystem_free_bytes/node_filesystem_size_bytes{cloud="aws",service="nexus", instance!~".*logs.*|.*LOGS.*"}) * 100 > 85
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Low disk space in {{ $externalLabels.location }} location'
+          description: '{{ $labels.instance }} has disk usage is above 85% on {{ $labels.device }} mount {{ $labels.mountpoint }} (current value: {{ humanize $value }})'
+      - alert: DiskSpace-logs
+        expr: (1 - node_filesystem_free_bytes/node_filesystem_size_bytes{cloud="aws",service="nexus",instance=~".*logs.*|.*LOGS.*"}) * 100 > 85
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Low disk space on logs-elasticsearch in {{ $externalLabels.location }} location'
+          description: '{{ $labels.instance }} has disk usage is above 85% on {{ $labels.device }} mount {{ $labels.mountpoint }} (current value: {{ humanize $value }})'      
+
+    - name: CPU
+      rules:
+      - record: instance:node_cpus:count
+        expr: >
+          count without (cpu, mode) (
+            node_cpu_seconds_total{mode="idle"}
+          )
+      - record: instance_cpu:node_cpu_seconds_not_idle:rate1m
+        expr: >
+          sum without (mode) (
+            1 - rate(node_cpu_seconds_total{mode="idle"}[1m])
+          )
+      - record: instance_mode:node_cpu_seconds:rate1m
+        expr: >
+          sum without (cpu) (
+            rate(node_cpu_seconds_total{mode!="iowait"}[1m])
+          )
+      - record: instance_mode:node_cpu_seconds:rate1m
+        expr: >
+          sum without (cpu) (
+            deriv(node_cpu_seconds_total{mode="iowait"}[1m]) > 0
+          )
+      - record: instance:node_cpu_utilization:ratio
+        expr: >
+          avg without (cpu) (
+            instance_cpu:node_cpu_seconds_not_idle:rate1m
+          )
+      - record: job:node_cpu_utilization:min_ratio
+        expr: >
+          min without (fqdn, instance) (
+            instance:node_cpu_utilization:ratio
+          )
+      - record: job:node_cpu_utilization:avg_ratio
+        expr: >
+          avg without (fqdn, instance) (
+            instance:node_cpu_utilization:ratio
+          )
+      - record: job:node_cpu_utilization:max_ratio
+        expr: >
+          max without (fqdn, instance) (
+            instance:node_cpu_utilization:ratio
+          )
+      - alert: HighCPU
+        expr: instance:node_cpu_utilization:ratio{cloud="aws",service="nexus",instance!~".*logs.*|.*LOGS.*"} > 0.95
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: CPU use percent is extremely high in {{ $externalLabels.location }} for the past 15 min.
+          description: CPU use percent is extremely high on {{ if $labels.fqdn }}{{ $labels.fqdn}}{{ else }}{{ $labels.instance }}{{ end }} for the past 15 min.
+      - alert: HighCPU-logs
+        expr: instance:node_cpu_utilization:ratio{cloud="aws",service="nexus",instance=~".*logs.*|.*LOGS.*"} > 0.95
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: CPU use percent on logs-elasticsearch is extremely high in {{ $externalLabels.location }} for the past 15 min.
+          description: CPU use percent is extremely high on {{ if $labels.fqdn }}{{ $labels.fqdn}}{{ else }}{{ $labels.instance }}{{ end }} for the past 15 min.
+
+    - name: iwd-aws
+      rules:
+      - alert: IWD DB errors
+        expr: increase(iwdTenantDB_db_errors_total{cloud="aws",db!="null"}[1m]) > 2
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'IWD Database errors in {{ $externalLabels.location }} location'
+          detailed_description: '{{ $labels.instance }} database in {{ $externalLabels.location }} has {{ humanize $value }} errors for last 5 min'
+      - alert: IWD DB max connections
+        expr: aws_rds_database_connections_average{service="nexus"} offset 7m >= 100
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'IWD Database errors in {{ $externalLabels.location }} region'
+          detailed_description: '{{ $labels.instance }} database in {{ $externalLabels.location }} has {{ humanize $value }} errors for last 5 min'
+
+    - name: Redis
+      rules:
+      - alert: Redis memory
+        expr: aws_elasticache_freeable_memory_average{service="nexus"} offset 10m  < 500000000
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis low memory {{ $externalLabels.location }} region'
+          description: 'Low memory on redis {{ $labels.cache_cluster_id }} less than 500000000 for last 5 min'
+      - alert: Redis CPU
+        expr: aws_elasticache_engine_cpuutilization_average{service="nexus"} offset 10m > 90
+        for: 15m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis Engine CPU use percent is extremely high in {{ $externalLabels.location }} region'
+          description: 'On CacheNode {{ $labels.cache_cluster_id }} CPU use percent bigger than 90'
+      - alert: Redis DB memory usage
+        expr: aws_elasticache_database_memory_usage_percentage_average{service="nexus"} offset 10m > 75
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis low memory {{ $externalLabels.location }} region'
+          description: 'Low memory on redis {{ $labels.cache_cluster_id }} take more than 75% for last 5 min'
+      - alert: Redis swap usage
+        expr: aws_elasticache_swap_usage_average{service="nexus"} offset 10m > 50000000
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis swap usage too much in  {{ $externalLabels.location }} region'
+          description: ' This alert is still in TESTING, we apology for any errors/spam/false alert. Redis use swap more than 50Mb {{ $labels.cache_cluster_id }} take more than 75% for last 5 min'
+      - alert: Redis string cmds latency
+        expr: aws_elasticache_string_based_cmds_latency_average{service="nexus"} offset 10m > 50
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis cmds latency in  {{ $externalLabels.location }} region'
+          description: ' This alert is still in TESTING, we apology for any errors/spam/false alert. Redis show internal latency more than 50 ms in {{ $labels.cache_cluster_id }}  for last 5 min'
+      - alert: Redis have evictions
+        expr: aws_elasticache_evictions_average{service="nexus"} offset 10m > 0
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis start evictions in {{ $externalLabels.location }} region'
+          description: ' This alert is still in TESTING, we apology for any errors/spam/false alert. Redis start evictions in  {{ $labels.cache_cluster_id }}  in 5 min'
+      - alert: Redis memory
+        expr: aws_elasticache_swap_usage_average{service="nexus"} offset 10m > 50000000
+        for: 5m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: 'Redis low memory {{ $externalLabels.location }} region'
+          description: ' This alert is still in TESTING, we apology for any errors/spam/false alert. Redis use swap more than 50Mb on {{ $labels.cache_cluster_id }}  for last 5 min'
+
+    - name: blackbox
+      rules:
+      - alert: status code not 200
+        expr: probe_http_status_code{environment != "dev"} != 200
+        for: 15m
+        labels:
+            mute_alarm: off
+            service: nexus
+            severity: critical
+        annotations:
+          summary: '{{ $labels.instance }} in {{ $externalLabels.location }} is not available'
+          description: '{{ $labels.instance }} in {{ $externalLabels.location }} is returning code {{ humanize $value }}'
+          dashboard: '{{ $externalLabels.grafana }}/d/qAa9PH6Zk'
+    - name: ssl_certs
+      rules:
+      - alert: tls_cert_expiring_in_60_days
+        expr: (probe_ssl_earliest_cert_expiry - time() > 86400 * 30) AND (probe_ssl_earliest_cert_expiry - time() < 86400 * 60)
+        for: 20m
+        labels:
+          mute_alarm: on
+          service: nexus
+          severity: warning
+        annotations:
+          summary: ' `{{$labels.instance}}` certificate expires in {{ .Value | humanizeDuration }}'
+          description: ' `{{$labels.instance}}` certificate expires in {{ .Value | humanizeDuration }}'
+      - alert: tls_cert_expiring_in_20_days
+        expr: (probe_ssl_earliest_cert_expiry - time()) < 86400 * 20
+        for: 20m
+        labels:
+          mute_alarm: off
+          service: nexus
+          severity: critical
+        annotations:
+          summary: ' `{{$labels.instance}}` certificate expires in {{ .Value | humanizeDuration }}'
+          description: ' `{{$labels.instance}}` certificate expires in {{ .Value | humanizeDuration }}'
+

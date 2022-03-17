@@ -1,0 +1,2341 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "iteration": 1639139493603,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 1
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 2,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "IwdRequest_H",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m])) by (domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$IwdRequest_H\" request per Tenant rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 4,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "IwdRequest_H",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain) (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_H)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$IwdRequest_H\" request processing time per Tenant, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 7
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 127,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "IwdRequest_M",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m])) by (domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$IwdRequest_M\" request per Tenant rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 7
+            },
+            "hiddenSeries": false,
+            "id": 128,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "IwdRequest_M",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain) (increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_iwd_($IwdRequest_M)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$IwdRequest_M\" request processing time per Tenant, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "IWD",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 8,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 14
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 125,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "UcsRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m])) by (domain)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$UcsRequest\" request per Tenant rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 14
+            },
+            "hiddenSeries": false,
+            "id": 126,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "UcsRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain) (increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_ucs_($UcsRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{domain}}",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$UcsRequest\" request processing time per Tenant, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "UCS",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 2
+        },
+        "id": 10,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 3
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 47,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "ImapRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m])) by (domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$ImapRequest\" request rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 3
+            },
+            "hiddenSeries": false,
+            "id": 48,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "ImapRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain,mailbox) (increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))/sum by (domain,mailbox)(increase({__name__=~\"iwdEmail_imap_($ImapRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$ImapRequest\" request processing time, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "IMAP",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "id": 12,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 4
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 49,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "SmtpRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m])) by (domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$SmtpRequest\" request rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 4
+            },
+            "hiddenSeries": false,
+            "id": 50,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "SmtpRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain,mailbox) (increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))/sum by (domain,mailbox)(increase({__name__=~\"iwdEmail_smtp_($SmtpRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$SmtpRequest\" request processing time, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "SMTP",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 4
+        },
+        "id": 14,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 5
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 69,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "GraphRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m])) by (domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$GraphRequest\" request rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 5
+            },
+            "hiddenSeries": false,
+            "id": 70,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "GraphRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain,mailbox) (increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))/sum by (domain,mailbox)(increase({__name__=~\"iwdEmail_graph_($GraphRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$GraphRequest\" request processing time, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "GRAPH",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 5
+        },
+        "id": 16,
+        "panels": [
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 0,
+              "y": 6
+            },
+            "hiddenSeries": false,
+            "hideTimeOverride": false,
+            "id": 71,
+            "interval": "",
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "GmailRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "format": "time_series",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "A"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_total\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m])) by (domain,mailbox)",
+                "instant": false,
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "B"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$GmailRequest\" request rate, rpm",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "$DataSource",
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "links": []
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 6,
+              "w": 12,
+              "x": 12,
+              "y": 6
+            },
+            "hiddenSeries": false,
+            "id": 72,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "rightSide": true,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "8.2.6",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "GmailRequest",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "sum (increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))/sum (increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Total",
+                "refId": "C"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain)(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))/sum by (domain)(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "Domain: {{domain}}",
+                "refId": "B"
+              },
+              {
+                "exemplar": true,
+                "expr": "sum by (domain,mailbox) (increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_sum\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))/sum by (domain,mailbox)(increase({__name__=~\"iwdEmail_gmail_($GmailRequest)_duration_milliseconds_count\", cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\", mailbox=~\"$ActiveMailboxName\"}[1m]))",
+                "interval": "",
+                "legendFormat": "{{mailbox}}({{domain}})",
+                "refId": "A"
+              }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "\"$GmailRequest\" request processing time, ms",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "title": "GMAIL",
+        "type": "row"
+      }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 32,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Genesys-Metrics",
+            "value": "Genesys-Metrics"
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "DataSource",
+          "multi": false,
+          "name": "DataSource",
+          "options": [],
+          "query": "prometheus",
+          "queryValue": "",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "azure",
+            "value": "azure"
+          },
+          "datasource": "$DataSource",
+          "definition": "up",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Cloud",
+          "multi": false,
+          "name": "Cloud",
+          "options": [],
+          "query": {
+            "query": "up",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*cloud=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "eastus2",
+            "value": "eastus2"
+          },
+          "datasource": "$DataSource",
+          "definition": "up{cloud=~\"$Cloud\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Location",
+          "multi": false,
+          "name": "Location",
+          "options": [],
+          "query": {
+            "query": "up{cloud=~\"$Cloud\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*location=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "prod001",
+            "value": "prod001"
+          },
+          "datasource": "$DataSource",
+          "definition": "up{cloud=~\"$Cloud\", location=~\"$Location\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Environment",
+          "multi": false,
+          "name": "Environment",
+          "options": [],
+          "query": {
+            "query": "up{cloud=~\"$Cloud\", location=~\"$Location\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": ".*environment=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$DataSource",
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": "Pod",
+          "multi": false,
+          "name": "Pod",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 2,
+          "regex": ".*pod=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$DataSource",
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": "Tenant",
+          "multi": false,
+          "name": "ActiveTenantName",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\"}",
+            "refId": "Genesys-Metrics-ActiveTenantName-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": ".*domain=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$DataSource",
+          "definition": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": "Mailbox",
+          "multi": false,
+          "name": "ActiveMailboxName",
+          "options": [],
+          "query": {
+            "query": "iwdEmail_mailbox_processing_duration_milliseconds_count{cloud=~\"$Cloud\", location=~\"$Location\", environment=~\"$Environment\", pod=~\"$Pod\", domain=~\"$ActiveTenantName\"}",
+            "refId": "Genesys-Metrics-ActiveMailboxName-Variable-Query"
+          },
+          "refresh": 2,
+          "regex": ".*mailbox=\\\"([^\\\"]*).*",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "IwdRequest_H",
+          "multi": true,
+          "name": "IwdRequest_H",
+          "options": [
+            {
+              "selected": true,
+              "text": "getMailboxes",
+              "value": "getMailboxes"
+            },
+            {
+              "selected": false,
+              "text": "getOAuth2Tokens",
+              "value": "getOAuth2Tokens"
+            },
+            {
+              "selected": false,
+              "text": "reportConnectionStatus",
+              "value": "reportConnectionStatus"
+            },
+            {
+              "selected": false,
+              "text": "bulkReportConnectionStatus",
+              "value": "bulkReportConnectionStatus"
+            }
+          ],
+          "query": "getMailboxes,getOAuth2Tokens,reportConnectionStatus,bulkReportConnectionStatus",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "IwdRequest_M",
+          "multi": true,
+          "name": "IwdRequest_M",
+          "options": [
+            {
+              "selected": true,
+              "text": "submitWorkItem",
+              "value": "submitWorkItem"
+            },
+            {
+              "selected": false,
+              "text": "reportEmailSendingStatus",
+              "value": "reportEmailSendingStatus"
+            },
+            {
+              "selected": false,
+              "text": "queryOutboundQueue",
+              "value": "queryOutboundQueue"
+            }
+          ],
+          "query": "submitWorkItem,reportEmailSendingStatus,queryOutboundQueue",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "UcsRequest",
+          "multi": true,
+          "name": "UcsRequest",
+          "options": [
+            {
+              "selected": true,
+              "text": "connect",
+              "value": "connect"
+            },
+            {
+              "selected": false,
+              "text": "getInteractionWOAttachments",
+              "value": "getInteractionWOAttachments"
+            },
+            {
+              "selected": false,
+              "text": "findInteractionsByExternalId",
+              "value": "findInteractionsByExternalId"
+            },
+            {
+              "selected": false,
+              "text": "getDocument",
+              "value": "getDocument"
+            },
+            {
+              "selected": false,
+              "text": "updateInteraction",
+              "value": "updateInteraction"
+            },
+            {
+              "selected": false,
+              "text": "insertInteraction",
+              "value": "insertInteraction"
+            },
+            {
+              "selected": false,
+              "text": "identifyContact",
+              "value": "identifyContact"
+            },
+            {
+              "selected": false,
+              "text": "addDocument",
+              "value": "addDocument"
+            },
+            {
+              "selected": false,
+              "text": "deleteInteraction",
+              "value": "deleteInteraction"
+            },
+            {
+              "selected": false,
+              "text": "getIdentifier",
+              "value": "getIdentifier"
+            },
+            {
+              "selected": false,
+              "text": "getContactAttributes",
+              "value": "getContactAttributes"
+            }
+          ],
+          "query": "connect,getInteractionWOAttachments,findInteractionsByExternalId,getDocument,updateInteraction,insertInteraction,identifyContact,addDocument,deleteInteraction,getIdentifier,getContactAttributes",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "ImapRequest",
+          "multi": true,
+          "name": "ImapRequest",
+          "options": [
+            {
+              "selected": true,
+              "text": "connect",
+              "value": "connect"
+            },
+            {
+              "selected": false,
+              "text": "disconnect",
+              "value": "disconnect"
+            },
+            {
+              "selected": false,
+              "text": "openBox",
+              "value": "openBox"
+            },
+            {
+              "selected": false,
+              "text": "closeBox",
+              "value": "closeBox"
+            },
+            {
+              "selected": false,
+              "text": "search",
+              "value": "search"
+            },
+            {
+              "selected": false,
+              "text": "getPartData",
+              "value": "getPartData"
+            },
+            {
+              "selected": false,
+              "text": "deleteMessage",
+              "value": "deleteMessage"
+            },
+            {
+              "selected": false,
+              "text": "addFlags",
+              "value": "addFlags"
+            }
+          ],
+          "query": "connect,disconnect,openBox,closeBox,search,getPartData,deleteMessage,addFlags",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "SmtpRequest",
+          "multi": true,
+          "name": "SmtpRequest",
+          "options": [
+            {
+              "selected": true,
+              "text": "connect",
+              "value": "connect"
+            },
+            {
+              "selected": false,
+              "text": "disconnect",
+              "value": "disconnect"
+            },
+            {
+              "selected": false,
+              "text": "sendMail",
+              "value": "sendMail"
+            }
+          ],
+          "query": "connect,disconnect,sendMail",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "GraphRequest",
+          "multi": true,
+          "name": "GraphRequest",
+          "options": [
+            {
+              "selected": true,
+              "text": "getUserMailFolders",
+              "value": "getUserMailFolders"
+            },
+            {
+              "selected": false,
+              "text": "getUserMailFoldersMessages",
+              "value": "getUserMailFoldersMessages"
+            },
+            {
+              "selected": false,
+              "text": "getUserMessagesAttachmentsInfo",
+              "value": "getUserMessagesAttachmentsInfo"
+            },
+            {
+              "selected": false,
+              "text": "getUserMessagesAttachments",
+              "value": "getUserMessagesAttachments"
+            },
+            {
+              "selected": false,
+              "text": "deleteUserMessages",
+              "value": "deleteUserMessages"
+            },
+            {
+              "selected": false,
+              "text": "patchUserMessages",
+              "value": "patchUserMessages"
+            },
+            {
+              "selected": false,
+              "text": "getUserMessages",
+              "value": "getUserMessages"
+            },
+            {
+              "selected": false,
+              "text": "postUserMessages",
+              "value": "postUserMessages"
+            },
+            {
+              "selected": false,
+              "text": "postUserMessagesCreateReply",
+              "value": "postUserMessagesCreateReply"
+            },
+            {
+              "selected": false,
+              "text": "postUserMessagesAttachments",
+              "value": "postUserMessagesAttachments"
+            },
+            {
+              "selected": false,
+              "text": "postUserMessagesSend",
+              "value": "postUserMessagesSend"
+            },
+            {
+              "selected": false,
+              "text": "getUserMailFoldersMessagesCount",
+              "value": "getUserMailFoldersMessagesCount"
+            }
+          ],
+          "query": "getUserMailFolders,getUserMailFoldersMessages,getUserMessagesAttachmentsInfo,getUserMessagesAttachments,deleteUserMessages,patchUserMessages,getUserMessages,postUserMessages,postUserMessagesCreateReply,postUserMessagesAttachments,postUserMessagesSend,getUserMailFoldersMessagesCount",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "",
+            "value": [
+              ""
+            ]
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "GmailRequest",
+          "multi": true,
+          "name": "GmailRequest",
+          "options": [
+            {
+              "selected": true,
+              "text": "labelsList",
+              "value": "labelsList"
+            },
+            {
+              "selected": false,
+              "text": "messagesList",
+              "value": "messagesList"
+            },
+            {
+              "selected": false,
+              "text": "messagesGet",
+              "value": "messagesGet"
+            },
+            {
+              "selected": false,
+              "text": "messagesAttachmentsGet",
+              "value": "messagesAttachmentsGet"
+            },
+            {
+              "selected": false,
+              "text": "messagesDelete",
+              "value": "messagesDelete"
+            },
+            {
+              "selected": false,
+              "text": "messagesModify",
+              "value": "messagesModify"
+            },
+            {
+              "selected": false,
+              "text": "messagesSend",
+              "value": "messagesSend"
+            }
+          ],
+          "query": "labelsList,messagesList,messagesGet,messagesAttachmentsGet,messagesDelete,messagesModify,messagesSend",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "API Calls",
+    "version": 3
+  }

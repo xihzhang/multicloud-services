@@ -1,0 +1,2461 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 313,
+    "iteration": 1603286560978,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 223,
+        "panels": [],
+        "title": "Health",
+        "type": "row"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 0,
+          "y": 1
+        },
+        "id": 12,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_amark_app}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeat": null,
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_amark_app\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_amark_app",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "description": "",
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 3,
+          "y": 1
+        },
+        "id": 157,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_list_manager}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_list_manager\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_list_manager",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "decimals": 0,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 18,
+          "x": 6,
+          "y": 1
+        },
+        "hiddenSeries": false,
+        "id": 159,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": false,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": null,
+          "sort": "total",
+          "sortDesc": true,
+          "total": true,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": true,
+        "steppedLine": true,
+        "targets": [
+          {
+            "expr": "rate(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod=~\"$svc_amark_app-.*|$svc_campaign_manager-.*|$svc_compliance-.*|$svc_dial_manager-.*|$svc_job_scheduler-.*|$svc_list_manager-.*|$svc_list_builder-.*\", pod=~\"$service.*\"}[5m)*5*60",
+            "interval": "",
+            "legendFormat": "{{ pod }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "warning",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 1,
+            "yaxis": "right"
+          },
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 3,
+            "yaxis": "left"
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Pod Restarts",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "transparent": true,
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 0,
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 0,
+          "y": 4
+        },
+        "id": 153,
+        "interval": null,
+        "links": [
+          {
+            "title": "Go to dashboard",
+            "url": "/d/${svc_campaign_manager}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_campaign_manager\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_campaign_manager",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "description": "",
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 3,
+          "y": 4
+        },
+        "id": 158,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_list_builder}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_list_builder\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_list_builder",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "description": "",
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 0,
+          "y": 7
+        },
+        "id": 155,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_dial_manager}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_dial_manager\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_dial_manager",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "description": "",
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 3,
+          "y": 7
+        },
+        "id": 156,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_job_scheduler}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_job_scheduler\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_job_scheduler",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 18,
+          "x": 6,
+          "y": 7
+        },
+        "hiddenSeries": false,
+        "id": 160,
+        "legend": {
+          "alignAsTable": true,
+          "avg": false,
+          "current": false,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sideWidth": null,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": true,
+        "targets": [
+          {
+            "expr": " sum(kube_pod_container_status_terminated_reason{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\"}) by (pod,reason) ",
+            "interval": "",
+            "legendFormat": "{{ pod }} - {{ reason }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Container Terminated",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "cacheTimeout": null,
+        "colorBackground": true,
+        "colorPrefix": false,
+        "colorValue": false,
+        "colors": [
+          "#d44a3a",
+          "rgba(237, 129, 40, 0.89)",
+          "#299c46"
+        ],
+        "datasource": "$server",
+        "decimals": 0,
+        "description": "",
+        "format": "short",
+        "gauge": {
+          "maxValue": 100,
+          "minValue": 0,
+          "show": false,
+          "thresholdLabels": false,
+          "thresholdMarkers": true
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 0,
+          "y": 10
+        },
+        "id": 154,
+        "interval": null,
+        "links": [
+          {
+            "targetBlank": true,
+            "title": "Go to dashboard",
+            "url": "/d/${svc_compliance}/"
+          }
+        ],
+        "mappingType": 1,
+        "mappingTypes": [
+          {
+            "name": "value to text",
+            "value": 1
+          },
+          {
+            "name": "range to text",
+            "value": 2
+          }
+        ],
+        "maxDataPoints": 100,
+        "maxPerRow": 24,
+        "nullPointMode": "connected",
+        "nullText": null,
+        "pluginVersion": "6.7.3",
+        "postfix": "",
+        "postfixFontSize": "50%",
+        "prefix": "",
+        "prefixFontSize": "50%",
+        "rangeMaps": [
+          {
+            "from": "null",
+            "text": "N/A",
+            "to": "null"
+          }
+        ],
+        "repeatDirection": "h",
+        "sparkline": {
+          "fillColor": "rgba(31, 118, 189, 0.18)",
+          "full": false,
+          "lineColor": "rgb(31, 120, 193)",
+          "show": false,
+          "ymax": null,
+          "ymin": null
+        },
+        "tableColumn": "",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas_available{namespace=\"$namespace\", deployment=~\"$svc_compliance\"}",
+            "instant": true,
+            "interval": "",
+            "intervalFactor": 1,
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "thresholds": "1,2",
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "$svc_compliance",
+        "transparent": true,
+        "type": "singlestat",
+        "valueFontSize": "150%",
+        "valueMaps": [
+          {
+            "op": "=",
+            "text": "N/A",
+            "value": "null"
+          }
+        ],
+        "valueName": "current"
+      },
+      {
+        "cacheTimeout": null,
+        "columns": [],
+        "datasource": null,
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 8,
+          "w": 9,
+          "x": 0,
+          "y": 13
+        },
+        "id": 162,
+        "links": [],
+        "pageSize": null,
+        "pluginVersion": "6.7.3",
+        "showHeader": true,
+        "sort": {
+          "col": 0,
+          "desc": true
+        },
+        "styles": [
+          {
+            "alias": "Time",
+            "align": "auto",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "pattern": "/Time|Value/",
+            "type": "hidden"
+          },
+          {
+            "alias": "Images:",
+            "align": "left",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "decimals": 0,
+            "mappingType": 1,
+            "pattern": "Metric",
+            "preserveFormat": false,
+            "sanitize": false,
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "expr": "sum(kube_pod_container_info{namespace=\"$namespace\", pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\"}) by (image)",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "{{ image }}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "",
+        "transform": "timeseries_to_rows",
+        "transparent": true,
+        "type": "table"
+      },
+      {
+        "columns": [],
+        "datasource": null,
+        "fontSize": "100%",
+        "gridPos": {
+          "h": 8,
+          "w": 15,
+          "x": 9,
+          "y": 13
+        },
+        "id": 164,
+        "pageSize": null,
+        "showHeader": true,
+        "sort": {
+          "col": 0,
+          "desc": true
+        },
+        "styles": [
+          {
+            "alias": "Last Terminated Time",
+            "align": "auto",
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "pattern": "Time",
+            "type": "date"
+          },
+          {
+            "alias": "Total",
+            "align": "center",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "decimals": 0,
+            "pattern": "Value",
+            "thresholds": [],
+            "type": "number",
+            "unit": "short"
+          },
+          {
+            "alias": "Reason",
+            "align": "center",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "reason",
+            "thresholds": [
+              ""
+            ],
+            "type": "string",
+            "unit": "short",
+            "valueMaps": []
+          },
+          {
+            "alias": "Pod",
+            "align": "left",
+            "colorMode": null,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+            "decimals": 2,
+            "mappingType": 1,
+            "pattern": "pod",
+            "thresholds": [],
+            "type": "string",
+            "unit": "short"
+          }
+        ],
+        "targets": [
+          {
+            "expr": "sum(increase(kube_pod_container_status_terminated_reason{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\"}[$__interval])) by (pod,reason) >0",
+            "format": "table",
+            "interval": "",
+            "legendFormat": "",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Container Last Terminated",
+        "transform": "table",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 21
+        },
+        "id": 227,
+        "panels": [],
+        "title": "External Ingress",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 8,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "hiddenSeries": false,
+        "id": 166,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"2..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "2xx {{ exported_service }}",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"3..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m]))  by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "3xx {{ exported_service }}",
+            "refId": "B"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"4..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m]))  by (exported_service)\n*100\n",
+            "interval": "",
+            "legendFormat": "4xx {{ exported_service }}",
+            "refId": "C"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"500\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "500 {{ exported_service }}",
+            "refId": "D"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"502\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "502 {{ exported_service }}",
+            "refId": "E"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"504\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "504 {{ exported_service }}",
+            "refId": "F"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "External Ingress Error Ratio | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 8,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 28
+        },
+        "hiddenSeries": false,
+        "id": 167,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\", status=~\"2..\"}[1m])) by (exported_service)",
+            "interval": "",
+            "legendFormat": "{{ exported_service }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "External Ingress Requests per 1m | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "hiddenSeries": false,
+        "id": 16,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_request_duration_seconds_sum{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service,status) /\nsum(rate(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=\"$namespace\", ingress=\"$frontend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service,status)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "{{ exported_service }} {{ status }}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "External Ingress Request Latency | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 40
+        },
+        "id": 225,
+        "panels": [],
+        "title": "Internal Ingress",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 8,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 41
+        },
+        "hiddenSeries": false,
+        "id": 228,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"2..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "2xx {{ exported_service }}",
+            "refId": "A"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"3..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m]))  by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "3xx {{ exported_service }}",
+            "refId": "B"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"4..\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m]))  by (exported_service)\n*100\n",
+            "interval": "",
+            "legendFormat": "4xx {{ exported_service }}",
+            "refId": "C"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"500\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "500 {{ exported_service }}",
+            "refId": "D"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"502\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "502 {{ exported_service }}",
+            "refId": "E"
+          },
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"504\"}[1m])) by (exported_service)\n/\nsum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service)\n*100 \n",
+            "interval": "",
+            "legendFormat": "504 {{ exported_service }}",
+            "refId": "F"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Internal Ingress Error Ratio | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 8,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 47
+        },
+        "hiddenSeries": false,
+        "id": 229,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": false,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_requests{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\", status=~\"2..\"}[1m])) by (exported_service)",
+            "interval": "",
+            "legendFormat": "{{ exported_service }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Internal Ingress Requests per 1m | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 2,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 53
+        },
+        "hiddenSeries": false,
+        "id": 230,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null as zero",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(rate(nginx_ingress_controller_request_duration_seconds_sum{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service,status) /\nsum(rate(nginx_ingress_controller_request_duration_seconds_count{exported_namespace=\"$namespace\", ingress=\"$backend_ingress\", exported_service=~\"$service\"}[1m])) by (exported_service,status)",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "{{ exported_service }} {{ status }}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Internal Ingress Request Latency | Service: $service",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 59
+        },
+        "id": 232,
+        "panels": [],
+        "title": "CPU/MEMORY/NETWORK",
+        "type": "row"
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 60
+        },
+        "hiddenSeries": false,
+        "id": 18,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum (rate (container_cpu_usage_seconds_total{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\",pod=~\"$service.*\", container!=\"POD\"}[1m])) by (pod) * 100",
+            "instant": false,
+            "interval": "",
+            "legendFormat": "{{ pod }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "warning",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 50,
+            "yaxis": "left"
+          },
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 80,
+            "yaxis": "left"
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "The cgroup's CPU usage in the last minute (% of CPU request)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 66
+        },
+        "hiddenSeries": false,
+        "id": 20,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": false,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(container_memory_usage_bytes{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\", pod=~\"$service.*\", container!=\"\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{ pod }}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [
+          {
+            "colorMode": "warning",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 700000000,
+            "yaxis": "left"
+          },
+          {
+            "colorMode": "critical",
+            "fill": true,
+            "line": true,
+            "op": "gt",
+            "value": 1100000000,
+            "yaxis": "left"
+          }
+        ],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "The cgroup's total memory usage (in bytes)\t",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 72
+        },
+        "hiddenSeries": false,
+        "id": 24,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": false,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sort": "max",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(container_network_receive_bytes_total{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\",pod=~\"$service-.*\", container!=\"\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ pod }}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Bytes received over the network by the container per second in the last minute\t",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 2,
+            "format": "decbytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 78
+        },
+        "hiddenSeries": false,
+        "id": 22,
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": true,
+          "hideEmpty": false,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(container_network_transmit_bytes_total{namespace=\"$namespace\",pod=~\"$svc_amark_app.*|$svc_campaign_manager.*|$svc_compliance.*|$svc_dial_manager.*|$svc_job_scheduler.*|$svc_list_manager.*|$svc_list_builder.*\",pod=~\"$service-.*\", container!=\"\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{ pod }}",
+            "refId": "B"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Bytes transmitted over the network by the container per second in the last minute\t",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 2,
+            "format": "decbytes",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": false
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [
+      "cxc",
+      ""
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "default",
+            "value": "default"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Server",
+          "multi": false,
+          "name": "server",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".*",
+          "current": {
+            "selected": false,
+            "tags": [],
+            "text": "All",
+            "value": "$__all"
+          },
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": false,
+          "name": "service",
+          "options": [
+            {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": false,
+              "text": "cxc-amark-app",
+              "value": "cxc-amark-app"
+            },
+            {
+              "selected": false,
+              "text": "cxc-campaign-manager",
+              "value": "cxc-campaign-manager"
+            },
+            {
+              "selected": false,
+              "text": "cxc-compliance",
+              "value": "cxc-compliance"
+            },
+            {
+              "selected": false,
+              "text": "cxc-dial-manager",
+              "value": "cxc-dial-manager"
+            },
+            {
+              "selected": false,
+              "text": "cxc-job-scheduler",
+              "value": "cxc-job-scheduler"
+            },
+            {
+              "selected": false,
+              "text": "cxc-list-builder",
+              "value": "cxc-list-builder"
+            },
+            {
+              "selected": false,
+              "text": "cxc-list-manager",
+              "value": "cxc-list-manager"
+            }
+          ],
+          "query": "cxc-amark-app,cxc-campaign-manager,cxc-compliance,cxc-dial-manager,cxc-job-scheduler,cxc-list-builder,cxc-list-manager",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc",
+            "value": "cxc"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "namespace",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc",
+              "value": "cxc"
+            }
+          ],
+          "query": "cxc",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-amark-app",
+            "value": "cxc-amark-app"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_amark_app",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-amark-app",
+              "value": "cxc-amark-app"
+            }
+          ],
+          "query": "cxc-amark-app",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-campaign-manager",
+            "value": "cxc-campaign-manager"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_campaign_manager",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-campaign-manager",
+              "value": "cxc-campaign-manager"
+            }
+          ],
+          "query": "cxc-campaign-manager",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-compliance",
+            "value": "cxc-compliance"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_compliance",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-compliance",
+              "value": "cxc-compliance"
+            }
+          ],
+          "query": "cxc-compliance",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-dial-manager",
+            "value": "cxc-dial-manager"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_dial_manager",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-dial-manager",
+              "value": "cxc-dial-manager"
+            }
+          ],
+          "query": "cxc-dial-manager",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-job-scheduler",
+            "value": "cxc-job-scheduler"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_job_scheduler",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-job-scheduler",
+              "value": "cxc-job-scheduler"
+            }
+          ],
+          "query": "cxc-job-scheduler",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-list-manager",
+            "value": "cxc-list-manager"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_list_manager",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-list-manager",
+              "value": "cxc-list-manager"
+            }
+          ],
+          "query": "cxc-list-manager",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": true,
+            "text": "cxc-list-builder",
+            "value": "cxc-list-builder"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "svc_list_builder",
+          "options": [
+            {
+              "selected": true,
+              "text": "cxc-list-builder",
+              "value": "cxc-list-builder"
+            }
+          ],
+          "query": "cxc-list-builder",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "ext-cxc",
+            "value": "ext-cxc"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "frontend_ingress",
+          "options": [
+            {
+              "selected": true,
+              "text": "ext-cxc",
+              "value": "ext-cxc"
+            }
+          ],
+          "query": "ext-cxc",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "int-cxc",
+            "value": "int-cxc"
+          },
+          "hide": 2,
+          "label": null,
+          "name": "backend_ingress",
+          "options": [
+            {
+              "selected": true,
+              "text": "int-cxc",
+              "value": "int-cxc"
+            }
+          ],
+          "query": "int-cxc",
+          "skipUrlSync": false,
+          "type": "constant"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "utc",
+    "title": "CXC General Dashboard ",
+    "uid": "cxc-general-dashboard",
+    "version": 1
+  }

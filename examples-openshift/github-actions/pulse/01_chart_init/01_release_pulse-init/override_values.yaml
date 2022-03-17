@@ -1,0 +1,32 @@
+# Additional override_values
+image:
+  tag: "100.0.000.0006"
+
+# tenant identification, or empty for shared deployment
+tenants:
+  - id: "${tenant_id}"
+    name: "t${tenant_sid}"
+    key: "${tenant_sid}"
+    dcu: "2"
+
+# common configuration.
+config:
+  # Postgres hostname
+  postgresHost: "${postgres_host}"
+  # Postgres port
+  postgresPort: "${postgres_port}"
+  # Postgres User
+  postgresUser: "${postgres_user}"
+  # Postgres Password
+  postgresPassword: "${postgres_password}"
+  # Redis host
+  redisHost: "${redis_host}"
+  # Redis port
+  redisPort: "${redis_port}"
+  # Password for Redis
+  redisKey: "${redis_key}"
+  # GWS config
+  # Client ID
+  gwsClientId: "${gws_ClientId}"
+  # Client Secret
+  gwsClientSecret: "${gws_Client_Secret}"

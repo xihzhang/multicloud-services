@@ -1,0 +1,148 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: gws-monitoring
+    meta.helm.sh/release-namespace: gws
+  name: gws-monitoring.prometheus.rules.gws
+  namespace: gws
+spec:
+  groups:
+    - name: gws
+      rules:
+        - alert: netstat_Tcp_RetransSegs
+          annotations:
+            description: >-
+              Instance: {{$labels.instance_id}}, IP: {{$labels.instance_ip}},
+              Type: {{$labels.instance_type}}, Name: {{$labels.instance_name}}
+            information: 'Current value: {{$value}}'
+            summary: ''
+          expr: 'delta(node_netstat_Tcp_RetransSegs[1m]) > 2000'
+          for: 180s
+          labels:
+            service: gws
+            severity: warning
+        - alert: gws_high_cpu_usage
+          annotations:
+            description: >-
+              Container cpu usage is above 300%. Name: {{$labels.name}}. IP:
+              {{$labels.instance_ip}}
+            information: 'Current value: {{$value}}'
+            summary: High container cpu usage
+          expr: >-
+            sum by (name,instance_ip)
+            (rate(container_cpu_usage_seconds_total{image!="",container_label_org_label_schema_group="",name!~".*ES-Data-Warm.*",namespace="gws"}[1m]))
+            * 100 > 300
+          for: 30s
+          labels:
+            service: gws
+            severity: warning
+        - alert: gws_app_workspace_incoming_requests
+          annotations:
+            description: 'High rate of WWE incoming requests. {{$labels.instance_ip}}'
+            summary: High rate of WWE incoming requests
+          expr: >-
+            gws_app_workspace_incoming_requests{metricName="rate_1min",namespace="gws"}
+            > 10
+          for: 300s
+          labels:
+            service: gws
+            severity: critical
+        - alert: gws_jvm_threads_deadlocked
+          annotations:
+            description: 'Deadlocked jvm threads exist. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: Deadlocked jvm threads exist
+          expr: 'jvm_threads_deadlocked{namespace="gws"} > 0'
+          for: 30s
+          labels:
+            service: gws
+            severity: critical
+        - alert: gws_high_jvm_gc_pause_seconds_count
+          annotations:
+            description: 'JVM GC is too often. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: JVM GC is too often
+          expr: >-
+            delta(jvm_gc_pause_seconds_count{action="end of major
+            GC",namespace="gws"}[1m]) > 10
+          for: 30s
+          labels:
+            app: jvm_gc_pause_seconds_count
+            service: gws
+            severity: critical
+        - alert: gws_high_5xx_responces_count
+          annotations:
+            description: 'Too many 5xx responces. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: Too many 5xx responces
+          expr: 'delta(gws_responses_total{code=~"5..",namespace="gws"}[5m]) > 60'
+          for: 100s
+          labels:
+            service: gws
+            severity: critical
+        - alert: gws_high_500_responces_java
+          annotations:
+            description: 'Too many 500 responces. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: Too many 500 responces
+          expr: 'delta(gws_responses_total{code=~"500",namespace="gws"}[5m]) > 10'
+          for: 10s
+          labels:
+            service: gws
+            severity: critical
+        - alert: gws_high_500_responces_workspace
+          annotations:
+            description: 'Too many 500 responces. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: Too many 500 responces
+          expr: >-
+            sum(delta(gws_app_workspace_requests{metricName="count",
+            statusCode=~"500",namespace="gws"}[5m])) > 10
+          for: 10s
+          labels:
+            service: gws
+            severity: critical
+        - alert: gws_high_nodejs_eventloop_lag_seconds
+          annotations:
+            description: 'Nodejs eventloop is too slow. Name: {{$labels.consul_service_id}}'
+            information: 'Current value: {{$value}}'
+            summary: Nodejs eventloop is too slow
+          expr: 'nodejs_eventloop_lag_seconds{namespace="gws"} > 0.2'
+          for: 30s
+          labels:
+            service: gws
+            severity: critical
+        - alert: total_count_of_errors_in_PSDK_connections
+          annotations:
+            description: >-
+              total count of errors in PSDK connections. Name:
+              {{$labels.consul_service_id}}
+            information: 'Current value: {{$value}}'
+            summary: >-
+              Spike might indicate a problem with backend or network issue.
+              Shouldn't occur too often, so it's one counter for all active
+              connections. Check logs for details.
+          expr: >-
+            increase(psdk_conn_error_total{consul_service="gws-platform-configuration-management",namespace="gws"}[5m])
+            > 3
+          for: 30s
+          labels:
+            service: gws
+            severity: warning
+        - alert: total_count_of_errors_during_context_initialization
+          annotations:
+            description: >-
+              total count of errors during context initialization. Name:
+              {{$labels.consul_service_id}}
+            information: 'Current value: {{$value}}'
+            summary: >-
+              Spike might indicate network or configuration problem. Check logs
+              for details.
+          expr: >-
+            increase(gws_context_error_total{consul_service=~"gws-platform-configuration-management|gws-core-auth-management",namespace="gws"}[5m]) 
+            > 1200
+          for: 30s
+          labels:
+            service: gws
+            severity: warning

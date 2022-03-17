@@ -1,0 +1,83 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-dcu-statserver
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-dcu-statserver
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Dcu StatServer Alerts
+    rules:
+      - alert: pulse_dcu_critical_ss_connected_configservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_statserver_server_connected_seconds{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",type="ConfigServer"}
+            > bool 0
+          )
+          < 1
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu StatServer is not connected to ConfigServer.
+          information: 'Detected critical number of ConfigServers the StatServer {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_ss_connected_ixnservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_statserver_server_connected_seconds{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",type="IxnServer"}
+            > bool 0
+          )
+          < 2
+          unless on(environment,location,pod)
+          kube_pod_labels{label_tenant=~"777"}
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu StatServer is not connected to IxnServers.
+          information: 'Detected critical number of IxnServers the StatServer {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_ss_connected_tservers
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_statserver_server_connected_number{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",type="T-Server"}
+          )
+          < 2
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu StatServer is not connected to T-Servers.
+          information: 'Detected critical number of T-Servers the StatServer {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} is connected to: {{ $value }}'
+      - alert: pulse_dcu_critical_ss_failed_dn_registrations
+        expr: |-
+          sum by(environment,location,pod) (
+            pulse_statserver_dn_failed{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+          ) / (
+            sum by(environment,location,pod) (
+              pulse_statserver_dn_registered{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+            ) +
+            sum by(environment,location,pod) (
+              pulse_statserver_dn_failed{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+            )
+          ) * 100
+          >= 0.5
+        for: 30m
+        labels:
+          action: ""
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected critical DN registration failures on Pulse Dcu StatServer.
+          information: 'Detected critical number of DN registration failures on the StatServer {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }}: {{ $value }}%'

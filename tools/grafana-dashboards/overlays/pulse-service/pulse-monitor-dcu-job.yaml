@@ -1,0 +1,82 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-dcu-job
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-dcu-job
+  namespace: pulse
+spec:  
+  groups:
+  - name: Pulse Dcu Job Alerts
+    rules:
+      - alert: pulse_dcu_critical_job_layout_metrics_succeeded
+        expr: |-
+          sum by(environment,location,label_tenant) (
+              label_replace(
+                (
+                  time()
+                  - on() group_right()
+                  kube_job_status_completion_time{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-layout-metrics-.*"}
+                )
+                * on(environment,location,job_name) group_left(owner_name)
+                kube_job_owner{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-layout-metrics-.*",owner_kind="CronJob"},
+                "cronjob", "$1", "owner_name", "(.*)"
+              )
+              * on(environment,location,job_name) group_left()
+              kube_job_status_succeeded{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-layout-metrics-.*"}
+              * on(environment,location,job_name) group_left(label_tenant)
+              kube_job_labels{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-layout-metrics-.*"}
+              <= bool on(environment,location,cronjob) group_left()
+              (
+                kube_cronjob_next_schedule_time{cloud="azure",namespace="pulse",cronjob=~"pulse-dcu-([0-9]+)-layout-metrics"}
+                -
+                kube_cronjob_status_last_schedule_time{cloud="azure",namespace="pulse",cronjob=~"pulse-dcu-([0-9]+)-layout-metrics"}
+              )
+          ) < 1
+        for: 30m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu metrics for layouts distribution are not published.
+          information: |-
+            Detected critical number of succeeded jobs for publishing metrics for distributing layouts
+            for the tenant {{ $labels.label_tenant }}: {{ $value }}
+      - alert: pulse_dcu_critical_job_rebalance_layouts_succeeded
+        expr: |-
+          sum by(environment,location,label_tenant) (
+              label_replace(
+                (
+                  time()
+                  - on() group_right()
+                  kube_job_status_completion_time{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-rebalance-layouts-.*"}
+                )
+                * on(environment,location,job_name) group_left(owner_name)
+                kube_job_owner{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-rebalance-layouts-.*",owner_kind="CronJob"},
+                "cronjob", "$1", "owner_name", "(.*)"
+              )
+              * on(environment,location,job_name) group_left()
+              kube_job_status_succeeded{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-rebalance-layouts-.*"}
+              * on(environment,location,job_name) group_left(label_tenant)
+              kube_job_labels{cloud="azure",namespace="pulse",job_name=~"pulse-dcu-([0-9]+)-rebalance-layouts-.*"}
+              <= bool on(environment,location,cronjob) group_left()
+              (
+                kube_cronjob_next_schedule_time{cloud="azure",namespace="pulse",cronjob=~"pulse-dcu-([0-9]+)-rebalance-layouts"}
+                -
+                kube_cronjob_status_last_schedule_time{cloud="azure",namespace="pulse",cronjob=~"pulse-dcu-([0-9]+)-rebalance-layouts"}
+              )
+          ) < 1
+        for: 2h
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu layouts are not rebalanced.
+          information: |-
+            Detected critical number of succeeded jobs for rebalancing layouts
+            for the tenant {{ $labels.label_tenant }}: {{ $value }}

@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-dcu-autoscaling-rules
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-dcu-autoscaling-rules
+  namespace: pulse 
+spec:
+  groups:
+  - name: Pulse Dcu Autoscaling Alerts
+    rules:
+      - alert: pulse_dcu_critical_dcu_autoscaling
+        expr: |-
+          label_replace(
+            kube_hpa_status_condition{cloud="azure",namespace="pulse",hpa=~".*-pulse-dcu-.*",condition="AbleToScale",status="true"}
+            * on(environment,location,hpa)
+            kube_hpa_status_condition{cloud="azure",namespace="pulse",hpa=~".*-pulse-dcu-.*",condition="ScalingActive",status="true"}
+            , "tenant", "$1", "hpa", ".*-pulse-dcu-([0-9]+)"
+          )
+          == 0
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu autoscaler is not active.
+          information: |-
+            Detected that Dcu autoscaler is not able to scale PODs
+            for the tenant {{ $labels.tenant }}.

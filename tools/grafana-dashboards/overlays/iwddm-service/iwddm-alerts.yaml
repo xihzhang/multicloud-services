@@ -1,0 +1,158 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: iwddm-alerts
+    meta.helm.sh/release-namespace: iwddm
+  creationTimestamp: '2022-02-03T16:13:03Z'
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: iwddm-alerts
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: iwddm-alerts
+    genesysengage/monitoring: prometheus
+    helm.sh/chart: iwddm-alerts-0.0.1
+    service: iwddm
+    servicename: iwddm
+    tenant: '000'
+  managedFields:
+    - apiVersion: monitoring.coreos.com/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:meta.helm.sh/release-name: {}
+            f:meta.helm.sh/release-namespace: {}
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/instance: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:app.kubernetes.io/name: {}
+            f:genesysengage/monitoring: {}
+            f:helm.sh/chart: {}
+            f:service: {}
+            f:servicename: {}
+            f:tenant: {}
+        f:spec:
+          .: {}
+          f:groups: {}
+      manager: helm
+      operation: Update
+      time: '2022-02-03T16:13:03Z'
+  name: iwddm-alerts
+  namespace: iwddm
+  resourceVersion: '176806705'
+  selfLink: /apis/monitoring.coreos.com/v1/namespaces/iwddm/prometheusrules/iwddm-alerts
+  uid: ac83eabe-560d-40d7-b148-89a78626a04d
+spec:
+  groups:
+    - name: iwddm-kube-state-metrics
+      rules:
+        - alert: iwddm CronJob Was Started Too Long Ago
+          annotations:
+            description: >-
+              CronJob {{$labels.namespace}}/{{$labels.cronjob}} was started more
+              than 60 minutes ago
+            summary: iwddm - CronJob was started too long ago
+          expr: time() - kube_cronjob_next_schedule_time{namespace="iwddm"} > 60*60
+          for: 1m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm Container Has Failed
+          annotations:
+            description: >-
+              Container {{$labels.namespace}}/{{$labels.container}} in pod
+              {{$labels.pod}} has failed with "{{$labels.reason}}" reason
+            summary: iwddm - Container has failed
+          expr: >-
+            increase(kube_pod_container_status_terminated_reason{namespace="iwddm",
+            reason!="Completed"}[15m]) > 0
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm Pod Has Been Running For 15 minutes
+          annotations:
+            description: Pod iwddm/{{$labels.pod}} has been running for 15 minutes
+            summary: iwddm - Pod has been running for 15 min
+          expr: >-
+            kube_pod_status_phase{namespace="iwddm", phase="Running",
+            pod=~"iwddm-cronjob-.+"} > 0
+          for: 15m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm Pod Has Been Running For 1 hour
+          annotations:
+            description: Pod iwddm/{{$labels.pod}} has been running for 1 hour
+            summary: iwddm - Pod has been running for 1 hour
+          expr: >-
+            kube_pod_status_phase{namespace="iwddm", phase="Running",
+            pod=~"iwddm-cronjob-.+"} > 0
+          for: 1h
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm Pod Has Been In Pending State For 10 minutes
+          annotations:
+            description: Pod iwddm/{{$labels.pod}} has been in Pending state for 10 minutes
+            summary: iwddm - Pod has been in Pending state
+          expr: >-
+            kube_pod_status_phase{namespace="iwddm", phase="Pending",
+            pod=~"iwddm-cronjob-.+"} > 0
+          for: 10m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm Pod Has Start Up Issue
+          annotations:
+            description: >-
+              Pod iwddm/{{$labels.pod}} has start up issue with a reason
+              {{$labels.reason}}
+            summary: iwddm - Pod has start up issue
+          expr: >-
+            kube_pod_container_status_waiting_reason{namespace="iwddm",
+            reason!="ContainerCreating"} > 0
+          for: 2m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+    - name: cadvisor
+      rules:
+        - alert: iwddm High Requested Memory Usage of Container
+          annotations:
+            summary: >-
+              iwddm - Container named {{$labels.container}} in {{$labels.pod}}
+              is using more than 90% of Requested Memory Limit
+          expr: >-
+            ((( sum(container_memory_working_set_bytes{namespace="iwddm"}) by
+            (container,pod)  /
+            sum(kube_pod_container_resource_requests_memory_bytes{namespace="iwddm"})
+            by (container,pod) ) * 100 ) < +Inf ) > 90
+          for: 2m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm
+        - alert: iwddm High CPU Usage of Container
+          annotations:
+            summary: >-
+              iwddm - Container named {{$labels.container}} in {{$labels.pod}}
+              is using more than 75% of CPU Limit
+          expr: >-
+            ((sum(irate(container_cpu_usage_seconds_total{namespace="iwddm"}[30s]))
+            by (container,pod) / sum(container_spec_cpu_quota{namespace="iwddm"}
+            / container_spec_cpu_period{namespace="iwddm"}) by (container,pod) )
+            * 100)  > 75
+          for: 2m
+          labels:
+            action: page
+            service: iwddm
+            servicename: iwddm

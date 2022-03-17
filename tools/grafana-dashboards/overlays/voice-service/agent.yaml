@@ -1,0 +1,253 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: agent-rules
+    meta.helm.sh/release-namespace: voice
+  name: agent-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-agent
+      rules: 
+      - alert: kafka_unavailable
+        expr: kafka_producer_state{pod=~"voice-agent.*"} == 0 or kafka_consumer_state{pod=~"voice-agent.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Kafka is not available for pod {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod
+      - alert: redis_unavailable
+        expr: agent_stream_redis_state == 0 or agent_redis_state == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Redis is not available for pod {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Redis, restart Redis. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod
+      - alert: kafka_latency
+        expr: histogram_quantile(0.95, sum(rate(kafka_consumer_latency_bucket{topic="voice-agent"}[1m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Latency for more than 5% of messages within 1 minute observation period is more than 1 s for topic {{ $labels.topic }} consistenly for 5 minutes
+          runbook: If alarm is triggered for multiple topics make sure there is no issues with Kafka (CPU, memory or network overload). If alarm is triggered only for topic {{ $labels.topic }} check if there is any issue with the service related to the topic (CPU, memory or network overload)
+      - alert: kafka_consumer_health_checks
+        expr: increase(kafka_consumer_error_total{topic="voice-agent", error="healthcheck"}[5m]) > 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Health check failed more than 10 times in 5 min for Kafka consumer for topic {{$labels.topic}}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for {{ $labels.container }}, check if there is any issue with the service
+      - alert: kafka_consumer_timeouts
+        expr: increase(kafka_consumer_error_total{topic="voice-agent", error="timeout"}[5m]) > 10
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: More than 10 request timeouts appeared in 5 min for Kafka consumer for topic {{$labels.topic}}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for {{ $labels.container }}, check if there is any issue with the service
+      - alert: kafka_consumer_crashes
+        expr: increase(kafka_consumer_error_total{topic="voice-agent",error="crash"}[5m]) > 3
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: More than 3 Kafka consumer crashes in 5 min for service {{ $labels.container }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for {{ $labels.container }}, check if there is any issue with the service
+      - alert: pod_status_failed
+        expr: kube_pod_status_phase{pod=~"voice-agent.*",pod!~"voice-agent-test-.*",phase="Failed"} == 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Pod {{ $labels.pod }} is in Failed state
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_unknown
+        expr: kube_pod_status_phase{pod=~"voice-agent.*",pod!~"voice-agent-test-.*",phase="Unknown"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Pod {{ $labels.pod }} is in Unknown state for 5 min
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_pending
+        expr: kube_pod_status_phase{pod=~"voice-agent.*",pod!~"voice-agent-test-.*",phase="Pending"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Pod {{ $labels.pod }} is in Pending state for 5 min
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_notready
+        expr: kube_pod_status_ready{pod=~"voice-agent.*",pod!~"voice-agent-test-.*",condition="true"} != 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Pod {{ $labels.pod }} went to NotReady status for 5 mins
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: container_restart
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-agent"}[15m]) >= 5
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} was restarted 5 or more times within 15 mins
+          runbook: Check if new version of image was deployed. Check for issues with Kubernetes cluster
+      - alert: max_replicas
+        expr: kube_deployment_spec_replicas{ deployment="voice-agent"} > kube_deployment_status_replicas{ deployment="voice-agent"}
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Desired number of replicas is higher than current available replicas for past 5 mins
+          runbook: "Check resources available for Kubernetes. Increase resources, if necessary"
+      - alert: pod_cpu_65
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-agent.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-agent.*",unit="core"}))) * 100 > 65
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} CPU crossed 65% for 5 min
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: pod_cpu_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-agent.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-agent.*",unit="core"}))) * 100 > 80
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} CPU crossed 80% for 5 min
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service.
+      - alert: pod_memory_65
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-agent"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-agent",unit="byte"})) * 100 > 65
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} memory crossed 65% for 5 minutes 
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: pod_memory_80
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-agent"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-agent",unit="byte"})) * 100 > 80
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} memory crossed 80% for 5 minutes 
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service for pod {{ $labels.pod }}
+      - alert: kafka_queue_increase
+        expr: avg_over_time(kafka_producer_queue_depth{pod=~"voice-agent.*"}[5m]) > 100
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Too many Kafka producer pending events for pod {{ $labels.pod }}
+          runbook: Make sure there is no issues with Kafka, {{ $labels.pod }} pod's CPU and network
+      - alert: service_state_fail
+        expr: agent_health_level == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Agent health level is fail for pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }}, restart pod
+      - alert: config_node_fail
+        expr: increase(http_client_response_count{container="voice-agent",status!~"2XX"}[5m]) > 3
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Request to config node failed
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-agent.*",pod!~"voice-.+-test-.*"}) by (pod) < 5
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      - alert: service_unavailable
+        expr: (absent(up{ container="voice-agent"})) == 1
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Service is deleted completely for more than 5 minutes
+          runbook: Check that Agent State service is not in maintenance, redeploy service
+      - alert: config_node_unavailable_for_2m
+        expr: agent_config_node_status == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_unavailable_for_5m
+        expr: agent_config_node_status == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-agent"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-agent
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate

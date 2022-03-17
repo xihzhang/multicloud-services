@@ -1,0 +1,97 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: ucsx
+    meta.helm.sh/release-namespace: ucsx
+  name: ucsx-rules
+  namespace: ucsx
+spec:
+  groups:
+    - name: UCSX
+      rules:
+        - alert: ucsx_instance_high_cpu_utilization
+          annotations:
+            summary: 'UCSX instance {{ $labels.instance }} has high CPU utilization'
+          expr: 'avg_over_time( ucsx_performance{metric="cpuUsage"}[1m]) > 80'
+          for: 5m
+          labels:
+            service: ucsx
+            severity: warning
+        - alert: ucsx_instance_high_memory_usage
+          annotations:
+            summary: 'UCSX instance {{ $labels.instance }} has high memory usage'
+          expr: 'ucsx_memory{metric="rss"} > 800'
+          for: 5m
+          labels:
+            service: ucsx
+            severity: warning
+        - alert: ucsx_instance_high_http_request_rate
+          annotations:
+            summary: >-
+              UCSX instance {{ $labels.instance }} has abnormal http request
+              rate
+          expr: 'sum by (instance) (rate(ucsx_http_request_duration_count[1m])) > 120'
+          for: 30m
+          labels:
+            service: ucsx
+            severity: warning
+        - alert: ucsx_instance_slow_http_response
+          annotations:
+            summary: 'UCSX instance {{ $labels.instance }} has slow response time'
+          expr: >-
+            sum by (instance)
+            (rate(ucsx_http_request_duration_sum{url!="/ucs/v3/notifications/connect",
+            url!="unsupportedUrls", restService!='attachments-service',
+            ccName=~"\\d+"}[1m]))/sum by
+            (instance)(rate(ucsx_http_request_duration_count{url!="/ucs/v3/notifications/connect",
+            url!="unsupportedUrls", restService!='attachments-service',
+            ccName=~"\\d+"}[1m])) > 500
+          for: 5m
+          labels:
+            service: ucsx
+            severity: critical
+        - alert: ucsx_elasticsearch_slow_processing_time
+          annotations:
+            summary: Elasticsearch slow processing time
+          expr: >-
+            sum by (job)
+            (rate(ucsx_elastic_search_sum{operation="es-took"}[1m])) / (sum by
+            (job) (rate(ucsx_elastic_search_count{operation="es-took"}[1m]))) >
+            500
+          for: 5m
+          labels:
+            service: ucsx
+            severity: critical
+        - alert: ucsx_tenantdb_health_status
+          annotations:
+            summary: 'Tenant RDS {{ $labels.ccName }} unavailable'
+          expr: ucsx_tenantdb_health_status == 0
+          for: 2m
+          labels:
+            service: ucsx
+            severity: critical
+        - alert: ucsx_elasticsearch_health_status
+          annotations:
+            summary: Elasticsearch cluster unavailable
+          expr: ucsx_elasticsearch_health_status == 0
+          for: 2m
+          labels:
+            service: ucsx
+            severity: critical
+        - alert: ucsx_masterdb_health_status
+          annotations:
+            summary: Master RDS unavailable
+          expr: ucsx_masterdb_health_status == 0
+          for: 2m
+          labels:
+            service: ucsx
+            severity: warning
+        - alert: ucsx_instance_overloaded
+          annotations:
+            summary: Frequent triggering of the overload protection
+          expr: 'rate(ucsx_overload_protection_count[1m])>0'
+          for: 5m
+          labels:
+            service: ucsx
+            severity: warning

@@ -1,0 +1,256 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "$$hashKey": "object:65",
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 221,
+    "iteration": 1599603151452,
+    "links": [],
+    "panels": [
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 15,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "hiddenSeries": false,
+        "id": 2,
+        "interval": "",
+        "legend": {
+          "alignAsTable": true,
+          "avg": true,
+          "current": false,
+          "hideEmpty": true,
+          "hideZero": true,
+          "max": true,
+          "min": false,
+          "rightSide": true,
+          "show": true,
+          "sort": "max",
+          "sortDesc": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "sum(irate(log_output_bytes_total{pod=~\"$pod-.*\", pod!~\"t.+\", level=~\"$level\", module=~\"$module\"}[5m])) by (pod, level)",
+            "interval": "",
+            "legendFormat": "{{pod}}:{{level}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Log output rate (bytes/s)",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "$$hashKey": "object:1269",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "$$hashKey": "object:1270",
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "datasource",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(log_output_bytes_total{namespace=\"voice\", pod !~ \"t.+\"}, pod)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "service",
+          "multi": true,
+          "name": "pod",
+          "options": [],
+          "query": "label_values(log_output_bytes_total{namespace=\"voice\", pod !~ \"t.+\"}, pod)",
+          "refresh": 2,
+          "regex": "/(voice-\\w+)-.+/",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "tags": [],
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(log_output_bytes_total{namespace=\"voice\", pod =~\"$pod\",  pod!~\"t.+\"}, level)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "level",
+          "multi": true,
+          "name": "level",
+          "options": [],
+          "query": "label_values(log_output_bytes_total{namespace=\"voice\", pod =~\"$pod\",  pod!~\"t.+\"}, level)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": ".+",
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "Prometheus",
+          "definition": "label_values(log_output_bytes_total{namespace=\"voice\", pod =~\"$pod\", pod!~\"t.+\"}, module)",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "module",
+          "multi": true,
+          "name": "module",
+          "options": [],
+          "query": "label_values(log_output_bytes_total{namespace=\"voice\", pod =~\"$pod\", pod!~\"t.+\"}, module)",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 5,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "utc",
+    "title": "Voice / Log output",
+    "uid": "quFEBlvMk",
+    "variables": {
+      "list": []
+    },
+    "version": 12
+  }

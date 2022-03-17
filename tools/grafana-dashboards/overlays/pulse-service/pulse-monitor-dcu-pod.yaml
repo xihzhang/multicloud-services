@@ -1,0 +1,246 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulse-monitor-dcu-pod
+    meta.helm.sh/release-namespace: pulse
+  name: pulse-monitor-dcu-pod
+  namespace: pulse
+spec:   
+  groups:
+  - name: Pulse Dcu Pod Alerts
+    rules:
+      - alert: pulse_dcu_critical_nonrunning_instances
+        expr: |-
+          sum by(environment,location,statefulset) (
+            kube_statefulset_status_replicas{cloud="azure",namespace="pulse",statefulset=~"pulse-dcu-.*"}
+          ) -
+          sum by(environment,location,statefulset) (
+            kube_statefulset_status_replicas_ready{cloud="azure",namespace="pulse",statefulset=~"pulse-dcu-.*"}
+          )
+          >= 1
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Pulse Dcu instances are down.
+          information: 'Detected critical number of non running {{ $labels.statefulset }}@{{ $labels.environment }}-{{ $labels.location }} instances: {{ $value }}'
+      - alert: pulse_dcu_critical_memory
+        expr: |-
+          sum by(environment,location,pod,container) (
+            container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+          ) /
+          sum by(environment,location,pod,container) (
+            kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="memory",unit="byte"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected critical memory usage by Pulse Dcu Pod.
+          information: 'Detected critical memory usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_dcu_high_memory
+        expr: |-
+          (
+            sum by(environment,location,pod,container) (
+              container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="memory",unit="byte"}
+            ) * 100
+            >= 80
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,pod,container) (
+              container_memory_working_set_bytes{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="memory",unit="byte"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected high memory usage by Pulse Dcu Pod.
+          information: 'Detected high memory usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_dcu_critical_cpu
+        expr: |-
+          sum by(environment,location,pod,container) (
+            rate(
+              container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+              [2m]
+            )
+          ) /
+          sum by(environment,location,pod,container) (
+            kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="cpu",unit="core"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected critical CPU usage by Pulse Dcu Pod.
+          information: 'Detected critical CPU usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_dcu_high_cpu
+        expr: |-
+          (
+            sum by(environment,location,pod,container) (
+              rate(
+                container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+                [2m]
+              )
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="cpu",unit="core"}
+            ) * 100
+            >= 80
+          ) * on() group_left() absent_over_time((
+            sum by(environment,location,pod,container) (
+              rate(
+                container_cpu_usage_seconds_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD"}
+                [2m]
+              )
+            ) /
+            sum by(environment,location,pod,container) (
+              kube_pod_container_resource_limits{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*",container!="",container!="POD",resource="cpu",unit="core"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected high CPU usage by Pulse Dcu Pod.
+          information: 'Detected high CPU usage: {{ $value }}% by Pod: {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} (container: {{ $labels.container }})'
+      - alert: pulse_dcu_critical_disk
+        expr: |-
+          (
+            sum by(environment,location,persistentvolumeclaim) (
+              kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+            ) -
+            sum by(environment,location,persistentvolumeclaim) (
+              kubelet_volume_stats_available_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+            )
+          ) /
+          sum by(environment,location,persistentvolumeclaim) (
+            kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+          ) * 100
+          >= 90
+        for: 5m
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected critical disk usage by Pulse Dcu Pod.
+          information: 'Detected critical disk usage: {{ $value }}% on PersistentVolumeClaim: {{ $labels.persistentvolumeclaim }}'
+      - alert: pulse_dcu_high_disk
+        expr: |-
+          (
+            (
+              sum by(environment,location,persistentvolumeclaim) (
+                kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+              ) -
+              sum by(environment,location,persistentvolumeclaim) (
+                kubelet_volume_stats_available_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+              )
+            ) /
+            sum by(environment,location,persistentvolumeclaim) (
+              kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+            ) * 100
+            >= 70
+          ) * on() group_left() absent_over_time((
+            (
+              sum by(environment,location,persistentvolumeclaim) (
+                kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+              ) -
+              sum by(environment,location,persistentvolumeclaim) (
+                kubelet_volume_stats_available_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+              )
+            ) /
+            sum by(environment,location,persistentvolumeclaim) (
+              kubelet_volume_stats_capacity_bytes{cloud="azure",namespace="pulse",persistentvolumeclaim=~".*-pulse-dcu-.*"}
+            ) * 100
+            >= 90
+          )[5m:])
+        for: 5m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected high disk usage by Pulse Dcu Pod.
+          information: 'Detected high disk usage: {{ $value }}% on PersistentVolumeClaim: {{ $labels.persistentvolumeclaim }}'
+      - alert: pulse_dcu_too_frequent_restarts
+        expr: |-
+          max_over_time((
+            increase(
+              kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+              [1h:]
+            ) >= bool 2
+          )[1h:])
+          > 0
+          unless on(environment,location,pod)
+          kube_pod_labels{cloud="azure",pod=~".*"}
+        for: 1h
+        labels:
+          action: email,pager
+          severity: Critical
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected too frequent restarts of Dcu Pod container.
+          information: |-
+            The container {{ $labels.container }} from the pod {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} has been restarted
+            at least 2 times in the last 1h.
+      - alert: pulse_dcu_frequent_restarts
+        expr: |-
+          (
+            max_over_time((
+              increase(
+                kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+                [10m:]
+              ) >= bool 1
+            )[10m:])
+            > 0
+          ) * on() group_left() absent_over_time((
+            max_over_time((
+              increase(
+                kube_pod_container_status_restarts_total{cloud="azure",namespace="pulse",pod=~"pulse-dcu-.*"}
+                [1h:]
+              ) >= bool 2
+            )[1h:])
+            > 0
+          )[1h:])
+          unless on(environment,location,pod)
+          kube_pod_labels{cloud="azure",pod=~".*"}
+        for: 10m
+        labels:
+          action: email
+          severity: Warning
+          service: pulse
+          servicename: dcu
+        annotations:
+          summary: Detected frequent restarts of Dcu Pod container.
+          information: |-
+            The container {{ $labels.container }} from the pod {{ $labels.pod }}@{{ $labels.environment }}-{{ $labels.location }} has been restarted
+            at least 1 times in the last 10m.

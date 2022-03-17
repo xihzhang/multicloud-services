@@ -1,0 +1,199 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: sipproxy-rules
+    meta.helm.sh/release-namespace: voice
+  name: sipproxy-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-sipproxy
+      rules: 
+      - alert: kafka_too_many_pending_events
+        expr: avg_over_time(kafka_producer_queue_depth{pod=~"voice-sipproxy.*"}[5m]) > 100
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Too many Kafka producer pending events for pod {{ $labels.pod }}, this means there are issues with SIP REGISTER processing on this voice-sipproxy
+          runbook: Make sure there is no issues with Kafka, {{ $labels.pod }} pod's CPU and network
+      - alert: sip_server_response_time_too_high
+        expr: histogram_quantile(0.95, sum(rate(sipproxy_response_latency_bucket{request_direction="to",node_in_cache="1"}[5m])) by (le,sip_node_id,pod)) > 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: SIP response latency for more than 95% of messages forwarded to {{ $labels.sip_node_id }} is more than 1s for voice-sipproxy {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple voice-sipproxys make sure there are no issues on {{ $labels.sip_node_id }}. If alarm is triggered only for voice-sipproxy {{ $labels.pod }} check if there is any issue with the service related to the topic (CPU, memory or network overload)
+      - alert: non_sip_node_target_response_time_too_high
+        expr: histogram_quantile(0.95, sum(rate(sipproxy_response_latency_bucket{request_direction!="to"}[5m])) by (le,pod,target)) > 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: SIP response latency for more than 95% of messages forwarded to {{ $labels.target }} is more than 1s for voice-sipproxy {{ $labels.pod }}
+          runbook: This probably indicates some upstream service degradation (SBC, GVP, WebRTC, etc). Target responds by itself, but with significant delay.
+      - alert: no_sip_nodes_available
+        expr: sipproxy_active_sip_nodes_count == 0
+        for: 2m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: No voice-sips available for pod for 2 min {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with voice-sips. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod
+      - alert: sip_node_capacity_limit_reached
+        expr: sipproxy_sip_node_is_capacity_available <= 50
+        for: 3m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: voice-sip {{ $labels.sip_node_id }} hit capacity limit on {{ $labels.pod }}
+          runbook: If alarm is triggered for multiple services make sure there is no issues with voice-sip {{ $labels.sip_node_id }}. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod
+      - alert: config_node_fail
+        expr: increase(http_client_response_count{container="voice-sipproxy",status!~"2XX"}[5m]) > 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Request to config node failed
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: pod_status_failed
+        expr: kube_pod_status_phase{pod=~"voice-sipproxy.*",pod!~"voice-sipproxy-test-.*",phase="Failed"} == 1
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Pod {{ $labels.pod }} is in Failed state
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_unknown
+        expr: kube_pod_status_phase{pod=~"voice-sipproxy.*",pod!~"voice-sipproxy-test-.*",phase="Unknown"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Pod {{ $labels.pod }} is in Unknown state for 5 min
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_pending
+        expr: kube_pod_status_phase{pod=~"voice-sipproxy.*",pod!~"voice-sipproxy-test-.*",phase="Pending"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Pod {{ $labels.pod }} is in Pending state for 5 min
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: pod_status_notready
+        expr: kube_pod_status_ready{pod=~"voice-sipproxy.*",pod!~"voice-sipproxy-test-.*",condition="true"} != 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Pod {{ $labels.pod }} went to NotReady status for 5 mins
+          runbook: Restart pod, check if there are any issues with pod after restart
+      - alert: container_restart
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-sipproxy"}[15m]) >= 5
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Container {{ $labels.container }} was restarted 5 or more times within 15 mins
+          runbook: Check if new version of image was deployed. Check for issues with Kubernetes cluster
+      - alert: pod_cpu_65
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sipproxy.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sipproxy.*",unit="core"}))) * 100 > 65
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: High CPU load for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: pod_cpu_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sipproxy.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sipproxy.*",unit="core"}))) * 100 > 80
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Critical CPU load for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: pod_memory_65
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sipproxy"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sipproxy",unit="byte"})) * 100 > 65
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: High memory utilization for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket
+      - alert: pod_memory_80
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sipproxy"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sipproxy",unit="byte"})) * 100 > 80
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Critical memory utilization for pod {{ $labels.pod }}
+          runbook: Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service for pod {{ $labels.pod }}
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-sipproxy.*",pod!~"voice-.+-test-.*"}) by (pod) < 5
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      - alert: config_node_unavailable_for_2m
+        expr: sipproxy_config_node_status == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: config_node_unavailable_for_5m
+        expr: sipproxy_config_node_status == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Config node is not reachable from pod {{ $labels.pod }}
+          runbook: Check if there is any problem with pod {{ $labels.pod }} and config node
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-sipproxy"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipproxy
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate

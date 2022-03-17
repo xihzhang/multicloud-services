@@ -1,0 +1,915 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "$$hashKey": "object:7",
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 43,
+    "iteration": 1618348601481,
+    "links": [],
+    "panels": [
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "$$hashKey": "object:915",
+              "color": "#73BF69",
+              "tooltip": "ready",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:919",
+              "color": "#F2495C",
+              "tooltip": "notready",
+              "value": "0"
+            }
+          ]
+        },
+        "datasource": "$datasource",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "highlightCards": true,
+        "id": 8,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "rq_client_state{ container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}:pair-{{pair}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Client State",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "$$hashKey": "object:629",
+              "color": "#73BF69",
+              "tooltip": "pass",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:633",
+              "color": "#F2495C",
+              "tooltip": "fail",
+              "value": "0"
+            }
+          ]
+        },
+        "datasource": "$datasource",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "highlightCards": true,
+        "id": 2,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "rq_client_cluster_state{ container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Cluster State",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "hiddenSeries": false,
+        "id": 4,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rq_client_cluster_nodes{ container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Active Nodes",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "cards": {
+          "cardHSpacing": 2,
+          "cardMinWidth": 5,
+          "cardRound": null,
+          "cardVSpacing": 2
+        },
+        "color": {
+          "cardColor": "#b4ff00",
+          "colorScale": "sqrt",
+          "colorScheme": "interpolateGnYlRd",
+          "defaultColor": "#757575",
+          "exponent": 0.5,
+          "mode": "discrete",
+          "thresholds": [
+            {
+              "$$hashKey": "object:778",
+              "color": "#73BF69",
+              "tooltip": "connected",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:782",
+              "color": "#F2495C",
+              "tooltip": "disconnected",
+              "value": "0"
+            }
+          ]
+        },
+        "datasource": "$datasource",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "highlightCards": true,
+        "id": 6,
+        "legend": {
+          "show": true
+        },
+        "nullPointMode": "as empty",
+        "pageSize": 15,
+        "seriesFilterIndex": -1,
+        "statusmap": {
+          "ConfigVersion": "v1"
+        },
+        "targets": [
+          {
+            "expr": "rq_client_connection_state{ container=~\"$service\",pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}:node-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "Connection State",
+        "tooltip": {
+          "extraInfo": "",
+          "freezeOnClick": true,
+          "items": [],
+          "show": true,
+          "showExtraInfo": false,
+          "showItems": false
+        },
+        "type": "flant-statusmap-panel",
+        "useMax": true,
+        "usingPagination": false,
+        "xAxis": {
+          "show": true
+        },
+        "yAxis": {
+          "maxWidth": -1,
+          "minWidth": -1,
+          "show": true
+        },
+        "yAxisSort": "metrics",
+        "yLabel": {
+          "delimiter": "",
+          "labelTemplate": "",
+          "usingSplitLabel": false
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "description": "",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "hiddenSeries": false,
+        "id": 12,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rq_client_streams_total{healthcheck=\"true\", container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}:node-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Active Healthcheck Streams",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "hiddenSeries": false,
+        "id": 14,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rq_client_streams_total{healthcheck=\"false\", container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}:node-{{node}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Active call/ixn streams",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "hiddenSeries": false,
+        "id": 10,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rq_client_queue_depth{ container=~\"$service\", pod=~\"$pod\"}",
+            "interval": "",
+            "legendFormat": "{{pod}}:pair-{{pair}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Queue Depth per Pair",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        },
+        "hiddenSeries": false,
+        "id": 16,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(rq_client_timeouts_total{healthcheck=\"true\", container=~\"$service\", pod=~\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{pod}}:node-{{node}}:cmd-{{cmd}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Rate of Healthcheck requests timeout",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "aliasColors": {},
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "$datasource",
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "hiddenSeries": false,
+        "id": 18,
+        "legend": {
+          "avg": false,
+          "current": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": false
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "seriesOverrides": [],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "expr": "rate(rq_client_timeouts_total{healthcheck=\"false\", container=~\"$service\", pod=~\"$pod\"}[1m])",
+            "interval": "",
+            "legendFormat": "{{pod}}:node-{{node}}:cmd-{{cmd}}",
+            "refId": "A"
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "Rate of call/ixn requests timeout",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "format": "short",
+            "label": null,
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 22,
+    "style": "dark",
+    "tags": [
+      "voice",
+      "rq",
+      "voice_common"
+    ],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "datasource",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": "",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "$datasource",
+          "definition": "rq_client_cluster_state",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "service",
+          "multi": true,
+          "name": "service",
+          "options": [],
+          "query": "rq_client_cluster_state",
+          "refresh": 1,
+          "regex": "/.*container=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 2,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$datasource",
+          "definition": "rq_client_cluster_state{container=~\"$service\"}",
+          "hide": 0,
+          "includeAll": true,
+          "index": -1,
+          "label": "pod",
+          "multi": true,
+          "name": "pod",
+          "options": [],
+          "query": "rq_client_cluster_state{container=~\"$service\"}",
+          "refresh": 1,
+          "regex": "/.*pod=\"([^\"]*).*/",
+          "skipUrlSync": false,
+          "sort": 2,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ]
+    },
+    "timezone": "",
+    "title": "RQ Client Dashboard",
+    "uid": "WoC37LQMz",
+    "variables": {
+      "list": []
+    },
+    "version": 2
+  }

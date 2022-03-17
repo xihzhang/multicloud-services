@@ -1,0 +1,263 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: sipfe-rules
+    meta.helm.sh/release-namespace: voice
+  name: sipfe-rules
+  namespace: voice
+spec:
+  groups:
+    - name: voice-sipfe
+      rules: 
+      - alert: kafka_producer_queue_increase
+        expr: avg_over_time(kafka_producer_queue_depth{pod=~"voice-sipfe.*"}[5m]) > 1000
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Too many Kafka pending producer events"
+          detailed_description: 'Too many Kafka producer pending events for pod {{ $labels.pod }}'
+          runbook: "Make sure there is no issues with Kafka, {{ $labels.pod }} pod CPU and network"
+      - alert: sipfe_requests_without_response
+        expr: increase(sipfe_requests_total[5m]) - increase(sipfe_responses_total[5m]) > 100
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Too many received requests without a response"
+          detailed_description: 'For too many requests the Front End service at pod {{ $labels.pod }} did not send any response'
+          runbook: "Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket, restart the service"
+      - alert: sipfe_sip_cluster_response_latency
+        expr: histogram_quantile(0.95, sum(rate(sipfe_sip_node_request_duration_seconds_bucket{pod=~"voice-sipfe.*", status="200"}[5m])) by (le)) > 0.5
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "SIP Cluster Service response latency is too high"
+          detailed_description: 'Latency for 95% of messages is more than 0.5s for service {{ $labels.container }}'
+          runbook: "If alarm is triggered for multiple pods make sure there is no issues with SIP Cluster Service (CPU, memory or network overload). If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod (CPU, memory or network overload)"
+      - alert: sipfe_failure_responses_sent
+        expr: increase(sipfe_responses_total{pod=~"voice-sipfe.*", status!="200"}[5m]) > 100
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Too many failure responses sent"
+          detailed_description: 'Too many failure responses are sent by Front End service at pod {{ $labels.pod }}'
+          runbook: "For pod {{ $labels.pod }} make sure received requests are valid"
+      - alert: sipfe_kafka_producer_errors
+        expr: increase(kafka_producer_error_total{pod=~"voice-sipfe.*"}[5m]) > 100
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Too many Kafka producer errors"
+          detailed_description: 'Kafka responds with errors at pod {{ $labels.pod }}'
+          runbook: "For pod {{ $labels.pod }} make sure there is no issues with Kafka"
+      - alert: sipfe_sip_cluster_errors
+        expr: increase(sipfe_sip_node_responses_total{container="voice-sipfe", status!="200"}[5m]) > 100
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Too many SIP Cluster Service error responses"
+          detailed_description: 'SIP Cluster Service responds with errors at pod {{ $labels.pod }}'
+          runbook: "If alarm is triggered for multiple pods make sure there is no issues with SIP Cluster Service (CPU, memory or network overload). If alarm is triggered only for pod {{ $labels.pod }} check if there is issues with requests sent by the pod"
+      - alert: sipfe_kafka_unavailable
+        expr: kafka_producer_state{pod=~"voice-sipfe.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Kafka not available"
+          detailed_description: 'Kafka is not available for pod {{ $labels.pod }}'
+          runbook: "If alarm is triggered for multiple services make sure there is no issues with Kafka, restart Kafka. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod."
+      - alert: sipfe_sip_nodes_unavailable
+        expr: sipfe_sip_nodes_total{pod=~"voice-sipfe.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "SIP Node(s) is not available"
+          detailed_description: 'No available SIP Nodes for pod {{ $labels.pod }}'
+          runbook: "If alarm is triggered for multiple services make sure there is no issues with SIP Nodes, restart SIP Nodes. If alarm is triggered only for pod {{ $labels.pod }} check if there is any issue with the pod or network to SIP Nodes."
+      - alert: sipfe_pod_status_failed
+        expr: kube_pod_status_phase{pod=~"voice-sipfe.*",pod!~"voice-sipfe-test-.*",phase="Failed"} >= 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod status Failed"
+          detailed_description: 'Pod {{ $labels.pod }} is in Failed state'
+          runbook: "Restart pod, check if there are any issues with pod after restart"
+      - alert: sipfe_pod_status_unknown
+        expr: kube_pod_status_phase{pod=~"voice-sipfe.*",pod!~"voice-sipfe-test-.*",phase="Unknown"} >= 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod status Unknown"
+          detailed_description: 'Pod {{ $labels.pod }} is in Unknown state for 5 min'
+          runbook: "Restart pod, check if there are any issues with pod after restart"
+      - alert: sipfe_pod_status_pending
+        expr: kube_pod_status_phase{pod=~"voice-sipfe.*",pod!~"voice-sipfe-test-.*",phase="Pending"} >= 1
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod status Pending"
+          detailed_description: 'Pod {{ $labels.pod }} is in Pending state for 5 min'
+          runbook: "Restart pod, check if there are any issues with pod after restart"
+      - alert: sipfe_pod_status_notready
+        expr: kube_pod_status_ready{pod=~"voice-sipfe.*",pod!~"voice-sipfe-test-.*",condition="true"} < 1
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod status NotReady"
+          detailed_description: 'Pod {{ $labels.pod }} went to NotReady status for 5 min'
+          runbook: "Restart pod, check if there are any issues with pod after restart"
+      - alert: sipfe_container_restarted_repeatedly
+        expr: increase(kube_pod_container_status_restarts_total{container="voice-sipfe"}[15m]) >= 5
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Container restarted repeatedly"
+          detailed_description: 'Container {{ $labels.container }} was restarted 5 or more times within 15 min'
+          runbook: "Check if new version of image was deployed. Check for issues with Kubernetes cluster"
+      - alert: sipfe_max_replicas_is_not_sufficient
+        expr: kube_deployment_spec_replicas{ deployment="voice-sipfe"} > kube_deployment_status_replicas{ deployment="voice-sipfe"}
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Max replicas is not sufficient for 5 mins"
+          detailed_description: 'Desired number of replicas is higher than current available replicas for past 5 mins'
+          runbook: "Check resources available for Kubernetes. Increase resources, if necessary"
+      - alert: sipfe_pods_scaled_up_80
+        expr: (kube_hpa_status_current_replicas{hpa="voice-sipfe-hpa"} * 100) / kube_hpa_spec_max_replicas{hpa="voice-sipfe-hpa"} > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pods scaled up greater than 80%"
+          detailed_description: 'Current number of replicas are greater than 80% of max replicas'
+          runbook: "Check resources available for Kubernetes. Increase resources, if necessary"
+      - alert: sipfe_pods_less_than_min_replicas
+        expr: kube_hpa_status_current_replicas{hpa="voice-sipfe-hpa"} < kube_hpa_spec_min_replicas{hpa="voice-sipfe-hpa"}
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pods less than Min Replicas"
+          detailed_description: 'Current replicas is lower than minimum replicas should be available'
+          runbook: "Check whether Kubernetes cannot deploy new pod or pods failing in their status to be active/ready"
+      - alert: sipfe_cpu_greater_65
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sipfe.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sipfe.*",unit="core"}))) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod CPU greater than 65%"
+          detailed_description: 'High CPU load for pod {{ $labels.pod }}'
+          runbook: "Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket"
+      - alert: sipfe_cpu_greater_80
+        expr: (sum by(pod) (rate(container_cpu_usage_seconds_total{pod=~"voice-sipfe.*", image!=""}[5m])) /( sum by(pod)(kube_pod_container_resource_limits{pod=~"voice-sipfe.*",unit="core"}))) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod CPU greater than 80%"
+          detailed_description: 'Critical CPU load for pod {{ $labels.pod }}'
+          runbook: "Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service."
+      - alert: sipfe_memory_greater_65
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sipfe"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sipfe",unit="byte"})) * 100 > 65
+        for: 5m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod memory greater than 65%"
+          detailed_description: 'High memory utilization for pod {{ $labels.pod }}'
+          runbook: "Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Collect the service logs for pod {{ $labels.pod }}, raise an investigation ticket"
+      - alert: sipfe_memory_greater_80
+        expr: (sum by(pod) (container_memory_working_set_bytes{container="voice-sipfe"}) / sum by(pod)(kube_pod_container_resource_limits{container="voice-sipfe",unit="byte"})) * 100 > 80
+        for: 5m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          summary: "Pod memory greater than 80%"
+          detailed_description: 'Critical memory utilization for pod {{ $labels.pod }}'
+          runbook: "Check whether horizontal pod autoscaler has triggered and maximum number of pods is reached. Check grafana for abnormal load. Restart the service for pod {{ $labels.pod }}"
+      - alert: pod_sidecars_failed
+        expr: count(container_memory_usage_bytes{pod=~"voice-sipfe.*",pod!~"voice-.+-test-.*"}) by (pod) < 5
+        for: 10m
+        labels:
+          severity: critical
+          category: voice_pager
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          description: Pod sidecar failed to start {{ $labels.pod }}
+          runbook: Check if there is any problem with consul {{ $labels.pod }}, restart pod
+      - alert: log_messages_rate_exceeds_limit
+        expr: sum(rate(log_output_bytes_total{container="voice-sipfe"}[1m])) by(container) > (1.65 * 1000 * 1000)
+        for: 1m
+        labels:
+          severity: warning
+          service: voice
+          servicename: voice-sipfe
+        annotations:
+          description: Container {{ $labels.container }} Log messages rate exceeds HLA requirement (100 MB/min or 1.65 MB/s)
+          runbook: Contact service team to reduce log rate
