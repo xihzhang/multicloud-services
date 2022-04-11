@@ -86,7 +86,7 @@ It is recommended to separate your override values for installation and provisio
 Helm installation on top of existing service does not impacting service, as Kubernetes applies change and restarts pods only if there is real difference between applied manifest and corresponding k8s object.
 
 `github/workflows` contains github actions (GHA) workflows, the sample workflow is based on simple Dispatch mode, when we trigger pipeline manually (see screenshot below) adding a few input parameters.
-![tempsnip](https://media.git.scm.genesys.com/user/1489/files/28ed4480-5104-11ec-9c18-d47c238bc609)
+![image](https://user-images.githubusercontent.com/83649784/162738542-420f3713-3c1a-40d5-8113-a2bf6298d9d0.png)
 
 # Usage
 Pipeline triggers manually in dispatch mode, within Github repo, in "Actions" tab. Minimum set of input is:
