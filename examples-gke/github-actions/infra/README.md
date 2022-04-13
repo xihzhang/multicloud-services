@@ -53,7 +53,7 @@ Some examples of installation commands:
 - `install elastic` (for ElasticSearch - requires licensing)
 
 ## Secrets 
-Create the standard [pullsecret](../github-actions#-considerations) for the workflow: 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
 ## Additional Information
