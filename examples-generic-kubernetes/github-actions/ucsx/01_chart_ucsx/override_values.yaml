@@ -48,7 +48,7 @@ ingress:
       port: 8080
     - path: /ucs/v3/config
       port: 8500
-      
+
 elasticsearch:
   url: http://elastic-es-http.infra.svc.cluster.local:9200
 
