@@ -68,7 +68,7 @@ Find known and resolved issues in the [issue tracker](https://github.com/genesys
 Upcoming features and accepted issues can be found on the [project page](https://github.com/genesys/multicloud-services/projects).
 
 ## FAQ
-Find answers to frequent questions [here](https://github.com/genesys/multicloud-services/wiki/FAQ). 
+Find answers to frequent questions [here](https://github.com/genesys/multicloud-services/discussions/categories/q-a). 
 
 #### Here is a sample issue someone had
 
