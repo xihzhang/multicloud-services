@@ -11,66 +11,40 @@ function get_secret {
 			--no-headers | base64 -d )
 }
 
-function find_in_overrides {
-  # Using: find_in_overrides yaml_path [lookup_arg1, lookup_arg2]
-  #
-  # try to parse by yq (if installed) then by awk (if false set to default)
-  
-  res=$(cat override_values.yaml | yq eval $1 - 2>/dev/null)
-  if [[ ! "$res" ]] && [[ $2 ]] && [[ $3 ]]; then
-    res=$(cat override_values.yaml | grep "$2" | grep "$3" \
-        | awk '{print $2}')
-  fi
-  [[ ! "$res" ]] && res="not found"
-  echo $res
-}
-
 ###############################################################################
 #       Tenant id (UUID) and sid from GIM deployment secrets
 ###############################################################################
-# export tenant_sid=$( get_secret tenant_sid gim )
-# export tenant_id=$( get_secret tenant_id gim )
-export tenant_sid=$( get_secret tenant_sid )
-export tenant_id=$( get_secret tenant_id )
+export tenant_sid=$( get_secret tenant_sid gim )
+export tenant_id=$( get_secret tenant_id gim )
 ###############################################################################
 #       GIM database parameters from GIM deployment secrets
 ###############################################################################
-# export gim_db_name=$( get_secret gim_pgdb_etl_name gim )
-# export gim_db_user=$( get_secret gim_pgdb_etl_user gim )
-# export gim_db_pass=$( get_secret gim_pgdb_etl_password gim )
-export gim_db_host=$( get_secret gim_db_host )
-export gim_db_name=$( get_secret gim_db_name )
-export gim_db_user=$( get_secret gim_db_user )
-export gim_db_pass=$( get_secret gim_db_pass )
+export gim_db_name=$( get_secret gim_pgdb_etl_name gim )
+export gim_db_user=$( get_secret gim_pgdb_etl_user gim )
+export gim_db_pass=$( get_secret gim_pgdb_etl_password gim )
 ###############################################################################
 #       IWD database parameters from GIM deployment secrets
 ###############################################################################
-# export iwd_db_name=iwd-$tenant_sid
-# export iwd_db_user=$( get_secret iwd_db_user iwd )
-# export iwd_db_pass=$( get_secret iwd_db_password iwd )
-export iwd_db_host=$( get_secret iwd_db_host )
-export iwd_db_name=$( get_secret iwd_db_name )
-export iwd_db_user=$( get_secret iwd_db_user )
-export iwd_db_pass=$( get_secret iwd_db_pass )
+export iwd_db_name=iwd-$tenant_sid
+export iwd_db_user=$( get_secret iwd_db_user iwd )
+export iwd_db_pass=$( get_secret iwd_db_password iwd )
 ###############################################################################
 #           Postgres address and admin_db
 ###############################################################################
-# export POSTGRES_ADDR=$(find_in_overrides ".db.host" "host:" "postgres")
-# export META_DB_ADMINDB=$(find_in_overrides ".db.META_DB_ADMINDB" "META_DB_ADMINDB:" "META_DB_ADMINDB")
 export POSTGRES_ADDR=$( get_secret gcxi_db_host )
 export META_DB_ADMINDB=$( get_secret gcxi_db_name )
 ###############################################################################
 #       Posgress admin credentials
 ###############################################################################
-export pg_admin_user=$( get_secret pg_admin_user )
-export pg_admin_pass=$( get_secret pg_admin_pass )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 ###############################################################################
 #       gcxi gauth credentials
 ###############################################################################
 export GAUTH_CLIENT=$( get_secret GAUTH_CLIENT )
 export GAUTH_KEY=$( get_secret GAUTH_KEY )
 ###############################################################################
-export repository=$( get_secret repo_path )
+
 
 ###############################################################################
 # Creating secrets: gcxi-secret-gauth and gcxi-secret-pg
@@ -95,8 +69,8 @@ metadata:
   namespace: ${NS}
 type: Opaque
 stringData:
-  META_DB_ADMIN: ${pg_admin_user}
-  META_DB_ADMINPWD: '${pg_admin_pass}'
+  META_DB_ADMIN: ${POSTGRES_USER}
+  META_DB_ADMINPWD: '${POSTGRES_PASSWORD}'
 EOF
 
 ###############################################################################

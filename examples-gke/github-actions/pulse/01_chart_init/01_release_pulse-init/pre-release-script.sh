@@ -21,10 +21,10 @@ function replace_overrides {
 #             Exporting variable from deployment secret
 ###############################################################################
 #-------POSTGRES
-export postgres_host=$( get_secret postgres_host )
-export postgres_port=$( get_secret postgres_port )
-export postgres_user=$( get_secret postgres_user )
-export postgres_password=$( get_secret postgres_password )
+export POSTGRES_ADDR=$( get_secret POSTGRES_ADDR )
+export POSTGRES_PORT=$( get_secret POSTGRES_PORT )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD )
 #-------REDIS
 export redis_host=$( get_secret redis_host )
 export redis_port=$( get_secret redis_port )
@@ -42,10 +42,7 @@ export tenant_sid=$( get_secret tenant_sid )
 # Creating gauth pulse if not exist
 ###############################################################################
 envsubst < create_pulse_db.sh > create_pulse_db.sh_
-kubectl delete pods busybox || true
-kubectl run busybox --image=alpine --restart=Never -- sh -c "$(<create_pulse_db.sh_)"
-sleep 15
-kubectl delete pods busybox || true
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<create_pulse_db.sh_)"
 
 
 ###############################################################################
