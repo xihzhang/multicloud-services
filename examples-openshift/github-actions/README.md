@@ -84,7 +84,7 @@ helm install release-name helm-repo/chart-name
 
 It is recommended to separate your override values for installation and provisioning, as well as maintaining separate files for application versions. This allows easier upgrades.
 
-Helm installation on top of existing service does not impacting service, as Kubernetes applies change and restarts pods only if there is real difference between applied manifest and corresponding k8s object.
+Helm installation on top of existing services does not impact the service, as Kubernetes applies change and restarts pods only if there is real difference between applied manifest and corresponding k8s object.
 
 `github/workflows` contains github actions (GHA) workflows, the sample workflow is based on simple Dispatch mode, when we trigger pipeline manually (see screenshot below) adding a few input parameters.
 ![image](https://user-images.githubusercontent.com/83649784/162738542-420f3713-3c1a-40d5-8113-a2bf6298d9d0.png)
