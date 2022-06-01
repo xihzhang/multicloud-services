@@ -26,8 +26,6 @@ Create the following secrets to store confidential information you may not want 
 
 **Note** As tenant will share the same namespace as voice services, we recommend using a common deployment secret `deployment_secrets` for the two services. 
 
-
-
 |Key|Value|
 |-|-|
 CONSUL_VOICE_TOKEN|abc123
