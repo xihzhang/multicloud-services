@@ -1,7 +1,0 @@
-images:
-  tenant:
-    tag: 100.0.1000060
-  pgdbInit:
-    tag: 100.0.1000060
-  pulseInit:
-    tag: 100.0.1000060
