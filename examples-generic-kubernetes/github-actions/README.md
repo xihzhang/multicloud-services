@@ -4,10 +4,20 @@ The following is an example framework for the use of GitOPS with Genesys Private
 
 - Github workflows and github actions (GHA), located in .github/
 - deployment scripts, located in services/ (dedicated sub-folder for each deployed service)
-- and helm packages, delivered by product/service teams and pulled from artifactory
+- and helm packages, delivered by product/service teams and uploaded to your own internal repository
 
+# TL;DR
+
+- create a repository for your CI/CD use
+- clone the directory that is relevant to you, for example /examples-openshift/github-actions/
+- create a dedicated runner (public or private)
+- update the scripting (as defined in the commentary) for your cluster
+- run the service deployment
+
+Depending on command (eg. install, uninstall, validate, provision, etc) script performs helm validation or helm install, using override values from same component's folder. Note: There may be multiple override values files.
 # Prerequisites
 In order to leverage this model of CI/CD, you will need to have the following configured.
+- Image repository
 - GitHub repository   
 - GitHub Actions runner - either [GitHub-hosted](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners), or your own [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners). * It is recommended to use self-hosted runners with private repositories. 
 - GitHub Actions workflow - workflows/ will contain a base template to work from. 
@@ -18,7 +28,7 @@ In order to leverage this model of CI/CD, you will need to have the following co
 - Follow the specific instructions for your operating system and architecture. 
 
 ### Creating a runner within the cluster
-To use a private runner within your cluster, we recommend [actions-runner-controller](https://github.com/actions-runner-controller/actions-runner-controller) or [actions-runner-operator](https://github.com/evryfs/github-actions-runner-operator/). You can also [build your own runner](/doc/RUNNERS.md) from the public images.
+To use a self-hosted runner within your cluster, we recommend [actions-runner-controller](https://github.com/actions-runner-controller/actions-runner-controller) or [actions-runner-operator](https://github.com/evryfs/github-actions-runner-operator/). You can also [build your own runner](/doc/RUNNERS.md) from the public images.
 
 # Repository content
 
@@ -33,7 +43,7 @@ To use a private runner within your cluster, we recommend [actions-runner-contro
 
 ## ℹ️ Configure your repository and the workflow with the following steps:
 1. Have access to an MicroK8s cluster. Refer to https://microk8s.io/docs/working-with-kubectl
-2. Create the MK8S_CONFIG_FILE and IMAGE_REGISTRY_TOKEN (optional HELM_REGISTRY_TOKEN) repository secrets. Refer to:
+2. Create the MK8S_CONFIG_FILE, IMAGE_REGISTRY, and IMAGE_REGISTRY_TOKEN (optional HELM_REGISTRY_TOKEN) repository secrets. Refer to:
 - https://docs.github.com/en/actions/reference/encrypted-secrets
 - https://cli.github.com/manual/gh_secret_set
 3. (Optional) Edit the top-level 'env' section as marked with '🖊️' if the defaults are not suitable for your project.
@@ -69,7 +79,7 @@ helm install release-name helm-repo/chart-name
 
 It is recommended to separate your override values for installation and provisioning, as well as maintaining separate files for application versions. This allows easier upgrades.
 
-Helm installation on top of existing service does not impacting service, as Kubernetes applies change and restarts pods only if there is real difference between applied manifest and corresponding k8s object.
+Helm installation on top of existing services does not impact the service, as Kubernetes applies change and restarts pods only if there is real difference between applied manifest and corresponding k8s object.
 
 `github/workflows` contains github actions (GHA) workflows, the sample workflow is based on simple Dispatch mode, when we trigger pipeline manually (see screenshot below) adding a few input parameters.
 ![image](https://user-images.githubusercontent.com/83649784/162738542-420f3713-3c1a-40d5-8113-a2bf6298d9d0.png)
