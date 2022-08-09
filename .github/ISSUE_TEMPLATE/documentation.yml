@@ -13,7 +13,6 @@ body:
       label: What did you find?
       description: Where is the issue with the documentation, and what is the suggested change.
       placeholder: Tell us what you see!
-      value: "This isn't right!"
     validations:
       required: true
   - type: checkboxes
