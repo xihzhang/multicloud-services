@@ -1,11 +1,11 @@
 ## Database Configuration 
 
-The examples provided are defined with the following database segmentation. This accomodates functional and operational distinction and mitigates any saturation on a single database within your lab environment. 
+The examples provided are defined with the following database segmentation. This accommodates functional and operational distinction and mitigates any saturation on a single database within your lab environment. 
 
 #### Standard `pg_db_std`  
 The base standard database holding config servers for both Tenant/Voice Config Server, GVP Config Server, and Genesys Engagement Server (GES).   
 #### GWS `pg_db_gws`  
-The GWS database contains all databased used by GWS, GAuth, as well as Agent Setup.   
+The GWS database contains all databases used by GWS, GAuth, as well as Agent Setup.   
 #### UCSX `pg_db_ucsx`  
 This single service DB is meant to handle the load that can be produced by a highly populated Contact Database with larger volumes of data.    
 #### Historical Reporting `pg_db_rpt_hist`
