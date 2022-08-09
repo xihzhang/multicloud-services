@@ -13,8 +13,7 @@ body:
     attributes:
       label: What is needed?
       description: Is your feature request related to a problem? Please describe.
-      placeholder: Tell us what is needed.
-      value: "A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]"
+      placeholder: A clear and concise description of what the problem is. 
     validations:
       required: true
   - type: textarea
@@ -22,8 +21,7 @@ body:
     attributes:
       label: Possible solutions.
       description: Describe the solution you'd like.
-      placeholder: Describe the solution you'd like.
-      value: "A description of what you want to happen."
+      placeholder: A description of what you want to happen.
     validations:
       required: true
   - type: textarea
@@ -32,7 +30,6 @@ body:
       label: What alternatives were considered?
       description: Describe alternatives you've considered.
       placeholder: Tell us what was tried.
-      value: "A description of any alternative solutions or features you've considered."
     validations:
       required: false
   - type: textarea
