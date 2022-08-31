@@ -37,6 +37,8 @@ export gvp_pg_db_server=$( get_secret gvp_pg_db_server )
 export gvp_cm_pg_db_name=$( get_secret gvp_cm_pg_db_name )
 export gvp_cm_pg_db_password=$( get_secret gvp_cm_pg_db_password )
 export gvp_cm_pg_db_user=$( get_secret gvp_cm_pg_db_user )
+export POSTGRES_USER=$( get_secret POSTGRES_USER )
+export POSTGRES_PASSWORD=$( get_secret POSTGRES_PASSWORD)
 ###############################################################################
 #             GVP credentials
 ###############################################################################
@@ -56,3 +58,13 @@ create_secret postgres-secret       db-username   $gvp_cm_pg_db_user
 create_secret configserver-secret   username      $gvp_cm_configserver_user
 create_secret configserver-secret   password      $gvp_cm_configserver_password
 ###############################################################################
+
+###############################################################################
+# Creating gvp postgress DB if not exist
+###############################################################################
+envsubst < create_gvp_db.sh > create_gvp_db.sh_
+kubectl delete pods busybox || true
+echo "Executing GVP DB script"
+kubectl run busybox -i --rm --image=alpine --restart=Never -- sh -c "$(<create_gvp_db.sh_)"
+sleep 15
+kubectl delete pods busybox || true

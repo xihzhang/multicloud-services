@@ -26,22 +26,20 @@ Create the following secrets to store confidential information you may not want 
 `secrets/deployment_secrets`
 
 
-|Key|Value|
-|-|-|
-POSTGRES_ADDR| pgdb-dgt-postgresql.infra
-POSTGRES_USER| postgres
-POSTGRES_PASSWORD| password
-nexus_db_password| nexusPASS
-nexus_db_user| nexusUSER
-nexus_gws_client_id| nexus_client
-nexus_gws_client_secret| secret
-nexus_redis_password| redPASS
-pg_admin_pass| pgAdminPASS
-pg_admin_user| pgAdmin
-tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
-tenant_locations| westus1
-tenant_primary_location| USW1
-tenant_sid| 100
+|:key: Key|:memo: Default value|:book: Description
+|-|-|-|
+POSTGRES_ADDR| pgdb-dgt-postgresql.infra|Postgres address for digital
+POSTGRES_USER|  postgres| Postgres admin account 
+POSTGRES_PASSWORD| secret| Postgres admin password
+nexus_db_user| nexus | Nexus DB user
+nexus_db_password| nexus | Nexus DB password
+nexus_gws_client_id| nexus_client|Client ID for communicating with GAUTH service
+nexus_gws_client_secret| secret|Client ID secret
+nexus_redis_password| redPASS| REDIS password
+tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd| Tenant CCID
+tenant_locations| westus1| Tenant location detail
+tenant_primary_location| USW1| Tenant location
+tenant_sid| 100| Tenant short-id
 
 An example `.yaml`
 ```
@@ -54,14 +52,12 @@ metadata:
 stringData:
   POSTGRES_ADDR: pgdb-dgt-postgresql.infra
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: password
-  nexus_db_password: nexusPASS
-  nexus_db_user: nexusUSER
+  POSTGRES_PASSWORD: secret
+  nexus_db_user: nexus
+  nexus_db_password: nexus
   nexus_gws_client_id: nexus_client
   nexus_gws_client_secret: secret
   nexus_redis_password: redPASS
-  pg_admin_pass: pgAdminPASS
-  pg_admin_user: pgAdmin
   tenant_id: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
   tenant_locations: westus1
   tenant_primary_location: USW1
@@ -73,3 +69,5 @@ stringData:
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

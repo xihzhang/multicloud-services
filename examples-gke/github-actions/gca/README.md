@@ -26,3 +26,5 @@ Create the standard [pullsecret](../#-considerations) for the workflow:
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

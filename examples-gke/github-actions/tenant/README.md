@@ -43,7 +43,8 @@ POSTGRES_PASSWORD| secret| Postgres admin password
 POSTGRES_ADDR| pgdb-std-postgresql.infra | Postgres address for voice
 tenant_t100_pg_db_name| t100 | Tenant DB name - part of tenant deployment
 tenant_t100_pg_db_password| t100| Tenant DB password - part of tenant deployment
-tenant_t100_pg_db_user| t100|Tenant DB user - part of tenant deployment                     
+tenant_t100_pg_db_user| t100|Tenant DB user - part of tenant deployment
+LOCATION|USW1|Location of environment - part of tenant deployment                  
 
 An example `.yaml`
 ```
@@ -68,6 +69,7 @@ stringData:
   tenant_t100_pg_db_name:  t100
   tenant_t100_pg_db_password:  t100
   tenant_t100_pg_db_user:  t100
+  LOCATION: USW1
 ```
 
 ## Additional Information
@@ -76,3 +78,4 @@ Our sample configurations include the optional monitoring capabilities. For impl
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
 
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

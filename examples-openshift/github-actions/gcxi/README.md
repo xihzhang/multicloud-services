@@ -26,25 +26,26 @@ Create the following secrets to store confidential information you may not want 
 `secrets/deployment_secrets`
 
 
-|Key|Value|
-|-|-|
-tenant_sid| 100
-tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
-LOCATION| USW1
-gim_db_host| gim.db.host
-gim_db_name| gim
-gim_db_user| gimuser
-gim_db_pass| gimpass
-iwd_db_host| iwd.db.host
-iwd_db_name| iwd-100
-iwd_db_user| iwduser
-iwd_db_pass| iwdpass
-gcxi_db_host| gcxi.db.host
-gcxi_db_name| postgres
-POSTGRES_USER| postgres
-POSTGRES_PASSWORD| somepass
-GAUTH_CLIENT| gcxi_client
-GAUTH_KEY| secret
+
+|Key|Sample Value|Description
+|-|-|-
+tenant_sid| 100 | Tenant short-id
+tenant_id| 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd|Tenant CCID
+LOCATION| USW1|Tenant location
+gim_db_host| pgdb-rpthist-postgresql.infra | Postgres DB address used for GIM
+gim_db_name| gim| GIM DB name
+gim_db_user| gim| GIM DB user
+gim_db_pass| gim| GIM DB password
+iwd_db_host| pgdb-dgt-postgresql.infra | Postgres DB address used for IWD
+iwd_db_name| iwd-100| IWD DB name
+iwd_db_user| iwd| IWD DB user
+iwd_db_pass| iwd| IWD DB password
+gcxi_db_host| pgdb-rpthist-postgresql.infra | Postgres DB address used for GCXI
+gcxi_db_name| gcxi | GCXI DB name
+POSTGRES_USER| postgres | Postgres admin user 
+POSTGRES_PASSWORD| secret| Postgres admin password
+GAUTH_CLIENT| gcxi_client| Name of the GWS service client to use
+GAUTH_KEY| secret |Secret for the GWS service client
 
 
 
@@ -60,18 +61,18 @@ stringData:
   tenant_sid: 100
   tenant_id: 9350e2fc-a1dd-4c65-8d40-1f75a2e080dd
   LOCATION: USW1
-  gim_db_host: gim.db.host
+  gim_db_host: pgdb-rpthist-postgresql.infra
   gim_db_name: gim
-  gim_db_user: gimuser
-  gim_db_pass: gimpass
-  iwd_db_host: iwd.db.host
+  gim_db_user: gim
+  gim_db_pass: gim
+  iwd_db_host: pgdb-dgt-postgresql.infra
   iwd_db_name: iwd-100
-  iwd_db_user: iwduser
-  iwd_db_pass: iwdpass
-  gcxi_db_host: gcxi.db.host
-  gcxi_db_name: postgres
+  iwd_db_user: iwd
+  iwd_db_pass: iwd
+  gcxi_db_host: pgdb-rpthist-postgresql.infra
+  gcxi_db_name: gcxi
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: somepass
+  POSTGRES_PASSWORD: secret
   GAUTH_CLIENT: gcxi_client
   GAUTH_KEY: secret
 
@@ -83,3 +84,6 @@ stringData:
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).
+

@@ -92,7 +92,7 @@ context:
     HOSTFOLDER: Hosts
     HOSTOS: CFGRedHatLinux
     LCAPORT: '4999'
-    MSSQLHOST: mssql-deployment.infra.svc.cluster.local
+    MSSQLHOST: $gvp_mssql_db_server
     RSAPP: azure_rs
     RSJVM_INITIALHEAPSIZE: 4096m
     RSJVM_MAXHEAPSIZE: 8192m
