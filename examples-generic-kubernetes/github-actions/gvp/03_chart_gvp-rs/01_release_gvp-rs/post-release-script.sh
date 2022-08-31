@@ -11,7 +11,7 @@ export gvp_mssql_db_server=$( get_secret gvp_mssql_db_server )
 export gvp_rs_mssql_db_name=$( get_secret gvp_rs_mssql_db_name )
 export gvp_rs_mssql_db_password=$( get_secret gvp_rs_mssql_db_password )
 export gvp_rs_mssql_db_user=$( get_secret gvp_rs_mssql_db_user )
-export gvp_rs_mssql_admin_password=$( kubectl get secret --namespace infra mssql-mssql-linux-secret -o jsonpath="{.data.sapassword}" | base64 --decode )
+export gvp_rs_mssql_admin_password=$( get secret gvp_rs_mssql_admin_password )
 export gvp_rs_mssql_reader_password=$( get_secret gvp_rs_mssql_reader_password )
 ###############################################################################
 
