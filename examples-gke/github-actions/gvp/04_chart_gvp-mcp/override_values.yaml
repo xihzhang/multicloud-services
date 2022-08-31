@@ -57,12 +57,12 @@ image:
   snmp:
     registry: $IMAGE_REGISTRY
     repository: gvp/multicloud/gvp_snmp
-    tag: 100.0.100.0027
+    tag: 100.0.100.0039
     pullPolicy: IfNotPresent
   rup:
     registry: $IMAGE_REGISTRY
     repository: cce/recording-provider
-    tag: 100.0.1001610
+    tag: 100.0.1010031
     pullPolicy: IfNotPresent
   fluentBit:
     registry: fluent

@@ -37,7 +37,7 @@ image:
   rsinitrepository: gvp/gvp_rs_init
   rstag:
   rsinittag:
-  snmptag: 100.0.100.0027
+  snmptag: 100.0.100.0039
   pullPolicy: Always
   imagePullSecrets:
     - name: pullsecret
@@ -60,7 +60,7 @@ readinessValues:
 ## PVCs defined
 volumes:
   pvc:
-    storageClass: nfs-client
+    storageClass: standard
     claimSize: 2Gi
     activemqAndLocalConfigPath: "/billing/gvp-rs"
 
@@ -92,7 +92,7 @@ context:
     HOSTFOLDER: Hosts
     HOSTOS: CFGRedHatLinux
     LCAPORT: '4999'
-    MSSQLHOST: mssql-deployment.infra.svc.cluster.local
+    MSSQLHOST: $gvp_mssql_db_server
     RSAPP: azure_rs
     RSJVM_INITIALHEAPSIZE: 4096m
     RSJVM_MAXHEAPSIZE: 8192m
