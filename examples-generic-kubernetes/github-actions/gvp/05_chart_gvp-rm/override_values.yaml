@@ -31,7 +31,7 @@ image:
   cfghandlertag:
   rmtesttag:
   rmtag:
-  snmptag: 100.0.100.0027
+  snmptag: 100.0.100.0039
   pullPolicy: Always
   imagePullSecrets:
     - name: pullsecret
