@@ -10,14 +10,14 @@ ixnService:
   image:
     ixnServer:
       repository: "ixn/interaction_server"
-      tag: 100.0.005.1205
+      tag: 100.0.007.0400
     logSidecar:
       enabled: true
       repository: "fluent/fluent-bit"
       tag: "1.8.5"
     ixnNode:
       repository: "ixn/ixn_node"
-      tag: 100.0.005.1200
+      tag: 100.0.008.0501
 
   ixnServer:
     secrets:
@@ -49,7 +49,7 @@ ixnVQNode:
   image:
     ixnVQNode:
       repository: "ixn/ixn_vq_node"
-      tag: 100.0.005.0510
+      tag: 100.0.008.0201
 
 # Custom override-valuse for usage in pre-release-script
 kafkaAddress: infra-kafka-cp-kafka.infra
