@@ -16,9 +16,9 @@ Consult with our [documentation](https://all.docs.genesys.com/GVP/Current/GVPPEG
 Additional manual steps before installation:
 
 
-1. Database for GVP should be created in postgres (gvp_cm_pg_db_name in deployment-secrets)
-2. Database for GVP-RS should be created in MS SQL (gvp_rs_mssql_db_name in deployment-secrets)
-3. User with db_owner role for gvp-rs db should be created in MS SQL. (gvp_rs_mssql_admin_password, )
+1. Database for GVP should be created in postgres `gvp_cm_pg_db_name` in `deployment-secrets`
+2. Database for GVP-RS should be created in MS SQL `gvp_rs_mssql_db_name` in `deployment-secrets`
+3. User with db_owner role for gvp-rs db should be created in MS SQL. `gvp_rs_mssql_admin_password` 
    
 Example:
 ```
@@ -54,49 +54,67 @@ GO
 
 
 
-
 ## Configuration
 
 Be sure to update the values defined to align with your environment.
 To use the scripting for service deployment, create a deployment secret (deployment-secrets) to store confidential information you may not want held in your repository, or `.yaml` files. 
 
-gvp
---
-|Option|Value|
-|-|-|
-db-hostname |  $gvp_pg_db_server
-db-name     |  $gvp_cm_pg_db_name
-db-password |  $gvp_cm_pg_db_password
-db-username |  $gvp_cm_pg_db_user
-username    |  $gvp_cm_configserver_user
-password    |  $gvp_cm_configserver_password
 
-### Secrets
-
+## Secrets 
+Create the standard [pullsecret](../#-considerations) for the workflow: 
 `secrets/pullsecret`
 
+Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
-```
-gvp_cm_configserver_password
-gvp_cm_configserver_user
-gvp_cm_pg_db_name
-gvp_cm_pg_db_password
-gvp_cm_pg_db_user
-gvp_consul_token
-gvp_mssql_db_server
-gvp_pg_db_server
-gvp_rs_mssql_admin_password
-gvp_rs_mssql_db_name
-gvp_rs_mssql_db_password
-gvp_rs_mssql_db_user
-gvp_rs_mssql_reader_password
-```
 
-## Note
-Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools)
+|:key: Key|:memo: Default value|:book: Description
+|-|-|-
+gvp_cm_configserver_password|password|password for GVP configserver
+gvp_cm_configserver_user|default|user for GVP configserver
+gvp_pg_db_server|pgdb-std-postgresql.infra.svc.cluster.local|Postgres GVP DB address
+gvp_cm_pg_db_name|gvp|Postgres GVP DB name
+gvp_cm_pg_db_user|gvp|Postgres GVP DB user
+gvp_cm_pg_db_password|gvp|Postgres GVP DB password
+gvp_consul_token|abc123|Consul API token
+gvp_mssql_db_server|mssql-deployment.infra.svc.cluster.local|MSSQL GVP reporting server DB address
+gvp_rs_mssql_admin_password|password|MSSQL GVP RS admin password
+gvp_rs_mssql_db_name|gvp_rs|MSSQL GVP RS DB name
+gvp_rs_mssql_db_password|password|MSSQL GVP RS DB admin password
+gvp_rs_mssql_db_user|sa|MSSQL GVP RS DB admin user
+gvp_rs_mssql_reader_password|password|MSSQL GVP RS DB reader user password
+POSTGRES_USER|postgres|Postgres admin user
+POSTGRES_PASSWORD|secret|Postgres admin password
 
+Example `.yaml`
+
+```
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: deployment-secrets
+  namespace: gvp
+data:
+  gvp_cm_configserver_password: password
+  gvp_cm_configserver_user: default
+  gvp_pg_db_server: pgdb-std-postgresql.infra.svc.cluster.local
+  gvp_cm_pg_db_name: gvp
+  gvp_cm_pg_db_password: gvp
+  gvp_cm_pg_db_user: gvp
+  gvp_consul_token: abc123
+  gvp_mssql_db_server: mssql-deployment.infra.svc.cluster.local
+  gvp_rs_mssql_admin_password: password
+  gvp_rs_mssql_db_name: gvp_rs
+  gvp_rs_mssql_db_password: password
+  gvp_rs_mssql_db_user: sa
+  gvp_rs_mssql_reader_password: password
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: secret
+```
 ## Additional Information
 
-Be sure to check your ingress details as per [ingress documentation.](/doc/ingress.md) 
+Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
+Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
 
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

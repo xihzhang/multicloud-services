@@ -25,10 +25,10 @@ Create the standard [pullsecret](../#-considerations) for the workflow:
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
 
-|Key|Sample Value|
-|-|-|
-designer_gws_client_id| designer_client
-designer_gws_client_secret| secret
+|Key|Sample Value|Description
+|-|-|-
+designer_gws_client_id| designer_client| Name of the GWS service client to use
+designer_gws_client_secret| secret| Secret for the GWS service client
 
 An example `.yaml`
 ```
@@ -112,3 +112,5 @@ Changing das.deployment.color to new color: <green> in 05_chart_designer-das/ove
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

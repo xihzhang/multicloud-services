@@ -30,22 +30,22 @@ Create the standard [pullsecret](../#-considerations) for the workflow:
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
 
-|Key|Sample Value|Description
+|:key: Key|:memo: Default value|:book: Description
 |-|-|-
 POSTGRES_ADDR|pgdb-gws-postgresql.infra.svc.cluster.local| Postgres address for GWS/GAUTH
 DB_NAME|gauth| GAUTH DB name
 POSTGRES_USER|postgres| Postgres admin account 
-POSTGRES_PASSWORD|postgresPass| Postgres admin password 
-gauth_pg_password|gauthPass| GAUTH DB password
-gauth_pg_username|gauthUser| GAUTH DB user
-gauth_redis_password|redPass|Redis password
+POSTGRES_PASSWORD|secret| Postgres admin password 
+gauth_pg_password|gauth| GAUTH DB password
+gauth_pg_username|gauth| GAUTH DB user
+gauth_redis_password|redPass|REDIS password
 gauth_admin_password|`$2y$10$a5znBNI3dr5q38jreJAj/ew/bdtpWDZ3FooLIBYMwxmlTU6Qm3qKy`| GAUTH admin password **bcrypt encoded**
-gauth_admin_username|gadminUser| GAUTH admin user
+gauth_admin_username|ops| GAUTH admin user
 gauth_gws_client_id|gauth_client| Client ID for communicating with GAUTH service
 gauth_gws_client_secret|`$2y$10$a5znBNI3dr5q38jreJAj/ew/bdtpWDZ3FooLIBYMwxmlTU6Qm3qKy`| Client ID secret **bcrypt encoded**
 gauth_jks_keyPassword|keyPass| key password
 gauth_jks_keyStorePassword|keyStorePass| keystore password
-LOCATION|USW1|Location setting
+LOCATION|/USW1|Location setting
 
 An example `.yaml`
 ```
@@ -58,16 +58,16 @@ metadata:
 stringData:
   POSTGRES_ADDR: pgdb-gws-postgresql.infra.svc.cluster.local
   DB_NAME: gauth
-  gauth_pg_username: gauthUser
-  gauth_pg_password: gauthPass
+  gauth_pg_username: gauth
+  gauth_pg_password: gauth
   gauth_redis_password: redPass
-  gauth_admin_username: gadminUser
+  gauth_admin_username: ops
   gauth_admin_password: $2y$10$a5znBNI3dr5q38jreJAj/ew/bdtpWDZ3FooLIBYMwxmlTU6Qm3qKy
   gauth_gws_client_id: gauth_client
   gauth_gws_client_secret: $2y$10$a5znBNI3dr5q38jreJAj/ew/bdtpWDZ3FooLIBYMwxmlTU6Qm3qKy
   gauth_jks_keyPassword: keyPass 
   gauth_jks_keyStorePassword: keyStorePass
-  LOCATION: USW1
+  LOCATION: /USW1
 ```
 ## Additional Information
 

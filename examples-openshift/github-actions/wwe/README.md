@@ -21,14 +21,8 @@ Be sure to update the values defined to align with your environment.
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 - `secrets/pullsecret`
 
-
-## Usage
-
-Document how to verify service once it has been installed and configured.
-
-## Note
-Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools)
-
 ## Additional Information
 
-Be sure to check your ingress details as per [ingress documentation.](/doc/ingress.md) 
+Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
+
+Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
