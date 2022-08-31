@@ -1,7 +1,7 @@
 ![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
-Consult with our [documentation](all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/Overview) for the full configuration and deployment details.
+Consult with our [documentation](https://all.docs.genesys.com/PEC-REP/Current/GIMPEGuide/Overview) for the full configuration and deployment details.
 
 ## TL;DR
 - Complete the prequisites if any.
@@ -23,31 +23,32 @@ Create the standard [pullsecret](../#-considerations) for the workflow:
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
 
-|Key|Value|
-|-|-|
-ACCESS_KEY_ID| access_key
-SECRET_ACCESS_KEY| secret_key
-BUCKET_HOST| storage.googleapis.com
-BUCKET_NAME| gca-gsp-storage-bucket
-BUCKET_PORT|  443
-KAFKA_ADDR| infra-kafka-cp-kafka.infra
+|Key|Sample Value|Description
+|-|-|-|
+ACCESS_KEY_ID| access_key|s3 bucket access key ID
+SECRET_ACCESS_KEY| secret_key|s3 bucket secret 
+BUCKET_HOST| storage.googleapis.com| s3 bucket host
+BUCKET_NAME| gca-gsp-storage-bucket| s3 bucket name
+BUCKET_PORT|  443|s3 bucket port
+KAFKA_ADDR| kafka-helm-cp-kafka.kafka|Kafka address
 
 Example `.yaml`
 
 ```
 apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: deployment-secrets
+  namespace: gsp
 data:
   ACCESS_KEY_ID: access_key
   SECRET_ACCESS_KEY: secret_key
   BUCKET_HOST: storage.googleapis.com
   BUCKET_NAME: gca-gsp-storage-bucket
   BUCKET_PORT: 443
-  KAFKA_ADDR: infra-kafka-cp-kafka.infra
-kind: Secret
-metadata:
-  name: deployment-secrets
-  namespace: gsp
-type: Opaque
+  KAFKA_ADDR: kafka-helm-cp-kafka.kafka
+
 ```
 
 
@@ -57,3 +58,5 @@ type: Opaque
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).

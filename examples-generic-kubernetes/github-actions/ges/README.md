@@ -1,7 +1,7 @@
 ![K8ssupport](https://badgen.net/badge/supported%20K8s%20release/1.22/cyan)
 # Getting Started
 We've included a basic deployment to help get started.
-Consult with our [documentation](all.docs.genesys.com/PEC-CAB/Current/CABPEGuide) for the full configuration and deployment details.
+Consult with our [documentation](https://all.docs.genesys.com/PEC-CAB/Current/CABPEGuide) for the full configuration and deployment details.
 
 ## TL;DR
 - Complete the prequisites if any.
@@ -25,20 +25,20 @@ Create the standard [pullsecret](../#-considerations) for the workflow:
 Create the following secrets to store confidential information you may not want held in your repository, or `.yaml` files. 
 `secrets/deployment_secrets`
 
-|Key|Sample Value|
-|-|-|
-POSTGRES_ADDR| pgdb-std-postgresql.infra
-POSTGRES_USER| postgres
-POSTGRES_PASSWORD| password
-AUTHENTICATION_CLIENT_ID| ges_client
-AUTHENTICATION_CLIENT_SECRET| secret
-DB_NAME| ges
-DB_PASSWORD| ges
-DB_USER| ges
-DEVOPS_PASSWORD| letmein
-DEVOPS_USERNAME| admin
-REDIS_ORS_PASSWORD| redOrsPass
-REDIS_PASSWORD| redPass
+|Key|Sample Value|Description
+|-|-|-|
+POSTGRES_ADDR| pgdb-std-postgresql.infra|Postgres address for GES
+POSTGRES_USER| postgres|Postgres admin user
+POSTGRES_PASSWORD| password|Postgres admin password
+AUTHENTICATION_CLIENT_ID| ges_client|Client ID for communicating with GAUTH service
+AUTHENTICATION_CLIENT_SECRET| secret|Client ID secret 
+DB_NAME| ges| GES DB name
+DB_PASSWORD| ges| GES DB password
+DB_USER| ges| GES DB user
+DEVOPS_USERNAME| admin | GES UI login account
+DEVOPS_PASSWORD| letmein | GES UI password
+REDIS_ORS_PASSWORD| redOrsPass| Voice Redis password
+REDIS_PASSWORD| redPass| GES Redis password
 
 An example `.yaml`
 ```
@@ -57,8 +57,8 @@ stringData:
   DB_NAME: ges
   DB_PASSWORD: ges
   DB_USER: ges
-  DEVOPS_PASSWORD: letmein
   DEVOPS_USERNAME: admin
+  DEVOPS_PASSWORD: letmein
   REDIS_ORS_PASSWORD: redOrsPass
   REDIS_PASSWORD: redPass
 ```
@@ -68,3 +68,5 @@ stringData:
 Our sample configurations include the optional monitoring capabilities. For implementation of dashboards and monitoring see the [tools section](/tools).
 
 Be sure to check your ingress details as per [ingress documentation](/doc/ingress.md).
+
+Our sample configurations segment databases as per [database details](/doc/DATABASE.md).
