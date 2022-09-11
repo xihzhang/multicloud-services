@@ -34,6 +34,7 @@ END;
 GO
 
 CREATE LOGIN mssqladmin WITH PASSWORD = '$gvp_rs_mssql_admin_password';
+EXEC sp_defaultdb 'mssqladmin', 'gvp_rs';  
 GO
 
 USE [gvp_rs];
@@ -47,6 +48,7 @@ END;
 GO
 
 CREATE LOGIN mssqlreader WITH PASSWORD = '$gvp_rs_mssql_reader_password';
+EXEC sp_defaultdb 'mssqlreader', 'gvp_rs'; 
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'mssqlreader')
@@ -56,6 +58,6 @@ BEGIN
 END;
 GO
 
-SELECT name,create_date from sys.server_principals WHERE type in ('s', 'u')
+SELECT name,create_date from sys.server_principals WHERE type in ('s', 'u');
 GO
 "
